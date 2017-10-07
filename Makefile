@@ -28,7 +28,7 @@ install2: ## Install for the current user using the python2 command
 	python2 setup.py build_ext --inplace
 	python2 setup.py install --user
 
-test: develop ## Run nosetests using the default nosetests command
+test: in ## Run nosetests using the default nosetests command
 	nosetests -v
 
 test2: develop2 ## Run nosetests using the nosetests2 command

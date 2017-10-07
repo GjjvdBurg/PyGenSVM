@@ -7,41 +7,71 @@ import numpy
 
 from numpy.distutils.core import setup
 from numpy.distutils.misc_util import Configuration
-from sklearn._build_utils import get_blas_info, maybe_cythonize_extensions
+from sklearn._build_utils import get_blas_info
+
+# Set this to True to enable building extensions using Cython. Set it to False·
+# to build extensions from the C file (that was previously generated using·
+# Cython). Set it to 'auto' to build with Cython if available, otherwise from·
+# the C file.
+USE_CYTHON = 'auto'
+
+# If we are in a release, we always never use Cython directly
+IS_RELEASE = os.path.exists('PKG-INFO')
+if IS_RELEASE:
+    USE_CYTHON = False
+
+# If we do want to use Cython, we double check if it is available
+if USE_CYTHON:
+    try:
+        from Cython.Build import cythonize
+    except ImportError:
+        if USE_CYTHON == 'auto':
+            USE_CYTHON = False
+        else:
+            raise
 
 
-def configuration(parent_package='', top_path=None):
-    config = Configuration('gensvm', parent_package, top_path)
+def configuration():
+    config = Configuration('gensvm', '', None)
 
-    # gensvm module
     cblas_libs, blas_info = get_blas_info()
     if os.name == 'posix':
         cblas_libs.append('m')
 
+    # Wrapper code in Cython uses the .pyx extension if we want to USE_CYTHON, 
+    # otherwise it ends in .c. If you have more Cython code, you may want to 
+    # extend this a bit
+    wrapper = 'pyx_gensvm.pyx' if USE_CYTHON else 'pyx_gensvm.c'
+
+    # Sources include the C/Cython code from the wrapper and the source code of 
+    # the C library
     gensvm_sources = [
-            os.path.join('gensvm', 'pyx_gensvm.pyx'),
-            os.path.join('gensvm', 'src', 'gensvm', 'src', '*.c'),
+            os.path.join('src', wrapper),
+            os.path.join('src', 'gensvm', 'src', '*.c'),
             ]
 
+    # Dependencies are the header files of the C library and any potential 
+    # helper code between the library and the Cython code
     gensvm_depends = [
-            os.path.join('gensvm', 'src', 'gensvm', 'include', '*.h'),
-            os.path.join('gensvm', 'src', 'gensvm', 'gensvm_helper.c')
+            os.path.join('src', 'gensvm', 'include', '*.h'),
+            os.path.join('src', 'gensvm', 'gensvm_helper.c')
             ]
 
     config.add_extension('pyx_gensvm',
             sources=gensvm_sources,
             libraries=cblas_libs,
             include_dirs=[
-                os.path.join('gensvm', 'src', 'gensvm'),
-                os.path.join('gensvm', 'src', 'gensvm', 'include'),
+                os.path.join('src', 'gensvm'),
+                os.path.join('src', 'gensvm', 'include'),
                 numpy.get_include(),
                 blas_info.pop('include_dirs', [])],
             extra_compile_args=blas_info.pop('extra_compile_args', []),
             depends=gensvm_depends,
             **blas_info)
-    # end gensvm module
 
-    maybe_cythonize_extensions(top_path, config)
+    # Cythonize if necessary
+    if USE_CYTHON:
+        config.ext_modules = cythonize(config.ext_modules)
 
     return config
 
@@ -55,7 +85,7 @@ if __name__ == '__main__':
     version = re.search("__version__ = '([^']+)'", 
             open('gensvm/__init__.py').read()).group(1)
 
-    attr = configuration(top_path='').todict()
+    attr = configuration().todict()
 
     attr['description'] = 'Python package for the GenSVM classifier'
     attr['long_description'] = read('README.rst')
