@@ -14,7 +14,7 @@ from __future__ import print_function
 import numpy as np
 cimport numpy as np
 
-cimport pyx_gensvm
+cimport wrapper
 
 np.import_array()
 

@@ -41,7 +41,7 @@ def configuration():
     # Wrapper code in Cython uses the .pyx extension if we want to USE_CYTHON, 
     # otherwise it ends in .c. If you have more Cython code, you may want to 
     # extend this a bit
-    wrapper = 'pyx_gensvm.pyx' if USE_CYTHON else 'pyx_gensvm.c'
+    wrapper = 'wrapper.pyx' if USE_CYTHON else 'wrapper.c'
 
     # Sources include the C/Cython code from the wrapper and the source code of 
     # the C library
@@ -57,7 +57,7 @@ def configuration():
             os.path.join('src', 'gensvm', 'gensvm_helper.c')
             ]
 
-    config.add_extension('pyx_gensvm',
+    config.add_extension('wrapper',
             sources=gensvm_sources,
             libraries=cblas_libs,
             include_dirs=[

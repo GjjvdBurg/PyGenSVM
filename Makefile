@@ -41,7 +41,7 @@ cover: test ## Test unit test coverage using default nosetests
 
 clean: ## Clean build dist and egg directories left after install
 	rm -rf ./dist ./build ./$(PACKAGE).egg-info
-	rm -rf gensvm/pyx_gensvm*.so
+	rm -rf gensvm/*.so
 	rm -f MANIFEST
 
 develop: ## Install a development version of the package needed for testing

@@ -15,7 +15,7 @@ from sklearn.utils import check_X_y, check_random_state
 from sklearn.utils.multiclass import type_of_target
 from sklearn.utils.validation import check_is_fitted
 
-from . import pyx_gensvm
+from . import wrapper
 
 
 def _fit_gensvm(X, y, p, lmd, kappa, epsilon, weight_idx, kernel, gamma, coef, 
@@ -25,10 +25,10 @@ def _fit_gensvm(X, y, p, lmd, kappa, epsilon, weight_idx, kernel, gamma, coef,
     rnd = check_random_state(random_state)
 
     # set the verbosity in GenSVM
-    pyx_gensvm.set_verbosity_wrap(verbose)
+    wrapper.set_verbosity_wrap(verbose)
 
     # run the actual training
-    raw_coef_, n_SV_, n_iter_, training_error_, status_ = pyx_gensvm.train_wrap(
+    raw_coef_, n_SV_, n_iter_, training_error_, status_ = wrapper.train_wrap(
             X, y, p, lmd, kappa, epsilon, weight_idx, kernel, gamma, coef, 
             degree, kernel_eigen_cutoff, max_iter, 
             rnd.randint(np.iinfo('i').max))
@@ -181,7 +181,7 @@ class GenSVM(BaseEstimator):
         check_is_fitted(self, "coef_")
 
         V = np.vstack((self.intercept_, self.coef_))
-        predictions = pyx_gensvm.predict_wrap(X, V)
+        predictions = wrapper.predict_wrap(X, V)
 
         # Transform the classes back to the original form
         predictions -= 1
