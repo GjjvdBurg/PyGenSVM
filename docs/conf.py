@@ -22,7 +22,11 @@ import os
 import sys
 import sphinx_rtd_theme
 
-from unittest.mock import MagicMock
+try:
+    from unittest.mock import MagicMock
+except:
+    # python 2
+    from mock import MagicMock
 
 sys.path.insert(0, os.path.abspath('..'))
 
