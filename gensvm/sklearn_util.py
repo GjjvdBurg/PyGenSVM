@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """Functions in GenSVM that are taken from Scikit-Learn
 
 The GenSVM Python package is designed to work in the same way as Scikit-Learn 
