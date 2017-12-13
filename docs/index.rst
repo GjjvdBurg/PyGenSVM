@@ -9,17 +9,14 @@
 Classes
 =======
 
-The complete documentation of the available GenSVM classes is presented below.  
-
 GenSVM
 ------
 
-.. autoclass:: gensvm.core.GenSVM
+.. include:: ./cls_gensvm.rst
 
 GenSVMGridSearchCV
 ------------------
 
-.. autoclass:: gensvm.gridsearch.GenSVMGridSearchCV
-
+.. include:: ./cls_gridsearch.rst
 
 .. include:: ../CHANGELOG.rst
