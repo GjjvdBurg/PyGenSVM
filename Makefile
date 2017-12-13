@@ -44,6 +44,9 @@ clean: ## Clean build dist and egg directories left after install
 	rm -rf gensvm/*.so
 	rm -f MANIFEST
 
+cleaner: clean
+	rm -f ./src/wrapper.c
+
 develop: ## Install a development version of the package needed for testing
 	python setup.py develop --user
 
@@ -55,3 +58,7 @@ dist: ## Make Python source distribution
 
 dist2: ## Make Python 2 source distribution
 	python2 setup.py sdist
+
+docs: doc
+doc: install ## Build documentation with Sphinx
+	$(MAKE) -C $(DOC_DIR) html
