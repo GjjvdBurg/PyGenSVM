@@ -10,7 +10,7 @@
    errors. It is this flexibility that makes it perform well on diverse
    datasets.
    
-   The :func:`.~GenSVM.fit` and :func:`~GenSVM.predict` methods of this class
+   The :func:`~GenSVM.fit` and :func:`~GenSVM.predict` methods of this class
    use the GenSVM C library for the actual computations.
    
    :param p: Parameter for the L_p norm of the loss function (1.0 <= p <= 2.0)

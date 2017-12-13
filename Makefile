@@ -31,7 +31,8 @@ install2: ## Install for the current user using the python2 command
 test: in ## Run nosetests using the default nosetests command
 	nosetests -v
 
-test2: develop2 ## Run nosetests using the nosetests2 command
+test2: ## Run nosetests using the nosetests2 command
+	python2 setup.py build_ext -i
 	nosetests2 -v
 
 cover: test ## Test unit test coverage using default nosetests

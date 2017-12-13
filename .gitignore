@@ -1,2 +1,5 @@
 *.pyc
 gensvm/*.so
+README
+build/*
+cover/*
