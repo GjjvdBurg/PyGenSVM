@@ -25,6 +25,23 @@ GenSVM can be easily installed through pip:
 
     pip install gensvm
 
+Citing
+------
+
+If you use this package in your research please cite the paper, for instance 
+using the following BibTeX entry::
+
+    @article{JMLR:v17:14-526,
+      author  = {Gerrit J.J. van den Burg and Patrick J.F. Groenen},
+      title   = {{GenSVM}: A Generalized Multiclass Support Vector Machine},
+      journal = {Journal of Machine Learning Research},
+      year    = {2016},
+      volume  = {17},
+      number  = {225},
+      pages   = {1-42},
+      url     = {http://jmlr.org/papers/v17/14-526.html}
+    }
+
 Usage
 -----
 
