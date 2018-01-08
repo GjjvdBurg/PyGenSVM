@@ -88,24 +88,22 @@ class GenSVM(BaseEstimator, ClassifierMixin):
 
     gamma : float, optional (default='auto')
         Kernel parameter for the rbf, poly, and sigmoid kernel. If gamma is 
-        'auto' then 1/n_features will be used. See `gensvm_kernels`_ for the 
-        exact implementation of the kernels.
+        'auto' then 1/n_features will be used. See `Kernels in GenSVM 
+        <gensvm_kernels_>`_ for the exact implementation of the kernels.
 
     coef : float, optional (default=0.0)
-        Kernel parameter for the poly and sigmoid kernel. See `gensvm_kernels`_ 
-        for the exact implementation of the kernels.
-
+        Kernel parameter for the poly and sigmoid kernel. See `Kernels in 
+        GenSVM <gensvm_kernels_>`_ for the exact implementation of the kernels.
 
     degree : float, optional (default=2.0)
-        Kernel parameter for the poly kernel. See `gensvm_kernels`_ for the 
-        exact implementation of the kernels.
-
+        Kernel parameter for the poly kernel. See `Kernels in GenSVM 
+        <gensvm_kernels_>`_ for the exact implementation of the kernels.
 
     kernel_eigen_cutoff : float, optional (default=1e-8)
-        Cutoff point for the reduced eigendecomposition used with 
-        kernel-GenSVM. Eigenvectors for which the ratio between their 
-        corresponding eigenvalue and the largest eigenvalue is smaller than the 
-        cutoff will be dropped.
+        Cutoff point for the reduced eigendecomposition used with nonlinear 
+        GenSVM.  Eigenvectors for which the ratio between their corresponding 
+        eigenvalue and the largest eigenvalue is smaller than the cutoff will 
+        be dropped.
 
     verbose : int, (default=0)
         Enable verbose output

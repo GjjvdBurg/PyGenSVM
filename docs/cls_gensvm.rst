@@ -26,16 +26,19 @@
                   'linear', 'poly', 'rbf', or 'sigmoid'.
    :type kernel: string, optional (default='linear')
    :param gamma: Kernel parameter for the rbf, poly, and sigmoid kernel. If gamma is
-                 'auto' then 1/n_features will be used.
+                 'auto' then 1/n_features will be used. See `Kernels in GenSVM
+                 <gensvm_kernels_>`_ for the exact implementation of the kernels.
    :type gamma: float, optional (default='auto')
-   :param coef: Kernel parameter for the poly and sigmoid kernel
+   :param coef: Kernel parameter for the poly and sigmoid kernel. See `Kernels in
+                GenSVM <gensvm_kernels_>`_ for the exact implementation of the kernels.
    :type coef: float, optional (default=0.0)
-   :param degree: Kernel parameter for the poly kernel
+   :param degree: Kernel parameter for the poly kernel. See `Kernels in GenSVM
+                  <gensvm_kernels_>`_ for the exact implementation of the kernels.
    :type degree: float, optional (default=2.0)
-   :param kernel_eigen_cutoff: Cutoff point for the reduced eigendecomposition used with
-                               kernel-GenSVM. Eigenvectors for which the ratio between their
-                               corresponding eigenvalue and the largest eigenvalue is smaller than the
-                               cutoff will be dropped.
+   :param kernel_eigen_cutoff: Cutoff point for the reduced eigendecomposition used with nonlinear
+                               GenSVM.  Eigenvectors for which the ratio between their corresponding
+                               eigenvalue and the largest eigenvalue is smaller than the cutoff will
+                               be dropped.
    :type kernel_eigen_cutoff: float, optional (default=1e-8)
    :param verbose: Enable verbose output
    :type verbose: int, (default=0)
@@ -66,6 +69,10 @@
    
       :class:`.GenSVMGridSearchCV`
           Helper class to run an efficient grid search for GenSVM.
+   
+   .. _gensvm_kernels:
+       https://gensvm.readthedocs.io/en/latest/#kernels-in-gensvm
+   
    
    
    .. py:method:: GenSVM.fit(X, y, seed_V=None)
