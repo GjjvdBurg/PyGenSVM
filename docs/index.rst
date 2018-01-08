@@ -20,4 +20,12 @@ GenSVMGridSearchCV
 
 .. include:: ./cls_gridsearch.rst
 
+Functions
+---------
+
+.. autofunction:: gensvm.gridsearch.load_default_grid
+
+.. include:: ./kernels.rst
+
 .. include:: ../CHANGELOG.rst
+
