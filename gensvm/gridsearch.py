@@ -155,7 +155,14 @@ def _format_results(results, cv_idx, true_y, scorers, iid,
             if return_n_test_samples:
                 ret.append(len(y_test))
             if return_times:
-                fit_time = duration
+                # Note, the C library returns the duration for a task (i.e. all 
+                # splits). The _skkl_format_cv_results() computes the mean of 
+                # the values, which should represent the average time per 
+                # split. To compute this correctly, we here divide by the 
+                # number of splits. Since we calculate the mean later, the mean 
+                # is still correct, but this is not the exact fit_time for this 
+                # fold.
+                fit_time = duration / n_splits
                 ret.extend([fit_time, score_time])
             if return_parameters:
                 ret.append(param)
