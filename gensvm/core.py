@@ -91,7 +91,7 @@ class GenSVM(BaseEstimator, ClassifierMixin):
         'auto' then 1/n_features will be used. See `Kernels in GenSVM 
         <gensvm_kernels_>`_ for the exact implementation of the kernels.
 
-    coef : float, optional (default=0.0)
+    coef : float, optional (default=1.0)
         Kernel parameter for the poly and sigmoid kernel. See `Kernels in 
         GenSVM <gensvm_kernels_>`_ for the exact implementation of the kernels.
 
@@ -142,7 +142,7 @@ class GenSVM(BaseEstimator, ClassifierMixin):
     """
 
     def __init__(self, p=1.0, lmd=1e-5, kappa=0.0, epsilon=1e-6, 
-            weights='unit', kernel='linear', gamma='auto', coef=0.0, 
+            weights='unit', kernel='linear', gamma='auto', coef=1.0, 
             degree=2.0, kernel_eigen_cutoff=1e-8, verbose=0, random_state=None, 
             max_iter=1e8):
 
