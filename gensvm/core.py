@@ -18,7 +18,7 @@ from sklearn.utils import check_X_y, check_random_state
 from sklearn.utils.multiclass import type_of_target
 from sklearn.utils.validation import check_is_fitted
 
-from . import wrapper
+from .cython_wrapper import wrapper
 
 
 def _fit_gensvm(X, y, n_class, p, lmd, kappa, epsilon, weights, kernel, gamma, 

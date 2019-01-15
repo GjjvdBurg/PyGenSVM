@@ -25,7 +25,7 @@ from sklearn.utils import check_X_y
 from sklearn.utils.multiclass import type_of_target
 from sklearn.utils.validation import indexable
 
-from . import wrapper
+from .cython_wrapper import wrapper
 from .core import GenSVM
 from .sklearn_util import (_skl_format_cv_results, _skl_check_scorers, 
         _skl_check_is_fitted, _skl_grid_score)

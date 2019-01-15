@@ -94,18 +94,14 @@ def configuration():
 
     # Wrapper code in Cython uses the .pyx extension if we want to USE_CYTHON, 
     # otherwise it ends in .c.
-    wrappers = [
-            os.path.join('src', 'wrapper.pyx'),
-            ]
-    if not USE_CYTHON:
-        wrappers = [os.path.splitext(w)[0] + '.c' for w in wrappers]
+    wrapper_extension = "*.pyx" if USE_CYTHON else "*.c"
 
     # Sources include the C/Cython code from the wrapper and the source code of 
     # the C library
-    gensvm_sources = wrappers[:]
-    gensvm_sources.append([
-            os.path.join('src', 'gensvm', 'src', '*.c'),
-            ])
+    gensvm_sources = [
+        os.path.join("gensvm", "cython_wrapper", wrapper_extension),
+        os.path.join("src", "gensvm", "src", "*.c"),
+    ]
 
     # Dependencies are the header files of the C library and any potential 
     # helper code between the library and the Cython code
@@ -115,7 +111,7 @@ def configuration():
             ]
 
     from numpy import get_include
-    config.add_extension('wrapper',
+    config.add_extension('cython_wrapper.wrapper',
             sources=gensvm_sources,
             libraries=cblas_libs,
             include_dirs=[
