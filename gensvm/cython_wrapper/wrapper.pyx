@@ -179,6 +179,7 @@ def grid_wrap(
         int store_predictions,
         np.ndarray[np.int_t, ndim=1, mode='c'] cv_idx,
         int n_folds,
+        int verbosity,
         ):
     """
     """
@@ -233,7 +234,8 @@ def grid_wrap(
     set_queue(queue, n_tasks, tasks)
 
     with nogil:
-        gensvm_train_q_helper(queue, cv_idx.data, store_predictions)
+        gensvm_train_q_helper(queue, cv_idx.data, store_predictions, 
+                verbosity)
 
     cdef np.ndarray[np.int_t, ndim=1, mode='c'] pred
 

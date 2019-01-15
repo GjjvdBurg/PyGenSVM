@@ -245,7 +245,13 @@ def _fit_grid_gensvm(
         fold_idx += 1
 
     results_ = wrapper.grid_wrap(
-        X, y, candidate_params, int(store_predictions), cv_idx, int(n_folds)
+        X,
+        y,
+        candidate_params,
+        int(store_predictions),
+        cv_idx,
+        int(n_folds),
+        int(verbose),
     )
     cv_results_ = _format_results(results_, cv_idx, y, scorers, iid)
 
