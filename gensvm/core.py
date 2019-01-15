@@ -142,6 +142,11 @@ class GenSVM(BaseEstimator, ClassifierMixin):
     verbose : int, (default=0)
         Enable verbose output
 
+    random_state : None, int, instance of RandomState
+        The seed for the random number generation used for initialization where 
+        necessary. See the documentation of 
+        ``sklearn.utils.check_random_state`` for more info.
+
     max_iter : int, (default=1e8)
         The maximum number of iterations to be run.
 
