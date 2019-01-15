@@ -42,7 +42,7 @@ cover: test ## Test unit test coverage using default nosetests
 
 clean: ## Clean build dist and egg directories left after install
 	rm -rf ./dist ./build ./$(PACKAGE).egg-info
-	rm -rf gensvm/*.so
+	rm -rf gensvm/cython_wrapper/*.so
 	rm -f MANIFEST
 
 cleaner: clean
