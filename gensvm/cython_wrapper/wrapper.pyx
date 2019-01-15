@@ -1,3 +1,5 @@
+# cython: language_level=2
+
 """
 Wrapper for GenSVM
 
