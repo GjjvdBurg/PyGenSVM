@@ -296,7 +296,7 @@ class GenSVMGridSearchCV(BaseEstimator, MetaEstimatorMixin):
         Determines the cross-validation splitting strategy. Possible inputs for 
         cv are:
 
-          - None, to use the default 3-fold cross validation,
+          - None, to use the default 5-fold cross validation,
           - integer, to specify the number of folds in a `(Stratified)KFold`,
           - An object to be used as a cross-validation generator.
           - An iterable yielding train, test splits.
@@ -490,7 +490,7 @@ class GenSVMGridSearchCV(BaseEstimator, MetaEstimatorMixin):
         _validate_param_grid(self.param_grid)
 
         self.scoring = scoring
-        self.cv = cv
+        self.cv = 5 if cv is None else cv
         self.refit = refit
         self.verbose = verbose
         self.return_train_score = return_train_score
