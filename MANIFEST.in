@@ -1,0 +1,10 @@
+include setup.py
+include README.rst
+include LICENSE
+include CHANGELOG.rst
+recursive-include gensvm *.py
+recursive-include gensvm *.pxd
+recursive-include gensvm *.pyx
+recursive-include src *
+prune src/gensvm/tests
+prune src/gensvm/.git
