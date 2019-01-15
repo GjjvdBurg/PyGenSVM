@@ -44,6 +44,7 @@ clean: ## Clean build dist and egg directories left after install
 	rm -rf ./dist ./build ./$(PACKAGE).egg-info
 	rm -rf gensvm/cython_wrapper/*.so
 	rm -f MANIFEST
+	$(MAKE) -C ./src/gensvm clean
 
 cleaner: clean
 	rm -f ./src/wrapper.c
