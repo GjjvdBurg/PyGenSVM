@@ -24,7 +24,7 @@ def get_ranks(x):
     x = np.ravel(np.asarray(x))
     l = len(x)
     r = 1
-    ranks = np.zeros((l, ))
+    ranks = np.zeros((l,))
     while not all([k is None for k in x]):
         m = min([k for k in x if not k is None])
         idx = [1 if k == m else 0 for k in x]

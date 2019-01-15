@@ -27,29 +27,33 @@ from sklearn.utils.validation import indexable
 
 from .cython_wrapper import wrapper
 from .core import GenSVM
-from .sklearn_util import (_skl_format_cv_results, _skl_check_scorers, 
-        _skl_check_is_fitted, _skl_grid_score)
+from .sklearn_util import (
+    _skl_format_cv_results,
+    _skl_check_scorers,
+    _skl_check_is_fitted,
+    _skl_grid_score,
+)
 
 
 def _sort_candidate_params(candidate_params):
-    if any(('epsilon' in p for p in candidate_params)):
-        candidate_params.sort(key=itemgetter('epsilon'), reverse=True)
-    if any(('p' in p for p in candidate_params)):
-        candidate_params.sort(key=itemgetter('p'))
-    if any(('lmd' in p for p in candidate_params)):
-        candidate_params.sort(key=itemgetter('lmd'))
-    if any(('kappa' in p for p in candidate_params)):
-        candidate_params.sort(key=itemgetter('kappa'))
-    if any(('weights' in p for p in candidate_params)):
-        candidate_params.sort(key=itemgetter('weights'))
-    if any(('gamma' in p for p in candidate_params)):
-        candidate_params.sort(key=itemgetter('gamma'))
-    if any(('degree' in p for p in candidate_params)):
-        candidate_params.sort(key=itemgetter('degree'))
-    if any(('coef' in p for p in candidate_params)):
-        candidate_params.sort(key=itemgetter('coef'))
-    if any(('kernel' in p for p in candidate_params)):
-        candidate_params.sort(key=itemgetter('kernel'))
+    if any(("epsilon" in p for p in candidate_params)):
+        candidate_params.sort(key=itemgetter("epsilon"), reverse=True)
+    if any(("p" in p for p in candidate_params)):
+        candidate_params.sort(key=itemgetter("p"))
+    if any(("lmd" in p for p in candidate_params)):
+        candidate_params.sort(key=itemgetter("lmd"))
+    if any(("kappa" in p for p in candidate_params)):
+        candidate_params.sort(key=itemgetter("kappa"))
+    if any(("weights" in p for p in candidate_params)):
+        candidate_params.sort(key=itemgetter("weights"))
+    if any(("gamma" in p for p in candidate_params)):
+        candidate_params.sort(key=itemgetter("gamma"))
+    if any(("degree" in p for p in candidate_params)):
+        candidate_params.sort(key=itemgetter("degree"))
+    if any(("coef" in p for p in candidate_params)):
+        candidate_params.sort(key=itemgetter("coef"))
+    if any(("kernel" in p for p in candidate_params)):
+        candidate_params.sort(key=itemgetter("kernel"))
 
 
 def _validate_param_grid(param_grid):
@@ -61,32 +65,32 @@ def _validate_param_grid(param_grid):
     """
     # the conditions that the parameters must satisfy
     conditions = {
-            'p': lambda x : 1.0 <= x <= 2.0,
-            'kappa': lambda x : x > -1.0,
-            'lmd': lambda x : x > 0,
-            'epsilon': lambda x : x > 0,
-            'gamma' : lambda x : x != 0,
-            'weights' : lambda x : x in ['unit', 'group'],
-            }
+        "p": lambda x: 1.0 <= x <= 2.0,
+        "kappa": lambda x: x > -1.0,
+        "lmd": lambda x: x > 0,
+        "epsilon": lambda x: x > 0,
+        "gamma": lambda x: x != 0,
+        "weights": lambda x: x in ["unit", "group"],
+    }
 
     for param in conditions:
         if param in param_grid:
             if not all(map(conditions[param], param_grid[param])):
                 raise ValueError(
-                        "Invalid value in grid for parameter: %s." % (param)
-                        )
+                    "Invalid value in grid for parameter: %s." % (param)
+                )
 
 
 class _MockEstimator(ClassifierMixin):
-    #This mock estimator facilitates the use of the Scorer class of 
-    #Scikit-Learn. Basically, we want to use the _score function of 
-    #sklearn.model_selection._validation, but we don't keep track of the 
-    #individual estimators in the GenSVM C grid search code. With this wrapper 
-    #we can mock an estimator for the _score function.
+    # This mock estimator facilitates the use of the Scorer class of
+    # Scikit-Learn. Basically, we want to use the _score function of
+    # sklearn.model_selection._validation, but we don't keep track of the
+    # individual estimators in the GenSVM C grid search code. With this wrapper
+    # we can mock an estimator for the _score function.
 
-    #The ClassifierMixin adds the score method to the estimator. This allows us 
-    #to leave scoring=None as the default to the GenSVMGridSearchCV class and 
-    #ends up using the accuracy_score metric.
+    # The ClassifierMixin adds the score method to the estimator. This allows us
+    # to leave scoring=None as the default to the GenSVMGridSearchCV class and
+    # ends up using the accuracy_score metric.
 
     def __init__(self, predictions):
         self.predictions = predictions
@@ -95,11 +99,17 @@ class _MockEstimator(ClassifierMixin):
         return self.predictions
 
 
-def _format_results(results, cv_idx, true_y, scorers, iid, 
-        return_train_score=True,
-        return_n_test_samples=True,
-        return_times=True,
-        return_parameters=False):
+def _format_results(
+    results,
+    cv_idx,
+    true_y,
+    scorers,
+    iid,
+    return_train_score=True,
+    return_n_test_samples=True,
+    return_times=True,
+    return_parameters=False,
+):
     """Format the results from the grid search
 
     Parameters
@@ -118,49 +128,52 @@ def _format_results(results, cv_idx, true_y, scorers, iid,
     """
 
     out = []
-    candidate_params = results['params']
+    candidate_params = results["params"]
     n_candidates = len(candidate_params)
     n_splits = len(np.unique(cv_idx))
 
     is_multimetric = not callable(scorers)
 
-    # Out must be a list of dicts of size n_params x n_splits that iterates 
+    # Out must be a list of dicts of size n_params x n_splits that iterates
     # over the params in the list and for each param iterates over the splits.
-    for param, duration, predictions in zip(results['params'], 
-            results['duration'], results['predictions']):
+    for param, duration, predictions in zip(
+        results["params"], results["duration"], results["predictions"]
+    ):
         for test_idx in np.unique(cv_idx):
 
             ret = []
             score_time = 0
 
             if return_train_score:
-                train_pred = predictions[cv_idx != test_idx, ]
-                y_train = true_y[cv_idx != test_idx, ]
+                train_pred = predictions[cv_idx != test_idx,]
+                y_train = true_y[cv_idx != test_idx,]
                 train_mock = _MockEstimator(train_pred)
                 start_time = time.time()
-                train_scores = _score(train_mock, None, y_train, scorers, 
-                        is_multimetric)
+                train_scores = _score(
+                    train_mock, None, y_train, scorers, is_multimetric
+                )
                 score_time += time.time() - start_time
                 ret.append(train_scores)
 
-            test_pred = predictions[cv_idx == test_idx, ]
-            y_test = true_y[cv_idx == test_idx, ]
+            test_pred = predictions[cv_idx == test_idx,]
+            y_test = true_y[cv_idx == test_idx,]
             test_mock = _MockEstimator(test_pred)
             start_time = time.time()
-            test_scores = _score(test_mock, None, y_test, scorers, 
-                    is_multimetric)
+            test_scores = _score(
+                test_mock, None, y_test, scorers, is_multimetric
+            )
             score_time += time.time() - start_time
             ret.append(test_scores)
 
             if return_n_test_samples:
                 ret.append(len(y_test))
             if return_times:
-                # Note, the C library returns the duration for a task (i.e. all 
-                # splits). The _skkl_format_cv_results() computes the mean of 
-                # the values, which should represent the average time per 
-                # split. To compute this correctly, we here divide by the 
-                # number of splits. Since we calculate the mean later, the mean 
-                # is still correct, but this is not the exact fit_time for this 
+                # Note, the C library returns the duration for a task (i.e. all
+                # splits). The _skkl_format_cv_results() computes the mean of
+                # the values, which should represent the average time per
+                # split. To compute this correctly, we here divide by the
+                # number of splits. Since we calculate the mean later, the mean
+                # is still correct, but this is not the exact fit_time for this
                 # fold.
                 fit_time = duration / n_splits
                 ret.extend([fit_time, score_time])
@@ -169,14 +182,31 @@ def _format_results(results, cv_idx, true_y, scorers, iid,
 
             out.append(ret)
 
-    cv_results_ = _skl_format_cv_results(out, return_train_score, 
-            candidate_params, n_candidates, n_splits, scorers, iid)
+    cv_results_ = _skl_format_cv_results(
+        out,
+        return_train_score,
+        candidate_params,
+        n_candidates,
+        n_splits,
+        scorers,
+        iid,
+    )
 
     return cv_results_
 
 
-def _fit_grid_gensvm(X, y, groups, candidate_params, scorers, cv, refit, 
-        verbose, return_train_score, iid):
+def _fit_grid_gensvm(
+    X,
+    y,
+    groups,
+    candidate_params,
+    scorers,
+    cv,
+    refit,
+    verbose,
+    return_train_score,
+    iid,
+):
     """Utility function for fitting the grid search for GenSVM
 
     This function sorts the parameter grid for optimal computation speed, sets 
@@ -193,35 +223,30 @@ def _fit_grid_gensvm(X, y, groups, candidate_params, scorers, cv, refit,
     """
 
     # sort the candidate params
-    # the optimal order of the parameters from inner to outer loop is: epsilon, 
+    # the optimal order of the parameters from inner to outer loop is: epsilon,
     # p, lambda, kappa, weights, kernel, ???
     _sort_candidate_params(candidate_params)
 
     # set the verbosity in GenSVM
     wrapper.set_verbosity_wrap(verbose)
 
-    # NOTE: The C library can compute the accuracy score and destroy the exact 
-    # predictions, but this doesn't allow us to compute the score per fold. So 
+    # NOTE: The C library can compute the accuracy score and destroy the exact
+    # predictions, but this doesn't allow us to compute the score per fold. So
     # we always want to get the raw predictions for each grid point.
     store_predictions = True
 
     # Convert the cv variable to a cv_idx array
     cv = check_cv(cv, y, classifier=True)
     n_folds = cv.get_n_splits(X, y, groups)
-    cv_idx = np.zeros((X.shape[0], ), dtype=np.int_) - 1
+    cv_idx = np.zeros((X.shape[0],), dtype=np.int_) - 1
     fold_idx = 0
     for train, test in cv.split(X, y, groups):
-        cv_idx[test, ] = fold_idx
+        cv_idx[test,] = fold_idx
         fold_idx += 1
 
     results_ = wrapper.grid_wrap(
-            X,
-            y,
-            candidate_params,
-            int(store_predictions),
-            cv_idx,
-            int(n_folds),
-            )
+        X, y, candidate_params, int(store_predictions), cv_idx, int(n_folds)
+    )
     cv_results_ = _format_results(results_, cv_idx, y, scorers, iid)
 
     return cv_results_, n_folds
@@ -449,8 +474,16 @@ class GenSVMGridSearchCV(BaseEstimator, MetaEstimatorMixin):
         https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html
     """
 
-    def __init__(self, param_grid, scoring=None, iid=True, cv=None, refit=True, 
-            verbose=0, return_train_score=True):
+    def __init__(
+        self,
+        param_grid,
+        scoring=None,
+        iid=True,
+        cv=None,
+        refit=True,
+        verbose=0,
+        return_train_score=True,
+    ):
 
         self.param_grid = param_grid
         _check_param_grid(self.param_grid)
@@ -465,7 +498,6 @@ class GenSVMGridSearchCV(BaseEstimator, MetaEstimatorMixin):
 
     def _get_param_iterator(self):
         return ParameterGrid(self.param_grid)
-
 
     def fit(self, X, y, groups=None):
         """Run GenSVM grid search with all sets of parameters
@@ -491,14 +523,15 @@ class GenSVMGridSearchCV(BaseEstimator, MetaEstimatorMixin):
 
         """
 
-        X, y_orig = check_X_y(X, y, accept_sparse=False, dtype=np.float64, 
-                order="C")
+        X, y_orig = check_X_y(
+            X, y, accept_sparse=False, dtype=np.float64, order="C"
+        )
 
         y_type = type_of_target(y_orig)
         if y_type not in ["binary", "multiclass"]:
             raise ValueError("Label type not allowed for GenSVM: %r" % y_type)
 
-        # This is necessary because GenSVM expects classes to go from 1 to 
+        # This is necessary because GenSVM expects classes to go from 1 to
         # n_class
         self.encoder = LabelEncoder()
         y = self.encoder.fit_transform(y_orig)
@@ -507,13 +540,23 @@ class GenSVMGridSearchCV(BaseEstimator, MetaEstimatorMixin):
         candidate_params = list(self._get_param_iterator())
 
         scorers, self.multimetric_, refit_metric = _skl_check_scorers(
-                self.scoring, self.refit)
+            self.scoring, self.refit
+        )
 
         X, y, groups = indexable(X, y, groups)
 
-        results, n_splits = _fit_grid_gensvm(X, y, groups, candidate_params, 
-                scorers, self.cv, self.refit, self.verbose, 
-                self.return_train_score, self.iid)
+        results, n_splits = _fit_grid_gensvm(
+            X,
+            y,
+            groups,
+            candidate_params,
+            scorers,
+            self.cv,
+            self.refit,
+            self.verbose,
+            self.return_train_score,
+            self.iid,
+        )
 
         self.cv_results_ = results
 
@@ -524,22 +567,22 @@ class GenSVMGridSearchCV(BaseEstimator, MetaEstimatorMixin):
             self.best_index_ = results["rank_test_%s" % refit_metric].argmin()
             self.best_params_ = candidate_params[self.best_index_]
             self.best_score_ = results["mean_test_%s" % refit_metric][
-                self.best_index_]
+                self.best_index_
+            ]
 
         if self.refit:
             self.best_estimator_ = GenSVM(**self.best_params_)
-            # y_orig because GenSVM fit must know the conversion for predict to 
+            # y_orig because GenSVM fit must know the conversion for predict to
             # work correctly
             self.best_estimator_.fit(X, y_orig)
 
         ## Store the only scorer not as a dict for single metric evaluation
-        self.scorer_ = scorers if self.multimetric_ else scorers['score']
+        self.scorer_ = scorers if self.multimetric_ else scorers["score"]
 
         self.cv_results_ = results
         self.n_splits_ = n_splits
 
         return self
-
 
     def score(self, X, y):
         """Compute the score on the test data given the true labels
@@ -559,9 +602,15 @@ class GenSVMGridSearchCV(BaseEstimator, MetaEstimatorMixin):
         score : float
 
         """
-        _skl_check_is_fitted(self, 'score', self.refit)
-        return _skl_grid_score(X, y, self.scorer_, self.best_estimator_, 
-                self.refit, self.multimetric_)
+        _skl_check_is_fitted(self, "score", self.refit)
+        return _skl_grid_score(
+            X,
+            y,
+            self.scorer_,
+            self.best_estimator_,
+            self.refit,
+            self.multimetric_,
+        )
 
     def predict(self, X):
         """Predict the class labels on the test data
@@ -578,7 +627,7 @@ class GenSVMGridSearchCV(BaseEstimator, MetaEstimatorMixin):
             Predicted class labels of the data in X.
 
         """
-        _skl_check_is_fitted(self, 'predict', self.refit)
+        _skl_check_is_fitted(self, "predict", self.refit)
         return self.best_estimator_.predict(X)
 
 
@@ -609,11 +658,11 @@ def load_default_grid():
         used as input for the :class:`.GenSVMGridSearchCV` class.
     """
     pg = {
-            'lmd': [pow(2, x) for x in range(-18, 19, 2)],
-            'kappa': [-0.9, 0.5, 5.0],
-            'p': [1.0, 1.5, 2.0],
-            'weights': ['unit', 'group'],
-            'epsilon': [1e-8],
-            'kernel': ['linear']
-            }
+        "lmd": [pow(2, x) for x in range(-18, 19, 2)],
+        "kappa": [-0.9, 0.5, 5.0],
+        "p": [1.0, 1.5, 2.0],
+        "weights": ["unit", "group"],
+        "epsilon": [1e-8],
+        "kernel": ["linear"],
+    }
     return pg

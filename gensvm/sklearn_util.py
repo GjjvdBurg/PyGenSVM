@@ -68,16 +68,30 @@ from sklearn.model_selection._validation import _aggregate_score_dicts
 from sklearn.utils.fixes import MaskedArray
 from sklearn.utils.validation import check_is_fitted
 
-def _skl_format_cv_results(out, return_train_score, candidate_params, 
-        n_candidates, n_splits, scorers, iid):
+
+def _skl_format_cv_results(
+    out,
+    return_train_score,
+    candidate_params,
+    n_candidates,
+    n_splits,
+    scorers,
+    iid,
+):
 
     # if one choose to see train score, "out" will contain train score info
     if return_train_score:
-        (train_score_dicts, test_score_dicts, test_sample_counts, fit_time,
-         score_time) = zip(*out)
+        (
+            train_score_dicts,
+            test_score_dicts,
+            test_sample_counts,
+            fit_time,
+            score_time,
+        ) = zip(*out)
     else:
-        (test_score_dicts, test_sample_counts, fit_time,
-         score_time) = zip(*out)
+        (test_score_dicts, test_sample_counts, fit_time, score_time) = zip(
+            *out
+        )
 
     # test_score_dicts and train_score dicts are lists of dictionaries and
     # we make them into dict of lists
@@ -91,35 +105,39 @@ def _skl_format_cv_results(out, return_train_score, candidate_params,
         """A small helper to store the scores/times to the cv_results_"""
         # When iterated first by splits, then by parameters
         # We want `array` to have `n_candidates` rows and `n_splits` cols.
-        array = np.array(array, dtype=np.float64).reshape(n_candidates,
-                                                          n_splits)
+        array = np.array(array, dtype=np.float64).reshape(
+            n_candidates, n_splits
+        )
         if splits:
             for split_i in range(n_splits):
                 # Uses closure to alter the results
-                results["split%d_%s"
-                        % (split_i, key_name)] = array[:, split_i]
+                results["split%d_%s" % (split_i, key_name)] = array[:, split_i]
 
         array_means = np.average(array, axis=1, weights=weights)
-        results['mean_%s' % key_name] = array_means
+        results["mean_%s" % key_name] = array_means
         # Weighted std is not directly available in numpy
-        array_stds = np.sqrt(np.average((array -
-                                         array_means[:, np.newaxis]) ** 2,
-                                        axis=1, weights=weights))
-        results['std_%s' % key_name] = array_stds
+        array_stds = np.sqrt(
+            np.average(
+                (array - array_means[:, np.newaxis]) ** 2,
+                axis=1,
+                weights=weights,
+            )
+        )
+        results["std_%s" % key_name] = array_stds
 
         if rank:
             results["rank_%s" % key_name] = np.asarray(
-                get_ranks(-array_means), dtype=np.int32)
+                get_ranks(-array_means), dtype=np.int32
+            )
 
-    _store('fit_time', fit_time)
-    _store('score_time', score_time)
+    _store("fit_time", fit_time)
+    _store("score_time", score_time)
     # Use one MaskedArray and mask all the places where the param is not
     # applicable for that candidate. Use defaultdict as each candidate may
     # not contain all the params
-    param_results = defaultdict(partial(MaskedArray,
-                                        np.empty(n_candidates,),
-                                        mask=True,
-                                        dtype=object))
+    param_results = defaultdict(
+        partial(MaskedArray, np.empty(n_candidates), mask=True, dtype=object)
+    )
     for cand_i, params in enumerate(candidate_params):
         for name, value in params.items():
             # An all masked empty array gets created for the key
@@ -129,19 +147,25 @@ def _skl_format_cv_results(out, return_train_score, candidate_params,
 
     results.update(param_results)
     # Store a list of param dicts at the key 'params'
-    results['params'] = candidate_params
+    results["params"] = candidate_params
 
     # NOTE test_sample counts (weights) remain the same for all candidates
-    test_sample_counts = np.array(test_sample_counts[:n_splits],
-                                  dtype=np.int)
+    test_sample_counts = np.array(test_sample_counts[:n_splits], dtype=np.int)
     for scorer_name in scorers.keys():
         # Computed the (weighted) mean and std for test scores alone
-        _store('test_%s' % scorer_name, test_scores[scorer_name],
-               splits=True, rank=True,
-               weights=test_sample_counts if iid else None)
+        _store(
+            "test_%s" % scorer_name,
+            test_scores[scorer_name],
+            splits=True,
+            rank=True,
+            weights=test_sample_counts if iid else None,
+        )
         if return_train_score:
-            _store('train_%s' % scorer_name, train_scores[scorer_name],
-                   splits=True)
+            _store(
+                "train_%s" % scorer_name,
+                train_scores[scorer_name],
+                splits=True,
+            )
 
     return results
 
@@ -149,44 +173,49 @@ def _skl_format_cv_results(out, return_train_score, candidate_params,
 def _skl_check_scorers(scoring, refit):
 
     scorers, multimetric_ = _check_multimetric_scoring(
-        GenSVM(), scoring=scoring)
+        GenSVM(), scoring=scoring
+    )
     if multimetric_:
         if refit is not False and (
-                not isinstance(refit, six.string_types) or
-                # This will work for both dict / list (tuple)
-                refit not in scorers):
-            raise ValueError("For multi-metric scoring, the parameter "
-                             "refit must be set to a scorer key "
-                             "to refit an estimator with the best "
-                             "parameter setting on the whole data and "
-                             "make the best_* attributes "
-                             "available for that metric. If this is not "
-                             "needed, refit should be set to False "
-                             "explicitly. %r was passed." % refit)
+            not isinstance(refit, six.string_types)
+            or
+            # This will work for both dict / list (tuple)
+            refit not in scorers
+        ):
+            raise ValueError(
+                "For multi-metric scoring, the parameter "
+                "refit must be set to a scorer key "
+                "to refit an estimator with the best "
+                "parameter setting on the whole data and "
+                "make the best_* attributes "
+                "available for that metric. If this is not "
+                "needed, refit should be set to False "
+                "explicitly. %r was passed." % refit
+            )
         else:
             refit_metric = refit
     else:
-        refit_metric = 'score'
+        refit_metric = "score"
 
     return scorers, multimetric_, refit_metric
 
 
 def _skl_check_is_fitted(estimator, method_name, refit):
     if not refit:
-        raise NotFittedError('This %s instance was initialized '
-                'with refit=False. %s is '
-                'available only after refitting on the best '
-                'parameters. You can refit an estimator '
-                'manually using the ``best_parameters_`` '
-                'attribute'
-                % (type(estimator).__name__, method_name))
+        raise NotFittedError(
+            "This %s instance was initialized "
+            "with refit=False. %s is "
+            "available only after refitting on the best "
+            "parameters. You can refit an estimator "
+            "manually using the ``best_parameters_`` "
+            "attribute" % (type(estimator).__name__, method_name)
+        )
     else:
-        check_is_fitted(estimator, 'best_estimator_')
-
+        check_is_fitted(estimator, "best_estimator_")
 
 
 def _skl_grid_score(X, y, scorer_, best_estimator_, refit, multimetric_):
-        """Returns the score on the given data, if the estimator has been 
+    """Returns the score on the given data, if the estimator has been 
         refit.
 
         This uses the score defined by ``scoring`` where provided, and the
@@ -206,9 +235,10 @@ def _skl_grid_score(X, y, scorer_, best_estimator_, refit, multimetric_):
         -------
         score : float
         """
-        if scorer_ is None:
-            raise ValueError("No score function explicitly defined, "
-                             "and the estimator doesn't provide one %s"
-                             % best_estimator_)
-        score = scorer_[refit] if multimetric_ else scorer_
-        return score(best_estimator_, X, y)
+    if scorer_ is None:
+        raise ValueError(
+            "No score function explicitly defined, "
+            "and the estimator doesn't provide one %s" % best_estimator_
+        )
+    score = scorer_[refit] if multimetric_ else scorer_
+    return score(best_estimator_, X, y)
