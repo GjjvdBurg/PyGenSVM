@@ -129,6 +129,8 @@ cdef extern from "gensvm_helper.c":
     void free_data(GenData *)
     void set_verbosity(int)
     void gensvm_predict(char *, char *, long, long, long, char *) nogil
+    void gensvm_predict_kernels(char *, char *, char *, long, long, long, 
+            long, long, long, int, double,  double, double, double, char *) nogil
     void gensvm_train_q_helper(GenQueue *, char *, int) nogil
     void set_queue(GenQueue *, long, GenTask **)
     double get_task_duration(GenTask *)
