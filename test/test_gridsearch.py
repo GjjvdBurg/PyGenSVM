@@ -15,11 +15,7 @@ from sklearn.datasets import load_iris, load_digits
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import maxabs_scale
 
-from gensvm.gridsearch import (
-    GenSVMGridSearchCV,
-    _validate_param_grid,
-    load_default_grid,
-)
+from gensvm.gridsearch import GenSVMGridSearchCV, _validate_param_grid
 
 
 class GenSVMGridSearchCVTestCase(unittest.TestCase):
@@ -207,3 +203,39 @@ class GenSVMGridSearchCVTestCase(unittest.TestCase):
         }
         gg = GenSVMGridSearchCV(pg, verbose=True)
         gg.fit(Xs, ys)
+
+    def test_gridsearch_tiny(self):
+        """ GENSVM_GRID: Test with tiny grid """
+        X, y = load_iris(return_X_y=True)
+        X = maxabs_scale(X)
+        X_train, X_test, y_train, y_test = train_test_split(X, y)
+
+        clf = GenSVMGridSearchCV(param_grid="tiny")
+        clf.fit(X_train, y_train)
+
+        score = clf.score(X_test, y_test)
+        self.assertGreaterEqual(score, 0.95)
+
+    def test_gridsearch_small(self):
+        """ GENSVM_GRID: Test with small grid """
+        X, y = load_iris(return_X_y=True)
+        X = maxabs_scale(X)
+        X_train, X_test, y_train, y_test = train_test_split(X, y)
+
+        clf = GenSVMGridSearchCV(param_grid="small")
+        clf.fit(X_train, y_train)
+
+        score = clf.score(X_test, y_test)
+        self.assertGreaterEqual(score, 0.95)
+
+    def test_gridsearch_full(self):
+        """ GENSVM_GRID: Test with full grid """
+        X, y = load_iris(return_X_y=True)
+        X = maxabs_scale(X)
+        X_train, X_test, y_train, y_test = train_test_split(X, y)
+
+        clf = GenSVMGridSearchCV(param_grid="full")
+        clf.fit(X_train, y_train)
+
+        score = clf.score(X_test, y_test)
+        self.assertGreaterEqual(score, 0.90)
