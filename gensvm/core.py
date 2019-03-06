@@ -14,7 +14,7 @@ import warnings
 from sklearn.base import BaseEstimator, ClassifierMixin
 from sklearn.exceptions import ConvergenceWarning, FitFailedWarning
 from sklearn.preprocessing import LabelEncoder
-from sklearn.utils import check_X_y, check_random_state
+from sklearn.utils import check_array, check_X_y, check_random_state
 from sklearn.utils.multiclass import type_of_target
 from sklearn.utils.validation import check_is_fitted
 
@@ -368,6 +368,13 @@ class GenSVM(BaseEstimator, ClassifierMixin):
         if not trainX is None and not X.shape[1] == trainX.shape[1]:
             raise ValueError(
                 "Test and training data should have the same number of features"
+            )
+
+        # make sure arrays are C-contiguous
+        X = check_array(X, accept_sparse=False, dtype=np.float64, order="C")
+        if not trainX is None:
+            trainX = check_array(
+                trainX, accept_sparse=False, dtype=np.float64, order="C"
             )
 
         V = self.combined_coef_
