@@ -277,7 +277,7 @@ class GenSVMTestCase(unittest.TestCase):
         clf.fit(X, y, seed_V=seed_V)
 
         V = clf.combined_coef_
-        eps = 1e-13
+        eps = 1e-7
         self.assertLess(abs(V[0, 0] - -1.1907736868272805), eps)
         self.assertLess(abs(V[0, 1] - 1.8651287814979396), eps)
         self.assertLess(abs(V[0, 2] - 1.7250030581662932), eps)
