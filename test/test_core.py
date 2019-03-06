@@ -152,7 +152,7 @@ class GenSVMTestCase(unittest.TestCase):
         with warnings.catch_warnings(record=True) as w:
             warnings.simplefilter("always")
             clf.fit(X, y, seed_V=seed_V)
-            self.assertTrue(len(w) == 1)
+            self.assertEqual(len(w), 1)
             msg = str(w[0].message)
         self.assertEqual(
             msg,
@@ -193,8 +193,9 @@ class GenSVMTestCase(unittest.TestCase):
         clf.fit(X_train, y_train)
 
         pred = clf.predict(X_test, trainX=X_train)
-        self.assertTrue(set(pred).issubset(set(['versicolor', 'virginica', 
-            'setosa'])))
+        self.assertTrue(
+            set(pred).issubset(set(["versicolor", "virginica", "setosa"]))
+        )
 
     def test_fit_with_seed(self):
         """ GENSVM: Test fit with seeding """
@@ -277,18 +278,18 @@ class GenSVMTestCase(unittest.TestCase):
 
         V = clf.combined_coef_
         eps = 1e-13
-        self.assertTrue(abs(V[0, 0] - -1.1907736868272805) < eps)
-        self.assertTrue(abs(V[0, 1] - 1.8651287814979396) < eps)
-        self.assertTrue(abs(V[0, 2] - 1.7250030581662932) < eps)
-        self.assertTrue(abs(V[1, 0] - 0.7925100058806183) < eps)
-        self.assertTrue(abs(V[1, 1] - -3.6093428916761665) < eps)
-        self.assertTrue(abs(V[1, 2] - -1.3394018960329377) < eps)
-        self.assertTrue(abs(V[2, 0] - 1.5203132433193016) < eps)
-        self.assertTrue(abs(V[2, 1] - -1.9118604362643852) < eps)
-        self.assertTrue(abs(V[2, 2] - -1.7939246097629342) < eps)
-        self.assertTrue(abs(V[3, 0] - 0.0658817457370326) < eps)
-        self.assertTrue(abs(V[3, 1] - 0.6547924025329720) < eps)
-        self.assertTrue(abs(V[3, 2] - -0.6773346708737853) < eps)
+        self.assertLess(abs(V[0, 0] - -1.1907736868272805), eps)
+        self.assertLess(abs(V[0, 1] - 1.8651287814979396), eps)
+        self.assertLess(abs(V[0, 2] - 1.7250030581662932), eps)
+        self.assertLess(abs(V[1, 0] - 0.7925100058806183), eps)
+        self.assertLess(abs(V[1, 1] - -3.6093428916761665), eps)
+        self.assertLess(abs(V[1, 2] - -1.3394018960329377), eps)
+        self.assertLess(abs(V[2, 0] - 1.5203132433193016), eps)
+        self.assertLess(abs(V[2, 1] - -1.9118604362643852), eps)
+        self.assertLess(abs(V[2, 2] - -1.7939246097629342), eps)
+        self.assertLess(abs(V[3, 0] - 0.0658817457370326), eps)
+        self.assertLess(abs(V[3, 1] - 0.6547924025329720), eps)
+        self.assertLess(abs(V[3, 2] - -0.6773346708737853), eps)
 
 
 if __name__ == "__main__":
