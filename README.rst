@@ -61,10 +61,11 @@ from Scikit-Learn as follows:
 
     >>> from sklearn.datasets import load_iris
     >>> from sklearn.model_selection import train_test_split
-    >>> from sklearn.preprocessing import maxabs_scale
+    >>> from sklearn.preprocessing import MaxAbsScaler
     >>> X, y = load_iris(return_X_y=True)
-    >>> X = maxabs_scale(X)
     >>> X_train, X_test, y_train, y_test = train_test_split(X, y)
+    >>> scaler = MaxAbsScaler().fit(X_train)
+    >>> X_train, X_test = scaler.transform(X_train), scaler.transform(X_test)
 
 Note that we scale the data using the `maxabs_scale 
 <http://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.maxabs_scale.html>`_ 
