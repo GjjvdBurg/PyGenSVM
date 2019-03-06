@@ -238,20 +238,28 @@ def grid_wrap(
                 verbosity)
 
     cdef np.ndarray[np.int_t, ndim=1, mode='c'] pred
+    cdef np.ndarray[np.double_t, ndim=1, mode='c'] dur
 
     results = dict()
     results['params'] = []
     results['duration'] = []
     results['scores'] = []
+    # predictions: for each task, an array of size n_obs with class 
+    # predictions (-1 if missing)
     results['predictions'] = []
+    # durations: for each task, an array of size n_folds with duration for 
+    # each fold (nan if missing)
+    results['durations'] = []
     for ID in range(n_tasks):
         results['params'].append(candidate_params[ID])
-        results['duration'].append(get_task_duration(tasks[ID]))
         results['scores'].append(get_task_performance(tasks[ID]))
         if store_predictions:
             pred = np.zeros((n_obs, ), dtype=np.int)
             copy_task_predictions(tasks[ID], pred.data, n_obs)
             results['predictions'].append(pred.copy())
+        dur = np.zeros((n_folds, ), dtype=np.double)
+        copy_task_durations(tasks[ID], dur.data, n_folds)
+        results['durations'].append(dur.copy())
 
     gensvm_free_queue(queue)
     free_data(data)

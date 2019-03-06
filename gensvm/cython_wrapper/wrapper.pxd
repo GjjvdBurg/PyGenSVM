@@ -136,3 +136,4 @@ cdef extern from "gensvm_helper.c":
     double get_task_duration(GenTask *)
     double get_task_performance(GenTask *)
     void copy_task_predictions(GenTask *, char *, long)
+    void copy_task_durations(GenTask *, char *, int)
