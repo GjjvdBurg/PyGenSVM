@@ -573,8 +573,6 @@ class GenSVMGridSearchCV(BaseEstimator, MetaEstimatorMixin):
             self.iid,
         )
 
-        self.cv_results_ = results
-
         # For multi-metric evaluation, store the best_index_, best_params_ and
         # best_score_ iff refit is one of the scorer names
         # In single metric evaluation, refit_metric is "score"

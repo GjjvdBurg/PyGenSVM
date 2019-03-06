@@ -89,9 +89,7 @@ def _skl_format_cv_results(
             score_time,
         ) = zip(*out)
     else:
-        (test_score_dicts, test_sample_counts, fit_time, score_time) = zip(
-            *out
-        )
+        (test_score_dicts, test_sample_counts, fit_time, score_time) = zip(*out)
 
     # test_score_dicts and train_score dicts are lists of dictionaries and
     # we make them into dict of lists
@@ -162,9 +160,7 @@ def _skl_format_cv_results(
         )
         if return_train_score:
             _store(
-                "train_%s" % scorer_name,
-                train_scores[scorer_name],
-                splits=True,
+                "train_%s" % scorer_name, train_scores[scorer_name], splits=True
             )
 
     return results
