@@ -180,6 +180,22 @@ class GenSVMTestCase(unittest.TestCase):
         label_set = set(labels)
         self.assertTrue(pred_set.issubset(label_set))
 
+    def test_fit_nonlinear(self):
+        """ GENSVM: Fit and predict with nonlinear kernel """
+        data = load_iris()
+        X = data.data
+        y = data.target_names[data.target]
+
+        X_train, X_test, y_train, y_test = train_test_split(
+            X, y, random_state=123
+        )
+        clf = GenSVM(kernel="rbf", gamma=10, max_iter=5000, random_state=123)
+        clf.fit(X_train, y_train)
+
+        pred = clf.predict(X_test, trainX=X_train)
+        self.assertTrue(set(pred).issubset(set(['versicolor', 'virginica', 
+            'setosa'])))
+
     def test_fit_with_seed(self):
         """ GENSVM: Test fit with seeding """
 
