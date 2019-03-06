@@ -1,0 +1,14 @@
+language: python
+python:
+  - "3.6"
+
+env:
+  - CC="gcc"
+
+install:
+  - pip install --upgrade pip
+  - pip install -r requirements.txt
+  - pip install nose
+
+script:
+  - python setup.py build_ext --inplace develop nosetests -v
