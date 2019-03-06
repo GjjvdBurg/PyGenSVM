@@ -85,6 +85,30 @@ def _skl_get_blas_info():
     return cblas_libs, blas_info
 
 
+def get_lapack_info():
+
+    from numpy.distutils.system_info import get_info
+
+    def atlas_not_found(lapack_info_):
+        def_macros = lapack_info.get("define_macros", [])
+        for x in def_macros:
+            if x[0] == "NO_ATLAS_INFO":
+                return True
+            if x[0] == "ATLAS_INFO":
+                if "None" in x[1]:
+                    return True
+        return False
+
+    lapack_info = get_info("lapack_opt", 0)
+    if (not lapack_info) or atlas_not_found(lapack_info):
+        lapack_libs = ["lapacke"]
+        lapack_info.pop("libraries", None)
+    else:
+        lapack_libs = lapack_info.pop("libraries", [])
+
+    return lapack_libs, lapack_info
+
+
 def configuration():
     from numpy.distutils.misc_util import Configuration
 
@@ -93,6 +117,10 @@ def configuration():
     cblas_libs, blas_info = _skl_get_blas_info()
     if os.name == "posix":
         cblas_libs.append("m")
+
+    lapack_libs, lapack_info = get_lapack_info()
+    if os.name == "posix":
+        lapack_libs.append("m") # unsure if necessary
 
     # Wrapper code in Cython uses the .pyx extension if we want to USE_CYTHON,
     # otherwise it ends in .c.
@@ -117,7 +145,7 @@ def configuration():
     config.add_extension(
         "cython_wrapper.wrapper",
         sources=gensvm_sources,
-        libraries=cblas_libs,
+        libraries=cblas_libs + lapack_libs,
         include_dirs=[
             os.path.join("src", "gensvm"),
             os.path.join("src", "gensvm", "include"),
@@ -160,7 +188,7 @@ if __name__ == "__main__":
     check_requirements()
 
     version = re.search(
-        "__version__ = \"([^']+)\"", open("gensvm/__init__.py").read()
+        '__version__ = "([^\']+)"', open("gensvm/__init__.py").read()
     ).group(1)
 
     attr = configuration().todict()
