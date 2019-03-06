@@ -1,6 +1,9 @@
 GenSVM Python Package
 =====================
 
+.. image:: https://travis-ci.org/GjjvdBurg/PyGenSVM.svg?branch=master
+    :target: https://travis-ci.org/GjjvdBurg/PyGenSVM
+
 This is the documentation of the Python package for the GenSVM classifier, 
 introduced in `GenSVM: A Generalized Multiclass Support Vector Machine 
 <http://www.jmlr.org/papers/v17/14-526.html>`_ by `Gerrit J.J. van den Burg 
@@ -24,6 +27,9 @@ GenSVM can be easily installed through pip:
 .. code:: bash
 
     pip install gensvm
+
+If you encounter any errors, please open an issue on `GitHub 
+<https://github.com/GjjvdBurg/PyGenSVM>`_.
 
 Citing
 ------

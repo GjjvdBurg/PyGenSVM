@@ -1,14 +1,19 @@
 language: python
 python:
   - "3.6"
+  - "2.7"
 
 env:
   - CC="gcc"
 
+before_install:
+  - sudo apt-get update
+  - sudo apt-get install -y libatlas-base-dev liblapack-dev liblapacke-dev
+
 install:
   - pip install --upgrade pip
   - pip install -r requirements.txt
-  - pip install nose
+  - pip install nose Cython
   - python setup.py build_ext --inplace
 
 script:
