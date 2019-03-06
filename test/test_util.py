@@ -8,6 +8,7 @@
 
 from __future__ import division, print_function
 
+import numpy as np
 import unittest
 
 from gensvm.util import get_ranks
@@ -27,3 +28,14 @@ class GenSVMUtilTestCase(unittest.TestCase):
 
         x = [-1, -2, -3]
         self.assertEqual(get_ranks(x), [3, 2, 1])
+
+    def test_get_ranks_nan(self):
+        """ UTIL: Test ranking function with NaN entries """
+        x = [3, 2, 1, 4, 5, np.nan]
+        self.assertEqual(get_ranks(x), [3, 2, 1, 4, 5, 6])
+
+        x = [3, 2, 1, np.nan, 4, 5]
+        self.assertEqual(get_ranks(x), [3, 2, 1, 6, 4, 5])
+
+        x = [3, 2, 1, np.nan, 4, 5, np.nan]
+        self.assertEqual(get_ranks(x), [3, 2, 1, 6, 4, 5, 6])

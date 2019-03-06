@@ -99,6 +99,23 @@ class _MockEstimator(ClassifierMixin):
         return self.predictions
 
 
+def _wrap_score(y_pred, y_true, scorers, is_multimetric):
+    start_time = time.time()
+    results = {}
+    # we use -1 to signify missing predictions because numpy has no integer NaN
+    if np.any(y_pred < 0):
+        if is_multimetric:
+            for name in scorers:
+                results[name] = np.nan
+        else:
+            results["score"] = np.nan
+    else:
+        estimator = _MockEstimator(y_pred)
+        results = _score(estimator, None, y_true, scorers, is_multimetric)
+    score_time = time.time() - start_time
+    return results, score_time
+
+
 def _format_results(
     results,
     cv_idx,
@@ -136,46 +153,38 @@ def _format_results(
 
     # Out must be a list of dicts of size n_params x n_splits that iterates
     # over the params in the list and for each param iterates over the splits.
-    for param, duration, predictions in zip(
-        results["params"], results["duration"], results["predictions"]
+    for param, durations, predictions in zip(
+        results["params"], results["durations"], results["predictions"]
     ):
-        for test_idx in np.unique(cv_idx):
+        fit_times = durations
+        is_missing = np.any(np.isnan(durations))
 
+        for test_idx in sorted(np.unique(cv_idx)):
             ret = []
             score_time = 0
 
             if return_train_score:
                 train_pred = predictions[cv_idx != test_idx,]
                 y_train = true_y[cv_idx != test_idx,]
-                train_mock = _MockEstimator(train_pred)
-                start_time = time.time()
-                train_scores = _score(
-                    train_mock, None, y_train, scorers, is_multimetric
+                train_score, score_t = _wrap_score(
+                    train_pred, y_train, scorers, is_multimetric
                 )
-                score_time += time.time() - start_time
-                ret.append(train_scores)
+                score_time += score_t
+                ret.append(train_score)
 
             test_pred = predictions[cv_idx == test_idx,]
             y_test = true_y[cv_idx == test_idx,]
-            test_mock = _MockEstimator(test_pred)
-            start_time = time.time()
-            test_scores = _score(
-                test_mock, None, y_test, scorers, is_multimetric
+            test_score, score_t = _wrap_score(
+                test_pred, y_test, scorers, is_multimetric
             )
-            score_time += time.time() - start_time
-            ret.append(test_scores)
+            score_time += score_t
+            ret.append(test_score)
 
             if return_n_test_samples:
                 ret.append(len(y_test))
             if return_times:
-                # Note, the C library returns the duration for a task (i.e. all
-                # splits). The _skkl_format_cv_results() computes the mean of
-                # the values, which should represent the average time per
-                # split. To compute this correctly, we here divide by the
-                # number of splits. Since we calculate the mean later, the mean
-                # is still correct, but this is not the exact fit_time for this
-                # fold.
-                fit_time = duration / n_splits
+                fit_time = fit_times[test_idx]
+                score_time = np.nan if is_missing else score_time
                 ret.extend([fit_time, score_time])
             if return_parameters:
                 ret.append(param)
