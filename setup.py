@@ -25,6 +25,16 @@ if USE_CYTHON:
         else:
             raise
 
+# Try to load setuptools, so that NumPy's distutils module that we use to 
+# provide the setup() function below comes from the setuptools package. If it 
+# fails, it'll use distutils' version, which doesn't support installing 
+# dependencies.
+try:
+   import setuptools
+except ImportError:
+    print("Warning: setuptools not found. You may have to install GenSVM's dependencies manually.")
+
+
 
 def _skl_get_blas_info():
     """Copyright notice for this function
