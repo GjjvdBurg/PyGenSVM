@@ -8,6 +8,7 @@ GenSVM Python Package
    :target: https://gensvm.readthedocs.io/en/latest/?badge=latest
    :alt: Documentation Status
 
+
 This is the Python package for the GenSVM multiclass classifier by `Gerrit 
 J.J. van den Burg <https://gertjanvandenburg.com>`_ and `Patrick J.F. Groenen 
 <https://personal.eur.nl/groenen/>`_.
@@ -17,8 +18,11 @@ J.J. van den Burg <https://gertjanvandenburg.com>`_ and `Patrick J.F. Groenen
 - Source repository: `https://github.com/GjjvdBurg/PyGenSVM 
   <https://github.com/GjjvdBurg/PyGenSVM>`_.
 
+- Package on PyPI: `https://pypi.org/project/gensvm/ 
+  <https://pypi.org/project/gensvm/>`_.
+
 - Journal paper: `GenSVM: A Generalized Multiclass Support Vector Machine 
-  <http://www.jmlr.org/papers/v17/14-526.html>`_
+  <http://www.jmlr.org/papers/v17/14-526.html>`_ JMLR, 17(225):1−42, 2016.
 
 - Package documentation: `Read The Docs 
   <https://gensvm.readthedocs.io/en/latest/>`_.
