@@ -295,7 +295,7 @@ class GenSVMTestCase(unittest.TestCase):
         """ GENSVM: Test fit with sample weights """
         X, y = load_iris(return_X_y=True)
         weights = np.random.random((X.shape[0],))
-        clf = GenSVM()
+        clf = GenSVM(max_iter=100)
         clf.fit(X, y, sample_weight=weights)
         # with seeding
         V = clf.combined_coef_
