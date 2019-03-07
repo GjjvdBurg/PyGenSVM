@@ -76,13 +76,16 @@ def _fit_gensvm(
     if status_ == 1 and verbose > 0:
         warnings.warn(
             "GenSVM optimization prematurely ended due to a "
-            "incorrect step in the optimization algorithm.",
+            "incorrect step in the optimization algorithm. "
+            "This can be due to data quality issues, hyperparameter "
+            "settings, or numerical precision errors.",
             FitFailedWarning,
         )
 
     if status_ == 2 and verbose > 0:
         warnings.warn(
-            "GenSVM failed to converge, increase " "the number of iterations.",
+            "GenSVM failed to converge, you may want to increase "
+            "the number of iterations.",
             ConvergenceWarning,
         )
 

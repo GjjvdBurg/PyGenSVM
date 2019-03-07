@@ -73,8 +73,8 @@ from Scikit-Learn as follows:
     >>> scaler = MaxAbsScaler().fit(X_train)
     >>> X_train, X_test = scaler.transform(X_train), scaler.transform(X_test)
 
-Note that we scale the data using the `maxabs_scale 
-<http://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.maxabs_scale.html>`_ 
+Note that we scale the data using the `MaxAbsScaler 
+<http://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.MaxAbsScaler.html>`_ 
 function. This scales the columns of the data matrix to ``[-1, 1]`` without 
 breaking sparsity. Scaling the dataset can have a significant effect on the 
 computation time of GenSVM and is `generally recommended for SVMs 
