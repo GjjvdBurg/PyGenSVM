@@ -172,6 +172,9 @@ class GenSVMGridSearchCVTestCase(unittest.TestCase):
 
         self.assertTrue(hasattr(clf, "best_params_"))
 
+        y_pred = clf.predict(X_test, trainX=X_train)
+        del y_pred
+
     def test_invalid_y(self):
         """ GENSVM_GRID: Check raises for invalid y type """
         pg = {"lmd": [1e-4, 100, 10000], "kernel": ["rbf"]}
