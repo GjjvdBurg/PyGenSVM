@@ -82,6 +82,7 @@ def train_wrap(
     error_msg = check_model(model)
     if error_msg:
         gensvm_free_model(model)
+        gensvm_free_model(seed_model)
         free_data(data)
         error_repl = error_msg.decode('utf-8')
         raise ValueError(error_repl)
@@ -106,6 +107,7 @@ def train_wrap(
 
     # free model and data
     gensvm_free_model(model);
+    gensvm_free_model(seed_model)
     free_data(data);
 
     return (V, n_SV, iter_count, training_error, fit_status)
