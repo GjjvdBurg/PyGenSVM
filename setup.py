@@ -111,7 +111,8 @@ def get_lapack_info():
 
     lapack_info = get_info("lapack_opt", 0)
     if (not lapack_info) or atlas_not_found(lapack_info):
-        print("Warning: Found no lapack info, using 'lapack' guess")
+        # This is a guess, but seems to work in practice. Need more systems to 
+        # test this fully.
         lapack_libs = ["lapack"]
         lapack_info.pop("libraries", None)
     else:
