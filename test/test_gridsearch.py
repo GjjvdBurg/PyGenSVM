@@ -15,7 +15,13 @@ from sklearn.datasets import load_iris, load_digits
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import maxabs_scale
 
-from gensvm.gridsearch import GenSVMGridSearchCV, _validate_param_grid
+from gensvm.gridsearch import (
+    GenSVMGridSearchCV,
+    _validate_param_grid,
+    load_grid_tiny,
+    load_grid_small,
+    load_grid_full,
+)
 
 
 class GenSVMGridSearchCVTestCase(unittest.TestCase):
@@ -211,9 +217,14 @@ class GenSVMGridSearchCVTestCase(unittest.TestCase):
         """ GENSVM_GRID: Test with tiny grid """
         X, y = load_iris(return_X_y=True)
         X = maxabs_scale(X)
-        X_train, X_test, y_train, y_test = train_test_split(X, y)
+        X_train, X_test, y_train, y_test = train_test_split(
+            X, y, random_state=123
+        )
 
-        clf = GenSVMGridSearchCV(param_grid="tiny")
+        tiny = load_grid_tiny()
+        for x in tiny:
+            x["epsilon"] = [1e-5]
+        clf = GenSVMGridSearchCV(param_grid=tiny)
         clf.fit(X_train, y_train)
 
         score = clf.score(X_test, y_test)
@@ -225,9 +236,13 @@ class GenSVMGridSearchCVTestCase(unittest.TestCase):
         """ GENSVM_GRID: Test with small grid """
         X, y = load_iris(return_X_y=True)
         X = maxabs_scale(X)
-        X_train, X_test, y_train, y_test = train_test_split(X, y)
+        X_train, X_test, y_train, y_test = train_test_split(
+            X, y, random_state=123
+        )
 
-        clf = GenSVMGridSearchCV(param_grid="small")
+        small = load_grid_small()
+        small["epsilon"] = [1e-5]
+        clf = GenSVMGridSearchCV(param_grid=small)
         clf.fit(X_train, y_train)
 
         score = clf.score(X_test, y_test)
@@ -239,9 +254,13 @@ class GenSVMGridSearchCVTestCase(unittest.TestCase):
         """ GENSVM_GRID: Test with full grid """
         X, y = load_iris(return_X_y=True)
         X = maxabs_scale(X)
-        X_train, X_test, y_train, y_test = train_test_split(X, y)
+        X_train, X_test, y_train, y_test = train_test_split(
+            X, y, random_state=123
+        )
 
-        clf = GenSVMGridSearchCV(param_grid="full")
+        full = load_grid_full()
+        full["epsilon"] = [1e-5]
+        clf = GenSVMGridSearchCV(param_grid=full)
         clf.fit(X_train, y_train)
 
         score = clf.score(X_test, y_test)
