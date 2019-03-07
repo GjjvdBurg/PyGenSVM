@@ -101,7 +101,8 @@ def get_lapack_info():
 
     lapack_info = get_info("lapack_opt", 0)
     if (not lapack_info) or atlas_not_found(lapack_info):
-        lapack_libs = ["lapacke"]
+        print("Warning: Found no lapack info, using 'lapack' guess")
+        lapack_libs = ["lapack"]
         lapack_info.pop("libraries", None)
     else:
         lapack_libs = lapack_info.pop("libraries", [])
@@ -120,7 +121,7 @@ def configuration():
 
     lapack_libs, lapack_info = get_lapack_info()
     if os.name == "posix":
-        lapack_libs.append("m") # unsure if necessary
+        lapack_libs.append("m")  # unsure if necessary
 
     # Wrapper code in Cython uses the .pyx extension if we want to USE_CYTHON,
     # otherwise it ends in .c.
