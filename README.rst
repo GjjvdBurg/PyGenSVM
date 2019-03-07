@@ -8,15 +8,26 @@ GenSVM Python Package
    :target: https://gensvm.readthedocs.io/en/latest/?badge=latest
    :alt: Documentation Status
 
-This is the documentation of the Python package for the GenSVM classifier, 
-introduced in `GenSVM: A Generalized Multiclass Support Vector Machine 
-<http://www.jmlr.org/papers/v17/14-526.html>`_ by `Gerrit J.J. van den Burg 
-<https://gertjanvandenburg.com>`_ and `Patrick J.F. Groenen 
+This is the Python package for the GenSVM multiclass classifier by `Gerrit 
+J.J. van den Burg <https://gertjanvandenburg.com>`_ and `Patrick J.F. Groenen 
 <https://personal.eur.nl/groenen/>`_.
 
-The source code of this package is available on GitHub at: 
-`https://github.com/GjjvdBurg/PyGenSVM 
-<https://github.com/GjjvdBurg/PyGenSVM>`_.
+**Important links:**
+
+- Source repository: `https://github.com/GjjvdBurg/PyGenSVM 
+  <https://github.com/GjjvdBurg/PyGenSVM>`_.
+
+- Journal paper: `GenSVM: A Generalized Multiclass Support Vector Machine 
+  <http://www.jmlr.org/papers/v17/14-526.html>`_
+
+- Package documentation: `Read The Docs 
+  <https://gensvm.readthedocs.io/en/latest/>`_.
+
+- There is also an `R package <https://github.com/GjjvdBurg/RGenSVM>`_.
+
+- Or you can directly use `the C library 
+  <https://github.com/GjjvdBurg/GenSVM>`_.
+
 
 Installation
 ------------
