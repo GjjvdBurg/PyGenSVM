@@ -1,6 +1,12 @@
 Change Log
 ----------
 
+Version 0.2.1
+^^^^^^^^^^^^^
+
+- Update docs
+- Speed up unit tests
+
 Version 0.2.0
 ^^^^^^^^^^^^^
 
