@@ -30,6 +30,7 @@ def _fit_gensvm(
     kappa,
     epsilon,
     weights,
+    sample_weight,
     kernel,
     gamma,
     coef,
@@ -48,7 +49,7 @@ def _fit_gensvm(
     wrapper.set_verbosity_wrap(verbose)
 
     # convert the weight index
-    weight_idx = 1 if weights == "unit" else 2
+    weight_idx = {"raw": 0, "unit": 1, "group": 2}[weights]
 
     # run the actual training
     raw_coef_, n_SV_, n_iter_, training_error_, status_ = wrapper.train_wrap(
@@ -60,6 +61,7 @@ def _fit_gensvm(
         kappa,
         epsilon,
         weight_idx,
+        sample_weight,
         kernel,
         gamma,
         coef,
@@ -115,6 +117,10 @@ class GenSVM(BaseEstimator, ClassifierMixin):
     weights: string, optional (default='unit')
         Type of sample weights to use. Options are 'unit' for unit weights and 
         'group' for group size correction weights (equation 4 in the paper).
+
+        It is also possible to provide an explicit vector of sample weights 
+        through the :func:`~GenSVM.fit` method. If so, it will override the 
+        setting provided here.
 
     kernel : string, optional (default='linear')
         Specify the kernel type to use in the classifier. It must be one of 
@@ -242,7 +248,7 @@ class GenSVM(BaseEstimator, ClassifierMixin):
         self.random_state = random_state
         self.max_iter = max_iter
 
-    def fit(self, X, y, seed_V=None):
+    def fit(self, X, y, sample_weight=None, seed_V=None):
         """Fit the GenSVM model on the given data
 
         The model can be fit with or without a seed matrix (``seed_V``). This 
@@ -256,6 +262,11 @@ class GenSVM(BaseEstimator, ClassifierMixin):
 
         y : array, shape = (n_observations, )
             The label vector, labels can be numbers or strings.
+
+        sample_weight : array, shape = (n_observations, )
+            Array of weights that are assigned to individual samples. If not 
+            provided, then the weight specification in the constructor is used 
+            ('unit' or 'group').
 
         seed_V : array, shape = (n_features+1, n_classes-1), optional
             Seed coefficient array to use as a warm start for the optimization.  
@@ -281,6 +292,21 @@ class GenSVM(BaseEstimator, ClassifierMixin):
         X, y_org = check_X_y(
             X, y, accept_sparse=False, dtype=np.float64, order="C"
         )
+        if not sample_weight is None:
+            sample_weight = check_array(
+                sample_weight,
+                accept_sparse=False,
+                ensure_2d=False,
+                dtype=np.float64,
+                order="C",
+            )
+            if not len(sample_weight) == X.shape[0]:
+                raise ValueError(
+                    "sample weight array must have the same number of observations as X"
+                )
+            weights = "raw"
+        else:
+            weights = self.weights
 
         y_type = type_of_target(y_org)
         if y_type not in ["binary", "multiclass"]:
@@ -330,7 +356,8 @@ class GenSVM(BaseEstimator, ClassifierMixin):
             self.lmd,
             self.kappa,
             self.epsilon,
-            self.weights,
+            weights,
+            sample_weight,
             self.kernel,
             gamma,
             self.coef,
@@ -358,6 +385,7 @@ class GenSVM(BaseEstimator, ClassifierMixin):
         Returns
         -------
         y_pred : array, shape = (n_samples, )
+            Predicted class labels of the data in X.
 
         """
 

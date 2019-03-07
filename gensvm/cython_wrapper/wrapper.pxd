@@ -115,6 +115,7 @@ cdef extern from "gensvm_helper.c":
             double, double, double, double, long, long)
     void set_seed_model(GenModel *, double, double, double, double, int, int, 
             double, double, double, double, long, long, char *, long, long)
+    void set_raw_weights(GenModel *, char *, int)
     void set_data(GenData *, char *, char *, np.npy_intp *, long)
     void set_task(GenTask *, int, GenData *, int, double, double, double, 
             double, double, int, double, double, double, long)

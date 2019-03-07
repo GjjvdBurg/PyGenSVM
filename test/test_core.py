@@ -291,6 +291,20 @@ class GenSVMTestCase(unittest.TestCase):
         self.assertLess(abs(V[3, 1] - 0.6547924025329720), eps)
         self.assertLess(abs(V[3, 2] - -0.6773346708737853), eps)
 
+    def test_fit_with_weights(self):
+        """ GENSVM: Test fit with sample weights """
+        X, y = load_iris(return_X_y=True)
+        weights = np.random.random((X.shape[0],))
+        clf = GenSVM()
+        clf.fit(X, y, sample_weight=weights)
+        # with seeding
+        V = clf.combined_coef_
+        weights = np.random.random((X.shape[0],))
+        clf.fit(X, y, sample_weight=weights, seed_V=V)
+
+        clf = GenSVM(kernel="rbf")
+        clf.fit(X, y, sample_weight=weights)
+
 
 if __name__ == "__main__":
     unittest.main()

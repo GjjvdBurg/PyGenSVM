@@ -33,6 +33,7 @@ def train_wrap(
         double kappa=0.0,
         double epsilon=1e-6,
         int weight_idx=1,
+        np.ndarray[np.float64_t, ndim=1, mode='c'] raw_weights=None,
         str kernel='linear',
         double gamma=1.0,
         double coef=0.0,
@@ -73,6 +74,9 @@ def train_wrap(
     else:
         gensvm_free_model(seed_model)
         seed_model = NULL
+
+    if not raw_weights is None:
+        set_raw_weights(model, raw_weights.data, n_obs)
 
     # Check the parameters
     error_msg = check_model(model)
