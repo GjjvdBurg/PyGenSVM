@@ -4,6 +4,10 @@ GenSVM Python Package
 .. image:: https://travis-ci.org/GjjvdBurg/PyGenSVM.svg?branch=master
     :target: https://travis-ci.org/GjjvdBurg/PyGenSVM
 
+.. image:: https://readthedocs.org/projects/gensvm/badge/?version=latest
+   :target: https://gensvm.readthedocs.io/en/latest/?badge=latest
+   :alt: Documentation Status
+
 This is the documentation of the Python package for the GenSVM classifier, 
 introduced in `GenSVM: A Generalized Multiclass Support Vector Machine 
 <http://www.jmlr.org/papers/v17/14-526.html>`_ by `Gerrit J.J. van den Burg 
