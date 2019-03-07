@@ -271,13 +271,7 @@ on the linked GitHub issues (this can make us add them sooner!).
    requires some time. In the meantime, if you really want to use sparse data 
    with GenSVM (this can lead to significant speedups!), check out the GenSVM 
    C library.
-2. `Specification of instance weights 
-   <https://github.com/GjjvdBurg/PyGenSVM/issues/2>`_. Currently the package 
-   allows for two modes of instance weights: ``unit`` weights where each 
-   instance gets weight 1 and ``group`` weights where instances get weights 
-   inversely proportional to the size of their class. In the future, we want 
-   to allow the user to specify a vector of weights as well.
-3. `Specification of class misclassification weights 
+2. `Specification of class misclassification weights 
    <https://github.com/GjjvdBurg/PyGenSVM/issues/3>`_. Currently, incorrectly 
    classification an object from class A to class C is as bad as incorrectly 
    classifying an object from class B to class C. Depending on the 
