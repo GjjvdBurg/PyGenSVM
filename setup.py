@@ -201,7 +201,7 @@ if __name__ == "__main__":
     attr["author"] = "G.J.J. van den Burg"
     attr["author_email"] = "gertjanvandenburg@gmail.com"
     attr["license"] = "GPL v2"
-    attr["install_requires"] = ["scikit-learn", "numpy", "scipy"]
+    attr["install_requires"] = ["scikit-learn", "numpy"]
 
     from numpy.distutils.core import setup
 
