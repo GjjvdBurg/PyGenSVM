@@ -619,8 +619,8 @@ class GenSVMGridSearchCV(BaseEstimator, MetaEstimatorMixin):
             # gamma='auto' was used. We need to save the actual numerical value
             # for use in the predict method later on, so we extract that here.
             if (
-                    "kernel" in self.best_params_ and
-                not self.best_params_["kernel"] == "linear"
+                "kernel" in self.best_params_
+                and not self.best_params_["kernel"] == "linear"
                 and not "gamma" in self.best_params_
             ):
                 self.best_params_["gamma"] = 1. / X.shape[1]
