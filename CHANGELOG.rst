@@ -1,6 +1,11 @@
 Change Log
 ----------
 
+Version 0.2.2
+^^^^^^^^^^^^^
+
+- Add error when unsupported ShuffleSplits are used
+
 Version 0.2.1
 ^^^^^^^^^^^^^
 
