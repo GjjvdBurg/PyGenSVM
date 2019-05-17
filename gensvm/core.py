@@ -408,6 +408,8 @@ class GenSVM(BaseEstimator, ClassifierMixin):
                 trainX, accept_sparse=False, dtype=np.float64, order="C"
             )
 
+        gamma = 1.0 / X.shape[1] if self.gamma == "auto" else self.gamma
+
         V = self.combined_coef_
         if self.kernel == "linear":
             predictions = wrapper.predict_wrap(X, V)
@@ -420,7 +422,7 @@ class GenSVM(BaseEstimator, ClassifierMixin):
                 V,
                 n_class,
                 kernel_idx,
-                self.gamma,
+                gamma,
                 self.coef,
                 self.degree,
                 self.kernel_eigen_cutoff,

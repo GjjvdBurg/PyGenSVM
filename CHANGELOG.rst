@@ -1,6 +1,11 @@
 Change Log
 ----------
 
+Version 0.2.3
+^^^^^^^^^^^^^
+
+- Bugfix for prediction with gamma = 'auto'
+
 Version 0.2.2
 ^^^^^^^^^^^^^
 
