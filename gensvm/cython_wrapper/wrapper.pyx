@@ -99,18 +99,22 @@ def train_wrap(
     V = np.empty((n_var+1, n_class-1))
     copy_V(V.data, model)
 
+    # get the support vectors
+    cdef np.ndarray[np.int32_t, ndim=1, mode='c'] SVs
+    SVs = np.empty((n_obs, ), dtype=np.int32)
+    get_SVs(model, SVs.data)
+
     # get other results from model
     iter_count = get_iter_count(model)
     training_error = get_training_error(model)
     fit_status = get_status(model)
-    n_SV = gensvm_num_sv(model)
 
     # free model and data
     gensvm_free_model(model);
     gensvm_free_model(seed_model)
     free_data(data);
 
-    return (V, n_SV, iter_count, training_error, fit_status)
+    return (V, SVs, iter_count, training_error, fit_status)
 
 
 def predict_wrap(
