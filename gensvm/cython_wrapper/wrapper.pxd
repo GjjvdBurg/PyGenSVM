@@ -94,10 +94,6 @@ cdef extern from "gensvm_train.h":
 
     void gensvm_train(GenModel *, GenData *, GenModel *) nogil
 
-cdef extern from "gensvm_sv.h":
-
-    long gensvm_num_sv(GenModel *)
-
 cdef extern from "gensvm_queue.h":
 
     cdef struct GenQueue:
@@ -121,6 +117,7 @@ cdef extern from "gensvm_helper.c":
             double, double, int, double, double, double, long)
     char_const_ptr check_model(GenModel *)
     void copy_V(void *, GenModel *)
+    void get_SVs(GenModel *, void *)
     long get_iter_count(GenModel *)
     double get_training_error(GenModel *)
     int get_status(GenModel *)
