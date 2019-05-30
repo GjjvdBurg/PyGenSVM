@@ -62,5 +62,5 @@ dist2: ## Make Python 2 source distribution
 	python2 setup.py sdist
 
 docs: doc
-doc: install ## Build documentation with Sphinx
-	$(MAKE) -C $(DOC_DIR) html
+doc: ## Build documentation with Sphinx
+	poetry run $(MAKE) -C $(DOC_DIR) html
