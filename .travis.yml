@@ -8,6 +8,9 @@ matrix:
       python: "3.7"
       services:
         - docker
+      before_install:
+        - sudo apt-get update
+        - sudo apt-get install -y libatlas-base-dev liblapack-dev liblapacke-dev;
       env:
         - CC="gcc"
         - PYTHON="python3"
@@ -15,6 +18,10 @@ matrix:
 
     - os: osx
       language: generic
+      before_install:
+        - brew update
+        - brew install openblas
+        - brew install lapack
       env:
         - CC="gcc"
         - PYTHON="python3"
@@ -24,6 +31,8 @@ matrix:
       language: shell
       before_install:
         - choco install python3 --version 3.6.8 --no-progress -y
+        - choco install cyg-get --no-progress -y
+        - cyg-get lapack-3.8.0-1 openblas-0.3.7-1
       env:
         - PATH=/c/Python36:/c/Python36/Scripts:$PATH
         - PYTHON="python"
@@ -31,13 +40,10 @@ matrix:
 
 env:
   - CIBW_TEST_COMMAND="python -VV && python -m unittest discover -f -s {project}/test
+  - CIBW_BEFORE_BUILD="pip install numpy"
 
 env:
   - CC="gcc"
-
-before_install:
-  - sudo apt-get update
-  - sudo apt-get install -y libatlas-base-dev liblapack-dev liblapacke-dev
 
 install:
   - $PIP install numpy
