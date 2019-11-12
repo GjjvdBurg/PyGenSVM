@@ -4,13 +4,38 @@
 import os
 import re
 
+# Package meta-data
+AUTHOR = "Gertjan van den Burg"
+DESCRIPTION = "Generalized Multiclass Support Vector Machines"
+EMAIL = "gertjanvandenburg@gmail.com"
+LICENSE = "GPLv2"
+LICENSE_TROVE = (
+    "License :: OSI Approved :: GNU General Public License v2 (GPLv2)"
+)
+NAME = "gensvm"
+REQUIRES_PYTHON = ">=2.7"
+URL = "https://github.com/GjjvdBurg/PyGenSVM"
+VERSION = None
+
+REQUIRED = ["scikit-learn", "numpy"]
+
+docs_require = ["Sphinx==1.6.5", "sphinx_rtd_theme>=0.4.3"]
+test_require = []
+dev_require = ["Cython"]
+
+EXTRAS = {
+    "docs": docs_require,
+    "tests": test_require,
+    "dev": docs_require + test_require + dev_require,
+}
+
 # Set this to True to enable building extensions using Cython. Set it to False·
 # to build extensions from the C file (that was previously generated using·
 # Cython). Set it to 'auto' to build with Cython if available, otherwise from·
 # the C file.
 USE_CYTHON = "auto"
 
-# If we are in a release, we always never use Cython directly
+# If we are in a release, we never use Cython directly
 IS_RELEASE = os.path.exists("PKG-INFO")
 if IS_RELEASE:
     USE_CYTHON = False
@@ -25,15 +50,16 @@ if USE_CYTHON:
         else:
             raise
 
-# Try to load setuptools, so that NumPy's distutils module that we use to 
-# provide the setup() function below comes from the setuptools package. If it 
-# fails, it'll use distutils' version, which doesn't support installing 
+# Try to load setuptools, so that NumPy's distutils module that we use to
+# provide the setup() function below comes from the setuptools package. If it
+# fails, it'll use distutils' version, which doesn't support installing
 # dependencies.
 try:
-   import setuptools
+    import setuptools
 except ImportError:
-    print("Warning: setuptools not found. You may have to install GenSVM's dependencies manually.")
-
+    print(
+        "Warning: setuptools not found. You may have to install GenSVM's dependencies manually."
+    )
 
 
 def _skl_get_blas_info():
@@ -111,7 +137,7 @@ def get_lapack_info():
 
     lapack_info = get_info("lapack_opt", 0)
     if (not lapack_info) or atlas_not_found(lapack_info):
-        # This is a guess, but seems to work in practice. Need more systems to 
+        # This is a guess, but seems to work in practice. Need more systems to
         # test this fully.
         lapack_libs = ["lapack"]
         lapack_info.pop("libraries", None)
@@ -182,6 +208,9 @@ def read(fname):
 
 def check_requirements():
     numpy_instructions = (
+        "\n"
+        "GenSVM Installation Error:"
+        "\n"
         "Numerical Python (NumPy) is not installed on your "
         "system. This package is required for GenSVM. Please install "
         "NumPy using the instructions available here: "
@@ -206,14 +235,15 @@ if __name__ == "__main__":
     attr = configuration().todict()
 
     attr["version"] = version
-    attr["description"] = "Python package for the GenSVM classifier"
+    attr["description"] = DESCRIPTION
     attr["long_description"] = read("README.rst")
-    attr["packages"] = ["gensvm"]
-    attr["url"] = "https://github.com/GjjvdBurg/PyGenSVM"
-    attr["author"] = "G.J.J. van den Burg"
-    attr["author_email"] = "gertjanvandenburg@gmail.com"
-    attr["license"] = "GPL v2"
-    attr["install_requires"] = ["scikit-learn", "numpy"]
+    attr["packages"] = [NAME]
+    attr["url"] = URL
+    attr["author"] = AUTHOR
+    attr["author_email"] = EMAIL
+    attr["license"] = LICENSE
+    attr["install_requires"] = REQUIRED
+    attr['extras_require'] = EXTRAS
 
     from numpy.distutils.core import setup
 

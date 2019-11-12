@@ -1,7 +1,36 @@
-language: python
-python:
-  - "3.6"
-  - "2.7"
+# Travis CI configuration for GenSVM
+
+matrix:
+  include:
+    - language: python
+      dist: xenial
+      sudo: required
+      python: "3.7"
+      services:
+        - docker
+      env:
+        - CC="gcc"
+        - PYTHON="python3"
+        - PIP="pip3"
+
+    - os: osx
+      language: generic
+      env:
+        - CC="gcc"
+        - PYTHON="python3"
+        - PIP="pip3"
+
+    - os: windows
+      language: shell
+      before_install:
+        - choco install python3 --version 3.6.8 --no-progress -y
+      env:
+        - PATH=/c/Python36:/c/Python36/Scripts:$PATH
+        - PYTHON="python"
+        - PIP="pip"
+
+env:
+  - CIBW_TEST_COMMAND="python -VV && python -m unittest discover -f -s {project}/test
 
 env:
   - CC="gcc"
@@ -11,10 +40,11 @@ before_install:
   - sudo apt-get install -y libatlas-base-dev liblapack-dev liblapacke-dev
 
 install:
-  - pip install --upgrade pip
-  - pip install -U -r requirements.txt
-  - pip install green Cython
-  - python setup.py build_ext --inplace
+  - $PIP install numpy
+  - $PIP install -e .[dev]
+  - $PYTHON -m unittest discover -v -f -s ./test
 
 script:
-  - green -vv -f
+  - $PIP install cibuildwheel==1.0.0
+  - cibuildwheel --output-dir wheelhouse
+  - ls wheelhouse
