@@ -15,6 +15,7 @@ matrix:
         - CC="gcc"
         - PYTHON="python3"
         - PIP="pip3"
+        - CIBW_BEFORE_BUILD="sudo apt-get update && sudo apt-get install -y libatlas-base-dev liblapack-dev liblapacke-dev && pip install numpy"
 
     - os: osx
       language: generic
