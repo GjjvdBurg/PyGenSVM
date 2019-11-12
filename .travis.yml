@@ -35,7 +35,7 @@ matrix:
         - choco install cyg-get --no-progress -y
         - cyg-get lapack-3.8.0-1 openblas-0.3.7-1
       env:
-        - PATH=/c/Python36:/c/Python36/Scripts:$PATH
+        - PATH=/c/Python36:/c/Python36/Scripts:/c/ProgramData/chocolatey/bin:$PATH
         - PYTHON="python"
         - PIP="pip"
 
