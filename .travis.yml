@@ -33,8 +33,11 @@ matrix:
       language: shell
       before_install:
         - choco install python3 --version 3.6.8 --no-progress -y
-        - choco install cyg-get --no-progress -y
-        - /c/ProgramData/chocolatey/bin/cyg-get.bat lapack-3.8.0-1 openblas-0.3.7-1
+        - choco install git
+        - /c/tools/cygwin/setup-x86.exe -q -P lapack-3.8.0-1,openblas-0.3.7-1
+          #- /c/ProgramData/chocolatey/bin/cyg-get.bat lapack-3.8.0-1 
+          #openblas-0.3.7-1
+          #- choco install cyg-get --no-progress -y
       env:
         - PATH=/c/Python36:/c/Python36/Scripts:/c/ProgramData/chocolatey/bin:$PATH
         - PYTHON="python"
