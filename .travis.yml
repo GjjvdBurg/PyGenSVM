@@ -36,8 +36,7 @@ matrix:
           #- choco install git
           #- choco install cygwin --no-progress -y
         - choco install cyg-get --no-progress -y
-        - dir /c/tools
-        - dir /c/tools/cygwin
+        - /c/ProgramData/chocolatey/bin/cyg-get.bat -help
           #- /c/tools/cygwin/cygwinsetup.exe -v -B -P 
           #lapack-3.8.0-1,openblas-0.3.7-1
         - /c/ProgramData/chocolatey/bin/cyg-get.bat lapack-3.8.0-1,openblas-0.3.7-1
