@@ -38,7 +38,7 @@ matrix:
         - PATH=/c/Python36:/c/Python36/Scripts:/c/ProgramData/chocolatey/bin:$PATH
         - PYTHON="python"
         - PIP="pip"
-        - CIBW_BEFORE_BUILD="/c/cibw/nuget.exe install lapacke -OutputDirectory /cibw/lapacke -Verbosity detailed && ls /c/cibw/lapacke && pip install numpy Cython"
+        - CIBW_BEFORE_BUILD="/c/cibw/nuget.exe install lapacke -OutputDirectory /cibw/lapacke -Verbosity detailed && find /c/cibw/lapacke -type d -maxdepth 2 && pip install numpy Cython"
 
 env:
   global:
