@@ -25,6 +25,7 @@ matrix:
         - brew install lapack
       env:
         - CC="gcc"
+        - CFLAGS="-fcommon"
         - PYTHON="python3"
         - PIP="pip3"
         - CIBW_BEFORE_BUILD="pip install numpy"
