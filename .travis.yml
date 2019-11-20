@@ -15,7 +15,7 @@ matrix:
         - CC="gcc"
         - PYTHON="python3"
         - PIP="pip3"
-        - CIBW_BEFORE_BUILD="yum install -y atlas-devel lapack-devel && pip install numpy"
+        - CIBW_BEFORE_BUILD="yum install -y atlas-devel lapack-devel && pip install numpy Cython"
 
     - os: osx
       language: generic
@@ -29,7 +29,7 @@ matrix:
         - CFLAGS="-fcommon"
         - PYTHON="python3"
         - PIP="pip3"
-        - CIBW_BEFORE_BUILD="pip install numpy"
+        - CIBW_BEFORE_BUILD="pip install numpy Cython"
     - os: windows
       language: shell
       before_install:
@@ -45,7 +45,7 @@ matrix:
         - PATH=/c/Python36:/c/Python36/Scripts:/c/ProgramData/chocolatey/bin:$PATH
         - PYTHON="python"
         - PIP="pip"
-        - CIBW_BEFORE_BUILD="/c/cibw/nuget.exe install lapacke -OutputDirectory /c/cibw/lapacke -Verbosity detailed && pip install numpy"
+        - CIBW_BEFORE_BUILD="/c/cibw/nuget.exe install lapacke -OutputDirectory /cibw/lapacke -Verbosity detailed && pip install numpy Cython"
 
 env:
   global:
