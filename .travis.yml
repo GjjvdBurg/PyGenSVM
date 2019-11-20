@@ -38,6 +38,8 @@ matrix:
         - PATH=/c/Python36:/c/Python36/Scripts:/c/ProgramData/chocolatey/bin:$PATH
         - PYTHON="python"
         - PIP="pip"
+        - LAPACK="/c/cibw/lapacke/lapacke.0.1.0/lib"
+        - BLAS="/c/cibw/lapacke/OpenBLAS.0.2.14.1/lib"
         - CIBW_BEFORE_BUILD="/c/cibw/nuget.exe install lapacke -OutputDirectory /cibw/lapacke -Verbosity detailed && echo && find /c/cibw/lapacke -type d -maxdepth 3 && echo && pip install numpy Cython"
 
 env:
