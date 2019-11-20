@@ -30,22 +30,22 @@ matrix:
         - PIP="pip3"
         - CIBW_BEFORE_BUILD="pip install numpy"
 
-    - os: windows
-      language: shell
-      before_install:
-        #- choco install python3 --version 3.6.8 --no-progress -y
-          #- choco install git
-          #- choco install cygwin --no-progress -y
-        - choco install cyg-get --no-progress -y
-        - /c/tools/cygwin/cygwinsetup.exe --root /c/tools/cygwin --local-package-dir /c/tools/cygwin/packages -d -n -f -q -v -B -P lapack,openblas
-          #- /c/ProgramData/chocolatey/bin/cyg-get.bat -debug lapack-3.8.0-1 
-          #openblas-0.3.7-1
-          #- choco install cyg-get --no-progress -y
-      env:
-        - PATH=/c/Python36:/c/Python36/Scripts:/c/ProgramData/chocolatey/bin:$PATH
-        - PYTHON="python"
-        - PIP="pip"
-        - CIBW_BEFORE_BUILD="pip install numpy"
+          #    - os: windows
+          #      language: shell
+          #      before_install:
+          #        #- choco install python3 --version 3.6.8 --no-progress -y
+          #          #- choco install git
+          #          #- choco install cygwin --no-progress -y
+          #        - choco install cyg-get --no-progress -y
+          #        - /c/tools/cygwin/cygwinsetup.exe --root /c/tools/cygwin --local-package-dir /c/tools/cygwin/packages -d -n -f -q -v -B -P lapack,openblas
+          #          #- /c/ProgramData/chocolatey/bin/cyg-get.bat -debug lapack-3.8.0-1 
+          #          #openblas-0.3.7-1
+          #          #- choco install cyg-get --no-progress -y
+          #      env:
+          #        - PATH=/c/Python36:/c/Python36/Scripts:/c/ProgramData/chocolatey/bin:$PATH
+          #        - PYTHON="python"
+          #        - PIP="pip"
+          #        - CIBW_BEFORE_BUILD="pip install numpy"
 
 env:
   - CIBW_TEST_COMMAND="python -VV && python -m unittest discover -f -s {project}/test
