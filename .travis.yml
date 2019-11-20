@@ -33,17 +33,19 @@ matrix:
     - os: windows
       language: shell
       before_install:
-        #- choco install python3 --version 3.6.8 --no-progress -y
+        - choco install python3 --version 3.6.8 --no-progress -y
        #- choco install git
-        - choco install cyg-get --no-progress -y
-        - /c/tools/cygwin/cygwinsetup.exe --root /c/tools/cygwin --local-package-dir /c/tools/cygwin/packages -d -n -f -q -v -B -P mingw64-i686-lapack
+       #- choco install cyg-get --no-progress -y
+          #- /c/tools/cygwin/cygwinsetup.exe --root /c/tools/cygwin 
+          #--local-package-dir /c/tools/cygwin/packages -d -n -f -q -v -B -P 
+          #mingw64-i686-lapack
           #- /c/ProgramData/chocolatey/bin/cyg-get.bat -debug 
           #mingw64-x86_64-cblas
       env:
         - PATH=/c/Python36:/c/Python36/Scripts:/c/ProgramData/chocolatey/bin:$PATH
         - PYTHON="python"
         - PIP="pip"
-        - CIBW_BEFORE_BUILD="pip install numpy"
+        - CIBW_BEFORE_BUILD="/c/cibw/nuget.exe install lapacke ; pip install numpy"
 
 env:
   global:
