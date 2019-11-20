@@ -54,10 +54,10 @@ env:
     # Run the unit tests on the wheels that are created
     - CIBW_TEST_COMMAND="python -VV && python -m unittest discover -f -s {project}/test"
 
-install:
-  - $PIP install numpy
-  - $PIP install -e .[dev]
-  - $PYTHON -m unittest discover -v -f -s ./test
+      #install:
+      #  - $PIP install numpy
+      #  - $PIP install -e .[dev]
+      #  - $PYTHON -m unittest discover -v -f -s ./test
 
 script:
   - $PIP install cibuildwheel==1.0.0
