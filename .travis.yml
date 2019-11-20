@@ -36,10 +36,9 @@ matrix:
         #- choco install python3 --version 3.6.8 --no-progress -y
        #- choco install git
         - choco install cyg-get --no-progress -y
-          #- /c/tools/cygwin/cygwinsetup.exe --root /c/tools/cygwin 
-          #--local-package-dir /c/tools/cygwin/packages -d -n -f -q -v -B -P 
+        - /c/tools/cygwin/cygwinsetup.exe --root /c/tools/cygwin --local-package-dir /c/tools/cygwin/packages -d -n -f -q -v -B -P mingw64-i686-lapack
+          #- /c/ProgramData/chocolatey/bin/cyg-get.bat -debug 
           #mingw64-x86_64-cblas
-        - /c/ProgramData/chocolatey/bin/cyg-get.bat -debug mingw64-x86_64-cblas
       env:
         - PATH=/c/Python36:/c/Python36/Scripts:/c/ProgramData/chocolatey/bin:$PATH
         - PYTHON="python"
