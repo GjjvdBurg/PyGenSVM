@@ -50,7 +50,7 @@ env:
     # No longer actively maintaining gensvm for Python 2.7
     - CIBW_SKIP="cp27-*"
     # Run the unit tests on the wheels that are created
-    - CIBW_TEST_COMMAND="python -VV && python -m unittest discover -f -s {project}/test
+    - CIBW_TEST_COMMAND="python -VV && python -m unittest discover -f -s {project}/test"
 
 install:
   - $PIP install numpy
