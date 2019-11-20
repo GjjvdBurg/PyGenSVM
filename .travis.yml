@@ -25,6 +25,7 @@ matrix:
         - brew install lapack
       env:
         - CC="gcc"
+          # avoids build errors on OSx
         - CFLAGS="-fcommon"
         - PYTHON="python3"
         - PIP="pip3"
