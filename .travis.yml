@@ -15,6 +15,7 @@ matrix:
         - CC="gcc"
         - PYTHON="python3"
         - PIP="pip3"
+        - CIBW_TEST_REQUIRES="Cython"
         - CIBW_BEFORE_BUILD="yum install -y atlas-devel lapack-devel && pip install numpy Cython"
 
     - os: osx
@@ -29,6 +30,7 @@ matrix:
         - CFLAGS="-fcommon"
         - PYTHON="python3"
         - PIP="pip3"
+        - CIBW_TEST_REQUIRES="Cython"
         - CIBW_BEFORE_BUILD="pip install numpy Cython"
     - os: windows
       language: shell
