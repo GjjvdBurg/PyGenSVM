@@ -116,7 +116,7 @@ def _wrap_score(y_pred, y_true, scorers, is_multimetric):
             results["score"] = np.nan
     else:
         estimator = _MockEstimator(y_pred)
-        results = _score(estimator, None, y_true, scorers, is_multimetric)
+        results = _score(estimator, None, y_true, scorers)
     score_time = time.time() - start_time
     return results, score_time
 
