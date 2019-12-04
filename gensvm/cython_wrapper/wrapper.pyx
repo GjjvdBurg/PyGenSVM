@@ -133,7 +133,7 @@ def predict_wrap(
 
     # output vector
     cdef np.ndarray[np.int_t, ndim=1, mode='c'] predictions
-    predictions = np.empty((n_test_obs, ), dtype=np.int)
+    predictions = np.empty((n_test_obs, ), dtype=np.int_)
 
     # do the prediction
     gensvm_predict(X.data, V.data, n_test_obs, n_var, n_class, 
@@ -259,7 +259,7 @@ def grid_wrap(
         results['params'].append(candidate_params[ID])
         results['scores'].append(get_task_performance(tasks[ID]))
         if store_predictions:
-            pred = np.zeros((n_obs, ), dtype=np.int)
+            pred = np.zeros((n_obs, ), dtype=np.int_)
             copy_task_predictions(tasks[ID], pred.data, n_obs)
             results['predictions'].append(pred.copy())
         dur = np.zeros((n_folds, ), dtype=np.double)
