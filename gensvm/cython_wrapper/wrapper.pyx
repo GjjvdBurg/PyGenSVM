@@ -264,7 +264,7 @@ def grid_wrap(
             results['predictions'].append(pred.copy())
         dur = np.zeros((n_folds, ), dtype=np.double)
         copy_task_durations(tasks[ID], dur.data, n_folds)
-        results['durations'].append(dur.copy())
+        results['durations'].append(dur)
 
     gensvm_free_queue(queue)
     free_data(data)
