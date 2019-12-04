@@ -112,6 +112,7 @@ def _skl_get_blas_info():
         return False
 
     blas_info = get_info("blas_opt", 0)
+    print("\n\n*** blas_info: \n%r\n\n ***\n\n" % blas_info)
     if (not blas_info) or atlas_not_found(blas_info):
         cblas_libs = ["cblas"]
         blas_info.pop("libraries", None)
@@ -143,6 +144,7 @@ def get_lapack_info():
         return False
 
     lapack_info = get_info("lapack_opt", 0)
+    print("\n\n*** lapack_info: \n%r\n\n ***\n\n" % lapack_info)
     if (not lapack_info) or atlas_not_found(lapack_info):
         # This is a guess, but seems to work in practice. Need more systems to
         # test this fully.
