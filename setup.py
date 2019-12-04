@@ -114,8 +114,8 @@ def _skl_get_blas_info():
     blas_info = get_info("blas_opt", 0)
     print("\n\n*** blas_info: \n%r\n\n ***\n\n" % blas_info)
     print(
-        "\n\n*** os.environ.get('BLAS') = %r ***\n\n"
-        % (os.environ.get("BLAS", None))
+        "\n\n*** os.environ.get('OPENBLAS') = %r ***\n\n"
+        % (os.environ.get("OPENBLAS", None))
     )
     if (not blas_info) or atlas_not_found(blas_info):
         cblas_libs = ["cblas"]
