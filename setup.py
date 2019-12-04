@@ -122,6 +122,7 @@ def _skl_get_blas_info():
         os.environ.get("CIBUILDWHEEL", "0") == "1"
         and os.environ.get("TRAVIS_OS_NAME", "none") == "windows"
     ):
+        print("\n\n*** On CIBW ***\n\n")
         cblas_libs = ["/c/cibw/lapacke/OpenBLAS.0.2.14.1/lib/native"]
 
     return cblas_libs, blas_info
@@ -150,8 +151,11 @@ def get_lapack_info():
     else:
         lapack_libs = lapack_info.pop("libraries", [])
 
-    if (os.environ.get("CIBUILDWHEEL", "0") == "1"
-            and os.environ.get("TRAVIS_OS_NAME", "none") == "windows"):
+    if (
+        os.environ.get("CIBUILDWHEEL", "0") == "1"
+        and os.environ.get("TRAVIS_OS_NAME", "none") == "windows"
+    ):
+        print("\n\n*** On CIBW ***\n\n")
         lapack_libs = ["/c/cibw/lapacke/lapacke.0.1.0/lib/native"]
 
     return lapack_libs, lapack_info
