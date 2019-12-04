@@ -8,6 +8,7 @@ Utility functions for GenSVM
 
 import numpy as np
 
+from sklearn.exceptions import NotFittedError
 
 def get_ranks(a):
     """
@@ -37,3 +38,15 @@ def get_ranks(a):
     ranks[~np.isnan(orig)] = count[dense - 1] + 1
     ranks[np.isnan(orig)] = np.max(ranks) + 1
     return list(ranks)
+
+
+def check_is_fitted(estimator, attribute):
+    msg = (
+        "This %(name)s instance is not fitted yet. Call 'fit' "
+        "with appropriate arguments before using this estimator."
+    )
+    if not hasattr(estimator, "fit"):
+        raise TypeError("%s is not an estimator instance" % (estimator))
+
+    if not hasattr(estimator, attribute):
+        raise NotFittedError(msg % {"name": type(estimator).__name__})

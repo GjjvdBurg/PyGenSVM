@@ -16,9 +16,9 @@ from sklearn.exceptions import ConvergenceWarning, FitFailedWarning
 from sklearn.preprocessing import LabelEncoder
 from sklearn.utils import check_array, check_X_y, check_random_state
 from sklearn.utils.multiclass import type_of_target
-from sklearn.utils.validation import check_is_fitted
 
 from .cython_wrapper import wrapper
+from .util import check_is_fitted
 
 
 def _fit_gensvm(

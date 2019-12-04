@@ -207,7 +207,12 @@ def _skl_check_is_fitted(estimator, method_name, refit):
             "attribute" % (type(estimator).__name__, method_name)
         )
     else:
-        check_is_fitted(estimator, "best_estimator_")
+        if not hasattr(estimator, "best_estimator_"):
+            raise NotFittedError(
+                "This %s instance is not fitted yet. Call "
+                "'fit' with appropriate arguments before using this "
+                "estimator." % type(estimator).__name__
+            )
 
 
 def _skl_grid_score(X, y, scorer_, best_estimator_, refit, multimetric_):
