@@ -88,8 +88,7 @@ def train_wrap(
         raise ValueError(error_repl)
 
     # Do the actual training
-    with nogil:
-        gensvm_train(model, data, seed_model)
+    gensvm_train(model, data, seed_model)
 
     # update the number of variables (this may have changed due to kernel)
     n_var = get_m(model)
@@ -137,9 +136,8 @@ def predict_wrap(
     predictions = np.empty((n_test_obs, ), dtype=np.int)
 
     # do the prediction
-    with nogil:
-        gensvm_predict(X.data, V.data, n_test_obs, n_var, n_class, 
-                predictions.data)
+    gensvm_predict(X.data, V.data, n_test_obs, n_var, n_class, 
+            predictions.data)
 
     return predictions
 
@@ -174,10 +172,9 @@ def predict_kernels_wrap(
     cdef np.ndarray[np.int_t, ndim=1, mode='c'] predictions
     predictions = np.empty((n_obs_test, ), dtype=np.int)
 
-    with nogil:
-        gensvm_predict_kernels(Xtest.data, Xtrain.data, V.data, V_rows, 
-                V_cols, n_obs_train, n_obs_test, n_var, n_class, kernel_idx, 
-                gamma, coef, degree, kernel_eigen_cutoff, predictions.data)
+    gensvm_predict_kernels(Xtest.data, Xtrain.data, V.data, V_rows, V_cols, 
+            n_obs_train, n_obs_test, n_var, n_class, kernel_idx, gamma, coef, 
+            degree, kernel_eigen_cutoff, predictions.data)
 
     return predictions
 
@@ -243,9 +240,7 @@ def grid_wrap(
 
     set_queue(queue, n_tasks, tasks)
 
-    with nogil:
-        gensvm_train_q_helper(queue, cv_idx.data, store_predictions, 
-                verbosity)
+    gensvm_train_q_helper(queue, cv_idx.data, store_predictions, verbosity)
 
     cdef np.ndarray[np.int_t, ndim=1, mode='c'] pred
     cdef np.ndarray[np.double_t, ndim=1, mode='c'] dur
