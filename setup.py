@@ -122,7 +122,6 @@ def _skl_get_blas_info():
     if on_cibw_win():
         blas_info = {
             "define_macros": [("NO_ATLAS_INFO", 1), ("HAVE_CBLAS", None)],
-            "libraries": ["openblas"],
             "library_dirs": [
                 "/c/cibw/openblas/OpenBLAS.0.2.14.1/lib/native/lib/"
             ],
@@ -131,7 +130,7 @@ def _skl_get_blas_info():
             ],
             "language": "c",
         }
-        return ["cblas"], blas_info
+        return ["openblas"], blas_info
 
     blas_info = get_info("blas_opt", notfound_action=2)
     print("\n\n*** blas_info: \n%r\n\n ***\n\n" % blas_info)
@@ -163,9 +162,8 @@ def get_lapack_info():
         return False
 
     if on_cibw_win():
-        blas_info = {
+        lapack_info = {
             "define_macros": [("NO_ATLAS_INFO", 1), ("HAVE_CBLAS", None)],
-            "libraries": ["openblas"],
             "library_dirs": [
                 "/c/cibw/openblas/OpenBLAS.0.2.14.1/lib/native/lib/"
             ],
@@ -174,7 +172,7 @@ def get_lapack_info():
             ],
             "language": "c",
         }
-        return ["cblas"], blas_info
+        return ["openblas"], lapack_info
 
     lapack_info = get_info("lapack_opt", notfound_action=2)
     print("\n\n*** lapack_info: \n%r\n\n ***\n\n" % lapack_info)
