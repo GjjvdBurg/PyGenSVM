@@ -120,13 +120,35 @@ def _skl_get_blas_info():
         return False
 
     if on_cibw_win():
+        blas_info = get_info("blas_opt", notfound_action=0)
+        print("***\nDetected blas info: %r" % blas_info)
         blas_info = {
             "define_macros": [("NO_ATLAS_INFO", 1), ("HAVE_CBLAS", None)],
             "library_dirs": [
-                "/c/cibw/openblas/OpenBLAS.0.2.14.1/lib/native/lib/"
+                os.sep.join(
+                    [
+                        "C:",
+                        "cibw",
+                        "openblas",
+                        "OpenBLAS.0.2.14.1",
+                        "lib",
+                        "native",
+                        "lib",
+                    ]
+                )
             ],
             "include_dirs": [
-                "/c/cibw/openblas/OpenBLAS.0.2.14.1/lib/native/include"
+                os.sep.join(
+                    [
+                        "C:",
+                        "cibw",
+                        "openblas",
+                        "OpenBLAS.0.2.14.1",
+                        "lib",
+                        "native",
+                        "include",
+                    ]
+                )
             ],
             "language": "c",
         }
@@ -162,16 +184,39 @@ def get_lapack_info():
         return False
 
     if on_cibw_win():
+        lapack_info = get_info("lapack_opt", notfound_action=0)
+        print("***\nDetected lapack info: %r" % lapack_info)
         lapack_info = {
             "define_macros": [("NO_ATLAS_INFO", 1), ("HAVE_CBLAS", None)],
             "library_dirs": [
-                "/c/cibw/openblas/OpenBLAS.0.2.14.1/lib/native/lib/"
+                os.sep.join(
+                    [
+                        "C:",
+                        "cibw",
+                        "openblas",
+                        "OpenBLAS.0.2.14.1",
+                        "lib",
+                        "native",
+                        "lib",
+                    ]
+                )
             ],
             "include_dirs": [
-                "/c/cibw/openblas/OpenBLAS.0.2.14.1/lib/native/include"
+                os.sep.join(
+                    [
+                        "C:",
+                        "cibw",
+                        "openblas",
+                        "OpenBLAS.0.2.14.1",
+                        "lib",
+                        "native",
+                        "include",
+                    ]
+                )
             ],
             "language": "c",
         }
+        print("***\nDefined lapack info: %r" % lapack_info)
         return ["openblas"], lapack_info
 
     lapack_info = get_info("lapack_opt", notfound_action=2)
@@ -291,10 +336,10 @@ def cibuildwheel_windows():
     print(os.environ.get("OPENBLAS", "none"))
 
     for path, dirs, files in os.walk("/c/cibw/openblas"):
-        print(path)
+        print(path, file=sys.stderr)
         for f in files:
-            print("\t" + f)
-    sys.stdout.flush()
+            print("\t" + f, file=sys.stderr)
+    sys.stderr.flush()
     import time
 
     time.sleep(5)
