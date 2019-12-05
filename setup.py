@@ -119,41 +119,40 @@ def _skl_get_blas_info():
                     return True
         return False
 
-
-#    if on_cibw_win():
-#        blas_info = get_info("blas_opt", notfound_action=0)
-#        print("***\nDetected blas info: %r" % blas_info)
-#        blas_info = {
-#            "define_macros": [("NO_ATLAS_INFO", 1), ("HAVE_CBLAS", None)],
-#            "library_dirs": [
-#                os.sep.join(
-#                    [
-#                        "C:",
-#                        "cibw",
-#                        "openblas",
-#                        "OpenBLAS.0.2.14.1",
-#                        "lib",
-#                        "native",
-#                        "lib",
-#                    ]
-#                )
-#            ],
-#            "include_dirs": [
-#                os.sep.join(
-#                    [
-#                        "C:",
-#                        "cibw",
-#                        "openblas",
-#                        "OpenBLAS.0.2.14.1",
-#                        "lib",
-#                        "native",
-#                        "include",
-#                    ]
-#                )
-#            ],
-#            "language": "c",
-#        }
-#        return ["libopenblas"], blas_info
+    if on_cibw_win():
+        blas_info = get_info("blas_opt", notfound_action=0)
+        print("***\nDetected blas info: %r" % blas_info)
+        blas_info = {
+            "define_macros": [("NO_ATLAS_INFO", 1), ("HAVE_CBLAS", None)],
+            "library_dirs": [
+                os.sep.join(
+                    [
+                        "C:",
+                        "cibw",
+                        "openblas",
+                        "OpenBLAS.0.2.14.1",
+                        "lib",
+                        "native",
+                        "lib",
+                    ]
+                )
+            ],
+            "include_dirs": [
+                os.sep.join(
+                    [
+                        "C:",
+                        "cibw",
+                        "openblas",
+                        "OpenBLAS.0.2.14.1",
+                        "lib",
+                        "native",
+                        "include",
+                    ]
+                )
+            ],
+            "language": "c",
+        }
+        return ["libopenblas"], blas_info
 
     blas_info = get_info("blas_opt", notfound_action=2)
     print("\n\n*** blas_info: \n%r\n\n ***\n\n" % blas_info)
@@ -184,41 +183,41 @@ def get_lapack_info():
                     return True
         return False
 
-#    if on_cibw_win():
-#        lapack_info = get_info("lapack_opt", notfound_action=0)
-#        print("***\nDetected lapack info: %r" % lapack_info)
-#        lapack_info = {
-#            "define_macros": [("NO_ATLAS_INFO", 1), ("HAVE_CBLAS", None)],
-#            "library_dirs": [
-#                os.sep.join(
-#                    [
-#                        "C:",
-#                        "cibw",
-#                        "openblas",
-#                        "OpenBLAS.0.2.14.1",
-#                        "lib",
-#                        "native",
-#                        "lib",
-#                    ]
-#                )
-#            ],
-#            "include_dirs": [
-#                os.sep.join(
-#                    [
-#                        "C:",
-#                        "cibw",
-#                        "openblas",
-#                        "OpenBLAS.0.2.14.1",
-#                        "lib",
-#                        "native",
-#                        "include",
-#                    ]
-#                )
-#            ],
-#            "language": "c",
-#        }
-#        print("***\nDefined lapack info: %r" % lapack_info)
-#        return ["libopenblas"], lapack_info
+    if on_cibw_win():
+        lapack_info = get_info("lapack_opt", notfound_action=0)
+        print("***\nDetected lapack info: %r" % lapack_info)
+        lapack_info = {
+            "define_macros": [("NO_ATLAS_INFO", 1), ("HAVE_CBLAS", None)],
+            "library_dirs": [
+                os.sep.join(
+                    [
+                        "C:",
+                        "cibw",
+                        "openblas",
+                        "OpenBLAS.0.2.14.1",
+                        "lib",
+                        "native",
+                        "lib",
+                    ]
+                )
+            ],
+            "include_dirs": [
+                os.sep.join(
+                    [
+                        "C:",
+                        "cibw",
+                        "openblas",
+                        "OpenBLAS.0.2.14.1",
+                        "lib",
+                        "native",
+                        "include",
+                    ]
+                )
+            ],
+            "language": "c",
+        }
+        print("***\nDefined lapack info: %r" % lapack_info)
+        return ["libopenblas"], lapack_info
 
     lapack_info = get_info("lapack_opt", notfound_action=2)
     print("\n\n*** lapack_info: \n%r\n\n ***\n\n" % lapack_info)
