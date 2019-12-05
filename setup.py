@@ -259,11 +259,14 @@ def cibuildwheel_windows():
         "OPENBLAS"
     ] = "/c/cibw/openblas/OpenBLAS.0.2.14.1/lib/native/lib"
 
-    for path, dirs, files in os.walk("/c/cibw/lapacke"):
+    for path, dirs, files in os.walk("/c/cibw/openblas"):
         print(path)
         for f in files:
             print("\t" + f)
     sys.stdout.flush()
+    import time
+
+    time.sleep(5)
 
 
 if __name__ == "__main__":
