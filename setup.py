@@ -253,7 +253,7 @@ if __name__ == "__main__":
     attr["author_email"] = EMAIL
     attr["license"] = LICENSE
     attr["install_requires"] = REQUIRED
-    attr['extras_require'] = EXTRAS
+    attr["extras_require"] = EXTRAS
 
     from numpy.distutils.core import setup
 
