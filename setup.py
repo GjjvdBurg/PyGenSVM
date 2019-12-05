@@ -152,7 +152,7 @@ def _skl_get_blas_info():
             ],
             "language": "c",
         }
-        return ["openblas"], blas_info
+        return ["libopenblas.dll.a"], blas_info
 
     blas_info = get_info("blas_opt", notfound_action=2)
     print("\n\n*** blas_info: \n%r\n\n ***\n\n" % blas_info)
@@ -217,7 +217,7 @@ def get_lapack_info():
             "language": "c",
         }
         print("***\nDefined lapack info: %r" % lapack_info)
-        return ["openblas"], lapack_info
+        return ["libopenblas.dll.a"], lapack_info
 
     lapack_info = get_info("lapack_opt", notfound_action=2)
     print("\n\n*** lapack_info: \n%r\n\n ***\n\n" % lapack_info)
