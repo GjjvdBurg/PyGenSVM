@@ -44,7 +44,7 @@ matrix:
           #OPENBLAS=/c/cibw/lapacke/OpenBLAS.0.2.14.1/lib/native/"
           #- LAPACK="/c/cibw/lapacke/lapacke.0.1.0/lib"
           #- BLAS="/c/cibw/lapacke/OpenBLAS.0.2.14.1/lib"
-        - CIBW_BEFORE_BUILD="git clone https://github.com/Microsoft/vcpkg.git && cd vcpkg && .\bootstrap-vcpkg.bat && .\vcpkg integrate install && .\vcpkg install openblas && cd .. && pip install numpy Cython"
+        - CIBW_BEFORE_BUILD="cd .. && git clone https://github.com/Microsoft/vcpkg.git && cd vcpkg && .\bootstrap-vcpkg.bat && .\vcpkg integrate install && travis_wait .\vcpkg install openblas && cd .. && pip install numpy Cython && cd PyGenSVM"
           #- CIBW_BEFORE_BUILD="/c/cibw/nuget.exe install lapacke 
           #-OutputDirectory /cibw/lapacke -Verbosity detailed && echo && find 
           #/c/cibw/lapacke -type f -maxdepth 8 && echo && pip install numpy 
