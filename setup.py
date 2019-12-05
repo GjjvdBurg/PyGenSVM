@@ -328,7 +328,7 @@ def cibuildwheel_windows():
     basepath = "/c/cibw/openblas/OpenBLAS.0.2.14.1/lib/native"
     dllpath = basepath + "/lib/" + bitprefix + "/libopenblas.dll.a"
     if os.path.exists(dllpath):
-        shutil.move(dllpath, basepath + "/lib/")
+        shutil.move(dllpath, basepath + "/lib/libopenblas.lib")
 
     os.environ[
         "OPENBLAS"
