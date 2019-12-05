@@ -258,6 +258,7 @@ def cibuildwheel_windows():
     os.environ[
         "OPENBLAS"
     ] = "/c/cibw/openblas/OpenBLAS.0.2.14.1/lib/native/lib"
+    print(os.environ.get('OPENBLAS', 'none'))
 
     for path, dirs, files in os.walk("/c/cibw/openblas"):
         print(path)
