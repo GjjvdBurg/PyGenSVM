@@ -345,6 +345,8 @@ def cibuildwheel_windows():
     import time
 
     time.sleep(5)
+    print("*** USE CYTHON = %s\n" % USE_CYTHON)
+    raise ValueError(USE_CYTHON)
 
 
 if __name__ == "__main__":
