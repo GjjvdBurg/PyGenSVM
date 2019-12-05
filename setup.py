@@ -242,6 +242,7 @@ def cibuildwheel_windows():
         and os.environ.get("TRAVIS_OS_NAME", "none") == "windows"
     ):
         return
+    print("\n*** Preparing GenSVM for CIBuildWheel ***")
 
     import shutil
 
@@ -255,6 +256,11 @@ def cibuildwheel_windows():
         shutil.move(dllpath, basepath + "/lib/")
 
     os.environ["OPENBLAS"] = "/c/cibw/lapacke/OpenBLAS.0.2.14.1/lib/native"
+
+    for path, dirs, files in os.walk("/c/cibw/lapacke"):
+        print(path)
+        for f in files:
+            print('\t' + f)
 
 
 if __name__ == "__main__":
