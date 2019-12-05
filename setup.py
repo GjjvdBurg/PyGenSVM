@@ -266,7 +266,7 @@ def cibuildwheel_windows():
 
 if __name__ == "__main__":
     check_requirements()
-    cibuildwheel_windows()
+#    cibuildwheel_windows()
 
     version = re.search(
         '__version__ = "([^\']+)"', open("gensvm/__init__.py").read()
