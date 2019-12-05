@@ -63,6 +63,13 @@ except ImportError:
     )
 
 
+def on_cibw_win():
+    return (
+        os.environ.get("CIBUILDWHEEL", "0") == "1"
+        and os.environ.get("TRAVIS_OS_NAME", "none") == "windows"
+    )
+
+
 def _skl_get_blas_info():
     """Copyright notice for this function
 
@@ -112,7 +119,21 @@ def _skl_get_blas_info():
                     return True
         return False
 
-    blas_info = get_info("blas_opt", 0)
+    if on_cibw_win():
+        blas_info = {
+            "define_macros": [("NO_ATLAS_INFO", 1), ("HAVE_CBLAS", None)],
+            "libraries": ["openblas"],
+            "library_dirs": [
+                "/c/cibw/openblas/OpenBLAS.0.2.14.1/lib/native/lib/"
+            ],
+            "include_dirs": [
+                "/c/cibw/openblas/OpenBLAS.0.2.14.1/lib/native/include"
+            ],
+            "language": "c",
+        }
+        return ["cblas"], blas_info
+
+    blas_info = get_info("blas_opt", notfound_action=2)
     print("\n\n*** blas_info: \n%r\n\n ***\n\n" % blas_info)
     print(
         "\n\n*** os.environ.get('OPENBLAS') = %r ***\n\n"
@@ -141,7 +162,21 @@ def get_lapack_info():
                     return True
         return False
 
-    lapack_info = get_info("lapack_opt", 0)
+    if on_cibw_win():
+        blas_info = {
+            "define_macros": [("NO_ATLAS_INFO", 1), ("HAVE_CBLAS", None)],
+            "libraries": ["openblas"],
+            "library_dirs": [
+                "/c/cibw/openblas/OpenBLAS.0.2.14.1/lib/native/lib/"
+            ],
+            "include_dirs": [
+                "/c/cibw/openblas/OpenBLAS.0.2.14.1/lib/native/include"
+            ],
+            "language": "c",
+        }
+        return ["cblas"], blas_info
+
+    lapack_info = get_info("lapack_opt", notfound_action=2)
     print("\n\n*** lapack_info: \n%r\n\n ***\n\n" % lapack_info)
     print(
         "\n\n*** os.environ.get('LAPACK') = %r ***\n\n"
@@ -237,10 +272,7 @@ def check_requirements():
 
 
 def cibuildwheel_windows():
-    if not (
-        os.environ.get("CIBUILDWHEEL", "0") == "1"
-        and os.environ.get("TRAVIS_OS_NAME", "none") == "windows"
-    ):
+    if not on_cibw_win():
         return
     print("\n*** Preparing GenSVM for CIBuildWheel ***")
 
@@ -258,7 +290,7 @@ def cibuildwheel_windows():
     os.environ[
         "OPENBLAS"
     ] = "/c/cibw/openblas/OpenBLAS.0.2.14.1/lib/native/lib"
-    print(os.environ.get('OPENBLAS', 'none'))
+    print(os.environ.get("OPENBLAS", "none"))
 
     for path, dirs, files in os.walk("/c/cibw/openblas"):
         print(path)
