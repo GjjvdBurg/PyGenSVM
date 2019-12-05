@@ -40,12 +40,10 @@ matrix:
         - PYTHON="python"
         - PIP="pip"
         - CIBW_ENVIRONMENT="DISTUTILS_DEBUG=1"
-          #- 
-          #CIBW_ENVIRONMENT="LAPACK=/c/cibw/lapacke/lapacke.0.1.0/lib/native/lib/x64 
-          #OPENBLAS=/c/cibw/lapacke/OpenBLAS.0.2.14.1/lib/native/"
+        - CIBW_ENVIRONMENT="OPENBLAS=/c/cibw/lapacke/OpenBLAS.0.2.14.1/lib/native/"
           #- LAPACK="/c/cibw/lapacke/lapacke.0.1.0/lib"
           #- BLAS="/c/cibw/lapacke/OpenBLAS.0.2.14.1/lib"
-        - CIBW_BEFORE_BUILD="/c/cibw/nuget.exe install OpenBLAS -OutputDirectory /cibw/openblas -Verbosity detailed && echo && find /c/cibw/openblas -type f -maxdepth 8 && echo && pip install numpy Cython"
+        - CIBW_BEFORE_BUILD="/c/cibw/nuget.exe install OpenBLAS -OutputDirectory /cibw/openblas -Verbosity detailed && echo && find /c/cibw/openblas -type f -maxdepth 10 && echo && pip install numpy Cython"
 
 env:
   global:
