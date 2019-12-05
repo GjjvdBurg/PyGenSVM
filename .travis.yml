@@ -39,6 +39,7 @@ matrix:
         - PATH=/c/Python36:/c/Python36/Scripts:/c/ProgramData/chocolatey/bin:$PATH
         - PYTHON="python"
         - PIP="pip"
+        - CIBW_ENVIRONMENT="DISTUTILS_DEBUG=1"
           #- 
           #CIBW_ENVIRONMENT="LAPACK=/c/cibw/lapacke/lapacke.0.1.0/lib/native/lib/x64 
           #OPENBLAS=/c/cibw/lapacke/OpenBLAS.0.2.14.1/lib/native/"
