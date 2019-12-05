@@ -255,7 +255,7 @@ def cibuildwheel_windows():
     if os.path.exists(dllpath):
         shutil.move(dllpath, basepath + "/lib/")
 
-    os.environ["OPENBLAS"] = "/c/cibw/lapacke/OpenBLAS.0.2.14.1/lib/native"
+    os.environ["OPENBLAS"] = "/c/cibw/lapacke/OpenBLAS.0.2.14.1/lib/native/lib"
 
     for path, dirs, files in os.walk("/c/cibw/lapacke"):
         print(path)
