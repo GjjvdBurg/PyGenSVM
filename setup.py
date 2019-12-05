@@ -325,17 +325,19 @@ def cibuildwheel_windows():
     bits = 64 if sys.maxsize > 2 ** 32 else 32
     bitprefix = "x64" if bits == 64 else "win32"
 
-    basepath = "/c/cibw/openblas/OpenBLAS.0.2.14.1/lib/native"
-    dllpath = basepath + "/lib/" + bitprefix + "/libopenblas.dll.a"
+    basepath = "C:\\cibw\\openblas\\OpenBLAS.0.2.14.1\\lib\\native"
+    dllpath = basepath + "\\lib\\" + bitprefix + "\\libopenblas.dll.a"
+    print("dllpath: %s" % dllpath)
     if os.path.exists(dllpath):
-        shutil.move(dllpath, basepath + "/lib/libopenblas.lib")
+        shutil.move(dllpath, basepath + "\\lib\\libopenblas.lib")
+    print(os.listdir(basepath + "\\lib"))
 
     os.environ[
         "OPENBLAS"
-    ] = "/c/cibw/openblas/OpenBLAS.0.2.14.1/lib/native/lib"
+    ] = "C:\\cibw\\openblas\\OpenBLAS.0.2.14.1\\lib\\native\\lib"
     print(os.environ.get("OPENBLAS", "none"))
 
-    for path, dirs, files in os.walk("/c/cibw/openblas"):
+    for path, dirs, files in os.walk("C:\\cibw\\openblas"):
         print(path, file=sys.stderr)
         for f in files:
             print("\t" + f, file=sys.stderr)
