@@ -3,6 +3,7 @@
 
 import os
 import re
+import sys
 
 # Package meta-data
 AUTHOR = "Gertjan van den Burg"
@@ -235,8 +236,30 @@ def check_requirements():
         raise ImportError(numpy_instructions)
 
 
+def cibuildwheel_windows():
+    if not (
+        os.environ.get("CIBUILDWHEEL", "0") == "1"
+        and os.environ.get("TRAVIS_OS_NAME", "none") == "windows"
+    ):
+        return
+
+    import shutil
+
+    # check if we're executing python in 32bit or 64bit mode
+    bits = 64 if sys.maxsize > 2 ** 32 else 32
+    bitprefix = "x64" if bits == 64 else "win32"
+
+    basepath = "/c/cibw/lapacke/OpenBLAS.0.2.14.1/lib/native"
+    dllpath = basepath + "/lib/" + bitprefix + "/libopenblas.dll.a"
+    if os.path.exists(dllpath):
+        shutil.move(dllpath, basepath + "/lib/")
+
+    os.environ["OPENBLAS"] = "/c/cibw/lapacke/OpenBLAS.0.2.14.1/lib/native"
+
+
 if __name__ == "__main__":
     check_requirements()
+    cibuildwheel_windows()
 
     version = re.search(
         '__version__ = "([^\']+)"', open("gensvm/__init__.py").read()
