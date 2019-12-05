@@ -260,7 +260,8 @@ def cibuildwheel_windows():
     for path, dirs, files in os.walk("/c/cibw/lapacke"):
         print(path)
         for f in files:
-            print('\t' + f)
+            print("\t" + f)
+    sys.stdout.flush()
 
 
 if __name__ == "__main__":
