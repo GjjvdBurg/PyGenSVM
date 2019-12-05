@@ -107,7 +107,7 @@ def _skl_get_blas_info():
     from numpy.distutils.system_info import get_info
 
     def atlas_not_found(blas_info_):
-        def_macros = blas_info.get("define_macros", [])
+        def_macros = blas_info_.get("define_macros", [])
         for x in def_macros:
             if x[0] == "NO_ATLAS_INFO":
                 # if x[1] != 1 we should have lapack
@@ -174,7 +174,7 @@ def get_lapack_info():
     from numpy.distutils.system_info import get_info
 
     def atlas_not_found(lapack_info_):
-        def_macros = lapack_info.get("define_macros", [])
+        def_macros = lapack_info_.get("define_macros", [])
         for x in def_macros:
             if x[0] == "NO_ATLAS_INFO":
                 return True
