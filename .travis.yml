@@ -31,19 +31,17 @@ matrix:
         - PIP="pip3"
         - CIBW_BEFORE_BUILD="pip install numpy Cython"
 
-    - os: windows
-      language: shell
-      before_install:
-        - choco install python3 --version 3.6.8 --no-progress -y
-      env:
-        - PATH=/c/Python36:/c/Python36/Scripts:/c/ProgramData/chocolatey/bin:$PATH
-        - PYTHON="python"
-        - PIP="pip"
-        - CIBW_ENVIRONMENT="DISTUTILS_DEBUG=1"
-        - CIBW_ENVIRONMENT="OPENBLAS=/c/cibw/lapacke/OpenBLAS.0.2.14.1/lib/native/"
-          #- LAPACK="/c/cibw/lapacke/lapacke.0.1.0/lib"
-          #- BLAS="/c/cibw/lapacke/OpenBLAS.0.2.14.1/lib"
-        - CIBW_BEFORE_BUILD="/c/cibw/nuget.exe install OpenBLAS -OutputDirectory /cibw/openblas -Verbosity detailed && echo && find /c/cibw/openblas -type f -maxdepth 10 && echo && pip install numpy Cython"
+          #    - os: windows
+          #      language: shell
+          #      before_install:
+          #        - choco install python3 --version 3.6.8 --no-progress -y
+          #      env:
+          #        - PATH=/c/Python36:/c/Python36/Scripts:/c/ProgramData/chocolatey/bin:$PATH
+          #        - PYTHON="python"
+          #        - PIP="pip"
+          #        - CIBW_ENVIRONMENT="DISTUTILS_DEBUG=1"
+          #        - CIBW_ENVIRONMENT="OPENBLAS=/c/cibw/lapacke/OpenBLAS.0.2.14.1/lib/native/"
+          #        - CIBW_BEFORE_BUILD="/c/cibw/nuget.exe install OpenBLAS -OutputDirectory /cibw/openblas -Verbosity detailed && echo && find /c/cibw/openblas -type f -maxdepth 10 && echo && pip install numpy Cython"
 
 env:
   global:
@@ -54,10 +52,10 @@ env:
     # Run the unit tests on the wheels that are created
     - CIBW_TEST_COMMAND="python -VV && python -m unittest discover -f -s {project}/test"
 
-      #install:
-      #  - $PIP install numpy
-      #  - $PIP install -e .[dev]
-      #  - $PYTHON -m unittest discover -v -f -s ./test
+install:
+  - $PIP install numpy
+  - $PIP install -e .[dev]
+  - $PYTHON -m unittest discover -v -f -s ./test
 
 script:
   - $PIP install cibuildwheel==1.0.0
