@@ -22,7 +22,7 @@ matrix:
       before_install:
         - brew update
         - brew install openblas
-        - brew install lapack
+          #- brew install lapack
       env:
         - CC="gcc"
           # avoids build errors on OSx
