@@ -46,9 +46,9 @@ matrix:
 env:
   global:
     # - No longer actively maintaining gensvm for Python 2.7
-    # - Skipping 3.8 for now because scikit-learn is not available as wheel 
-    # yet, and this breaks testing.
-    - CIBW_SKIP="cp27-* cp38-*"
+    # - Skipping 3.5 for now because scikit-learn is not available as wheel 
+    # anymore, and this breaks testing.
+    - CIBW_SKIP="cp27-* cp35-*"
     # Run the unit tests on the wheels that are created
     - CIBW_TEST_REQUIRES="numpy Cython"
     - CIBW_TEST_COMMAND="python -VV && python -m unittest discover -f -s {project}/test"
