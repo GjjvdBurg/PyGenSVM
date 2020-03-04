@@ -293,6 +293,9 @@ def configuration():
 
     print("\n\n *** CONFIG ***\n")
     print(config)
+    print("\n\n *** EXT_MODULE ***\n")
+    from pprint import pprint
+    print(pprint(config.ext_modules[0].__dict__))
 
     return config
 
