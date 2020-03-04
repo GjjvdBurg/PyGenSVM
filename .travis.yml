@@ -50,6 +50,7 @@ env:
     # yet, and this breaks testing.
     - CIBW_SKIP="cp27-* cp38-*"
     # Run the unit tests on the wheels that are created
+    - CIBW_TEST_REQUIRES="numpy Cython"
     - CIBW_TEST_COMMAND="python -VV && python -m unittest discover -f -s {project}/test"
 
 install:
