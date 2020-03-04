@@ -155,16 +155,17 @@ def _skl_get_blas_info():
         return ["libopenblas"], blas_info
 
     blas_info = get_info("blas_opt", notfound_action=2)
-    print("\n\n*** blas_info: \n%r\n\n ***\n\n" % blas_info)
-    print(
-        "\n\n*** os.environ.get('OPENBLAS') = %r ***\n\n"
-        % (os.environ.get("OPENBLAS", None))
-    )
     if (not blas_info) or atlas_not_found(blas_info):
         cblas_libs = ["cblas"]
         blas_info.pop("libraries", None)
     else:
         cblas_libs = blas_info.pop("libraries", [])
+
+    print("\n\n*** blas_info: \n%r\n\n ***\n\n" % blas_info)
+    print(
+        "\n\n*** os.environ.get('OPENBLAS') = %r ***\n\n"
+        % (os.environ.get("OPENBLAS", None))
+    )
 
     return cblas_libs, blas_info
 
@@ -220,11 +221,7 @@ def get_lapack_info():
         return ["libopenblas"], lapack_info
 
     lapack_info = get_info("lapack_opt", notfound_action=2)
-    print("\n\n*** lapack_info: \n%r\n\n ***\n\n" % lapack_info)
-    print(
-        "\n\n*** os.environ.get('LAPACK') = %r ***\n\n"
-        % (os.environ.get("LAPACK", None))
-    )
+
     if (not lapack_info) or atlas_not_found(lapack_info):
         # This is a guess, but seems to work in practice. Need more systems to
         # test this fully.
@@ -232,6 +229,12 @@ def get_lapack_info():
         lapack_info.pop("libraries", None)
     else:
         lapack_libs = lapack_info.pop("libraries", [])
+
+    print("\n\n*** lapack_info: \n%r\n\n ***\n\n" % lapack_info)
+    print(
+        "\n\n*** os.environ.get('LAPACK') = %r ***\n\n"
+        % (os.environ.get("LAPACK", None))
+    )
 
     return lapack_libs, lapack_info
 
@@ -287,6 +290,9 @@ def configuration():
     # Cythonize if necessary
     if USE_CYTHON:
         config.ext_modules = cythonize(config.ext_modules)
+
+    print("\n\n *** CONFIG ***\n")
+    print(config)
 
     return config
 
