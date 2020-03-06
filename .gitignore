@@ -1,5 +1,6 @@
 *.pyc
 gensvm/cython_wrapper/*.so
+gensvm/cython_wrapper/*.c
 README
 build/*
 cover/*
