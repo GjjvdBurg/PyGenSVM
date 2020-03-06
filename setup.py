@@ -175,6 +175,10 @@ def _skl_get_blas_info():
             base = os.path.split(libdir)[0]
             blas_info["include_dirs"] = os.path.join(base, "include")
 
+    if on_cibw_mac():
+        # debugging
+        print(os.listdir('/System/Library/Frameworks/vecLib.framework/Headers'))
+
     print("\n\n*** blas_info: \n%r\n\n ***\n\n" % blas_info)
     print(
         "\n\n*** os.environ.get('OPENBLAS') = %r ***\n\n"
