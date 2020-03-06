@@ -1,20 +1,50 @@
-language: python
-python:
-  - "3.6"
-  - "2.7"
+# Travis CI configuration for GenSVM
+
+jobs:
+  include:
+    - language: python
+      dist: xenial
+      python: "3.7"
+      services:
+        - docker
+      before_install:
+        - sudo apt-get update
+        - sudo apt-get install -y libatlas-base-dev liblapack-dev liblapacke-dev;
+      env:
+        - CC="gcc"
+        - PYTHON="python3"
+        - PIP="pip3"
+        - CIBW_BEFORE_BUILD="yum install -y atlas-devel lapack-devel && pip install numpy Cython"
+
+    - os: osx
+      osx_image: xcode11.3
+      language: generic
+      before_install:
+        - brew update
+        - brew install openblas
+      env:
+        - CC="gcc"
+        - CFLAGS="-fcommon" # avoids build errors on OSx
+        - PYTHON="python3"
+        - PIP="pip3"
+        - CIBW_BEFORE_BUILD="pip install numpy Cython"
 
 env:
-  - CC="gcc"
-
-before_install:
-  - sudo apt-get update
-  - sudo apt-get install -y libatlas-base-dev liblapack-dev liblapacke-dev
+  global:
+    # - No longer actively maintaining gensvm for Python 2.7
+    # - Skipping 3.5 for now because scikit-learn is not available as wheel 
+    # anymore, and this breaks testing.
+    - CIBW_SKIP="cp27-* cp35-*"
+    # Run the unit tests on the wheels that are created
+    - CIBW_TEST_REQUIRES="numpy Cython"
+    - CIBW_TEST_COMMAND="python -VV && python -m unittest discover -f -s {project}/test"
 
 install:
-  - pip install --upgrade pip
-  - pip install -U -r requirements.txt
-  - pip install green Cython
-  - python setup.py build_ext --inplace
+  - $PIP install numpy
+  - $PIP install -e .[dev]
+  - $PYTHON -m unittest discover -v -f -s ./test
 
 script:
-  - green -vv -f
+  - $PIP install cibuildwheel==1.0.0
+  - cibuildwheel --output-dir wheelhouse
+  - ls wheelhouse

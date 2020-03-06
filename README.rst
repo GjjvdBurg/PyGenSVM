@@ -36,16 +36,12 @@ J.J. van den Burg <https://gertjanvandenburg.com>`_ and `Patrick J.F. Groenen
 Installation
 ------------
 
-**Before** GenSVM can be installed, a working NumPy installation is required.  
-Please see `the installation instructions for NumPy 
-<https://docs.scipy.org/doc/numpy-1.13.0/user/install.html>`_, then install 
-GenSVM using the instructions below.
-
-GenSVM can be easily installed through pip:
+**Before** GenSVM can be installed, a working NumPy installation is required, 
+so GenSVM can be installed using the following command:
 
 .. code:: bash
 
-    pip install gensvm
+    pip install numpy && pip install gensvm
 
 If you encounter any errors, please open an issue on `GitHub 
 <https://github.com/GjjvdBurg/PyGenSVM>`_.
