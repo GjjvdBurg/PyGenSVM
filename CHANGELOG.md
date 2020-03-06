@@ -1,5 +1,10 @@
 ## Change Log
 
+### Version 0.2.5
+
+- Build platform wheels for Linux and MacOS
+- Minor improvements to the package
+
 ### Version 0.2.4
 
 - Add support for retrieving support vectors
