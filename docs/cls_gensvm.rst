@@ -111,13 +111,13 @@ GenSVM
                      <.GenSVM.combined_coef_>` attribute of a different GenSVM model.
                      This is only supported for the linear kernel.
       
-                     NOTE: the size of the seed_V matrix is `n_features+1` by `n_classes
-                     - 1`.  The number of columns of `seed_V` is leading for the number
-                       of classes in the model. For example, if `y` contains 3 different
-                       classes and `seed_V` has 3 columns, we assume that there are
-                       actually 4 classes in the problem but one class is just
-                       represented in this training data. This can be useful for
-                       problems were a certain class has only a few samples.
+                     NOTE: the size of the seed_V matrix is `n_features+1` by `n_classes - 1`.
+                     The number of columns of `seed_V` is leading for the number of
+                     classes in the model. For example, if `y` contains 3 different
+                     classes and `seed_V` has 3 columns, we assume that there are
+                     actually 4 classes in the problem but one class is just represented
+                     in this training data. This can be useful for problems were a
+                     certain class has only a few samples.
       :type seed_V: array, shape = (n_features+1, n_classes-1), optional
       
       :returns: **self** -- Returns self.
