@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import io
 import os
 
 from distutils.command.sdist import sdist
@@ -322,6 +323,10 @@ def check_requirements():
         raise ImportError(numpy_instructions)
 
 
+class mysdist(sdist):
+    READMES = ("README", "README.txt", "README.rst", "README.md")
+
+
 if __name__ == "__main__":
     check_requirements()
 
@@ -334,12 +339,18 @@ if __name__ == "__main__":
     else:
         about["__version__"] = VERSION
 
+    try:
+        with io.open(os.path.join(here, "README.md"), encoding="utf-8") as fp:
+            long_description = "\n" + fp.read()
+    except FileNotFoundError:
+        long_description = DESCRIPTION
+
     attr = configuration().todict()
 
     attr["version"] = about["__version__"]
     attr["description"] = DESCRIPTION
-    attr["long_description"] = read("README.md")
-    attr["long_description"] = "text/markdown"
+    attr["long_description"] = long_description
+    attr["long_description_content_type"] = "text/markdown"
     attr["packages"] = [NAME]
     attr["url"] = URL
     attr["author"] = AUTHOR
@@ -347,7 +358,7 @@ if __name__ == "__main__":
     attr["license"] = LICENSE
     attr["install_requires"] = REQUIRED
     attr["extras_require"] = EXTRAS
-    attr["cmdclass"] = {"sdist": sdist}
+    attr["cmdclass"] = {"sdist": mysdist}
 
     from numpy.distutils.core import setup
 
