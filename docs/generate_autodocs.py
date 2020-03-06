@@ -42,11 +42,11 @@ FULL_NAMES = {
 }
 
 OUTPUT_FILES = {
-    "GenSVMGridSearchCV": os.path.join(DOCDIR, "cls_gridsearch.rst"),
-    "GenSVM": os.path.join(DOCDIR, "cls_gensvm.rst"),
-    "load_grid_tiny": os.path.join(DOCDIR, "auto_functions.rst"),
-    "load_grid_small": os.path.join(DOCDIR, "auto_functions.rst"),
-    "load_grid_full": os.path.join(DOCDIR, "auto_functions.rst"),
+    "GenSVMGridSearchCV": os.path.join(DOCDIR, "cls_gridsearch.txt"),
+    "GenSVM": os.path.join(DOCDIR, "cls_gensvm.txt"),
+    "load_grid_tiny": os.path.join(DOCDIR, "auto_functions.txt"),
+    "load_grid_small": os.path.join(DOCDIR, "auto_functions.txt"),
+    "load_grid_full": os.path.join(DOCDIR, "auto_functions.txt"),
 }
 
 

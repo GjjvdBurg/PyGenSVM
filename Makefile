@@ -36,6 +36,8 @@ dist: ## Make Python source distribution
 
 docs: doc
 doc: venv ## Build documentation with Sphinx
+	source $(VENV_DIR)/bin/activate && m2r README.md && mv README.rst $(DOC_DIR)
+	source $(VENV_DIR)/bin/activate && m2r CHANGELOG.md && mv CHANGELOG.rst $(DOC_DIR)
 	source $(VENV_DIR)/bin/activate && $(MAKE) -C $(DOC_DIR) html
 
 clean: ## Clean build dist and egg directories left after install
@@ -56,5 +58,5 @@ venv: $(VENV_DIR)/bin/activate
 
 $(VENV_DIR)/bin/activate:
 	test -d $(VENV_DIR) || virtualenv $(VENV_DIR)
-	source $(VENV_DIR)/bin/activate && pip install -e .[dev]
+	source $(VENV_DIR)/bin/activate && pip install numpy && pip install -e .[dev]
 	touch $(VENV_DIR)/bin/activate

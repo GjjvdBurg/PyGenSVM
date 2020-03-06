@@ -5,7 +5,7 @@
 
 .. toctree::
 
-.. include:: ../README.rst
+.. include:: ./README.rst
 
 Classes
 -------
@@ -13,19 +13,19 @@ Classes
 GenSVM
 ^^^^^^
 
-.. include:: ./cls_gensvm.rst
+.. include:: ./cls_gensvm.txt
 
 GenSVMGridSearchCV
 ^^^^^^^^^^^^^^^^^^
 
-.. include:: ./cls_gridsearch.rst
+.. include:: ./cls_gridsearch.txt
 
 Functions
 ---------
 
-.. include:: ./auto_functions.rst
+.. include:: ./auto_functions.txt
 
-.. include:: ./kernels.rst
+.. include:: ./kernels.txt
 
-.. include:: ../CHANGELOG.rst
+.. include:: ./CHANGELOG.rst
 

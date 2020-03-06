@@ -3,7 +3,6 @@
 
 import os
 import re
-import sys
 
 # Package meta-data
 AUTHOR = "Gertjan van den Burg"
@@ -20,7 +19,7 @@ VERSION = None
 
 REQUIRED = ["scikit-learn", "numpy"]
 
-docs_require = ["Sphinx==1.6.5", "sphinx_rtd_theme>=0.4.3"]
+docs_require = ["Sphinx==1.6.5", "sphinx_rtd_theme>=0.4.3", "m2r"]
 test_require = []
 dev_require = ["Cython"]
 
@@ -333,7 +332,8 @@ if __name__ == "__main__":
 
     attr["version"] = version
     attr["description"] = DESCRIPTION
-    attr["long_description"] = read("README.rst")
+    attr["long_description"] = read("README.md")
+    attr["long_description"] = "text/markdown"
     attr["packages"] = [NAME]
     attr["url"] = URL
     attr["author"] = AUTHOR
