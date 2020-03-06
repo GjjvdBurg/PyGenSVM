@@ -1,7 +1,7 @@
 include setup.py
-include README.rst
+include README.md
 include LICENSE
-include CHANGELOG.rst
+include CHANGELOG.md
 recursive-include gensvm *.py
 recursive-include gensvm *.pxd
 recursive-include gensvm *.pyx
