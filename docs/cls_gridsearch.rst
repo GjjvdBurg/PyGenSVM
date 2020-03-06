@@ -1,3 +1,5 @@
+GenSVMGridSearchCV
+==================
 
 .. py:class:: GenSVMGridSearchCV(param_grid='tiny', scoring=None, iid=True, cv=None, refit=True, verbose=0, return_train_score=True)
    :noindex:

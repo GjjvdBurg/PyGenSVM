@@ -104,7 +104,7 @@ class GenSVM(BaseEstimator, ClassifierMixin):
     errors. It is this flexibility that makes it perform well on diverse 
     datasets.
 
-    The :func:`~GenSVM.fit` and :func:`~GenSVM.predict` methods of this class 
+    The :meth:`~GenSVM.fit` and :meth:`~GenSVM.predict` methods of this class 
     use the GenSVM C library for the actual computations.
 
     Parameters
@@ -123,7 +123,7 @@ class GenSVM(BaseEstimator, ClassifierMixin):
         'group' for group size correction weights (equation 4 in the paper).
 
         It is also possible to provide an explicit vector of sample weights 
-        through the :func:`~GenSVM.fit` method. If so, it will override the 
+        through the :meth:`~GenSVM.fit` method. If so, it will override the 
         setting provided here.
 
     kernel : string, optional (default='linear')
@@ -183,7 +183,7 @@ class GenSVM(BaseEstimator, ClassifierMixin):
 
     See Also
     --------
-    :class:`.GenSVMGridSearchCV`:
+    :class:`~.gridsearch.GenSVMGridSearchCV`:
         Helper class to run an efficient grid search for GenSVM.
 
 
@@ -257,8 +257,8 @@ class GenSVM(BaseEstimator, ClassifierMixin):
     def fit(self, X, y, sample_weight=None, seed_V=None):
         """Fit the GenSVM model on the given data
 
-        The model can be fit with or without a seed matrix (``seed_V``). This 
-        can be used to provide warm starts for the algorithm.
+        The model can be fit with or without a seed matrix (`seed_V`). This can 
+        be used to provide warm starts for the algorithm.
 
         Parameters
         ----------
@@ -280,14 +280,13 @@ class GenSVM(BaseEstimator, ClassifierMixin):
             <.GenSVM.combined_coef_>` attribute of a different GenSVM model.  
             This is only supported for the linear kernel.
 
-            NOTE: the size of the seed_V matrix is ``n_features+1`` by 
-            ``n_classes - 1``.  The number of columns of ``seed_V`` is leading 
-            for the number of classes in the model. For example, if ``y`` 
-            contains 3 different classes and ``seed_V`` has 3 columns, we 
-            assume that there are actually 4 classes in the problem but one 
-            class is just represented in this training data. This can be useful 
-            for problems were a certain class has only a few samples.
-
+            NOTE: the size of the seed_V matrix is `n_features+1` by `n_classes 
+            - 1`.  The number of columns of `seed_V` is leading for the number 
+              of classes in the model. For example, if `y` contains 3 different 
+              classes and `seed_V` has 3 columns, we assume that there are 
+              actually 4 classes in the problem but one class is just 
+              represented in this training data. This can be useful for 
+              problems were a certain class has only a few samples.
 
         Returns
         -------
@@ -354,7 +353,13 @@ class GenSVM(BaseEstimator, ClassifierMixin):
                     )
                 )
 
-        self.coef_, self.intercept_, self.n_iter_, self.n_support_, self.SVs_ = _fit_gensvm(
+        (
+            self.coef_,
+            self.intercept_,
+            self.n_iter_,
+            self.n_support_,
+            self.SVs_,
+        ) = _fit_gensvm(
             X,
             y,
             n_class,

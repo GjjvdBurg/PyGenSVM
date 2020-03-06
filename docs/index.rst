@@ -3,29 +3,24 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
+.. include:: ./readme.rst
+
 .. toctree::
+   :maxdepth: 2
 
-.. include:: ./README.rst
+   readme
 
-Classes
--------
+.. toctree::
+   :caption: API Documentation
+   :maxdepth: 2
 
-GenSVM
-^^^^^^
+   cls_gensvm
+   cls_gridsearch
+   auto_functions
+   kernels
 
-.. include:: ./cls_gensvm.txt
+.. toctree::
+   :caption: Further Documentation
+   :maxdepth: 2
 
-GenSVMGridSearchCV
-^^^^^^^^^^^^^^^^^^
-
-.. include:: ./cls_gridsearch.txt
-
-Functions
----------
-
-.. include:: ./auto_functions.txt
-
-.. include:: ./kernels.txt
-
-.. include:: ./CHANGELOG.rst
-
+   changelog
