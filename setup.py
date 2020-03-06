@@ -324,13 +324,18 @@ def check_requirements():
 if __name__ == "__main__":
     check_requirements()
 
-    version = re.search(
-        '__version__ = "([^\']+)"', open("gensvm/__version__.py").read()
-    ).group(1)
+    here = os.path.abspath(os.path.dirname(__file__))
+    about = {}
+    if not VERSION:
+        project_slug = NAME.lower().replace("-", "_").replace(" ", "_")
+        with open(os.path.join(here, project_slug, "__version__.py")) as fp:
+            exec(fp.read(), about)
+    else:
+        about["__version__"] = VERSION
 
     attr = configuration().todict()
 
-    attr["version"] = version
+    attr["version"] = about["__version__"]
     attr["description"] = DESCRIPTION
     attr["long_description"] = read("README.md")
     attr["long_description"] = "text/markdown"
