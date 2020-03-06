@@ -172,7 +172,7 @@ def _skl_get_blas_info():
         libdir = blas_info.get("library_dirs", [])
         libdir = libdir[0] if libdir else None
         if libdir:
-            base = os.path.join(os.path.split(libdir)[:-1])
+            base = os.path.split(libdir)[0]
             blas_info["include_dirs"] = os.path.join(base, "include")
 
     print("\n\n*** blas_info: \n%r\n\n ***\n\n" % blas_info)
