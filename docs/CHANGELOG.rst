@@ -2,6 +2,12 @@
 Change Log
 ----------
 
+Version 0.2.6
+^^^^^^^^^^^^^
+
+
+* Minor fixes to fix description on PyPI
+
 Version 0.2.5
 ^^^^^^^^^^^^^
 
