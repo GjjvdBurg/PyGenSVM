@@ -21,7 +21,8 @@ jobs:
       language: generic
       before_install:
         - brew update
-        - brew install openblas
+        - brew uninstall openblas
+        - brew install --fresh -vd openblas
           #- brew install lapack
       env:
         - CC="gcc"
