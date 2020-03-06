@@ -12,6 +12,7 @@ exclude src/gensvm/.gitignore
 exclude .gitmodules
 exclude .gitignore
 exclude .travis.yml
+exclude pyproject.toml
 exclude Makefile
 recursive-exclude test_human *.py
 recursive-exclude docs *
