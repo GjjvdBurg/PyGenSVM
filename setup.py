@@ -128,7 +128,6 @@ def _skl_get_blas_info():
 
     if on_cibw_win():
         blas_info = get_info("blas_opt", notfound_action=0)
-        print("***\nDetected blas info: %r" % blas_info)
         blas_info = {
             "define_macros": [("NO_ATLAS_INFO", 1), ("HAVE_CBLAS", None)],
             "library_dirs": [
@@ -174,15 +173,11 @@ def _skl_get_blas_info():
         if libdir:
             base = os.path.split(libdir)[0]
             blas_info["include_dirs"] = [os.path.join(base, "include")]
-    
-    if on_cibw_mac():
-        blas_info['include_dirs'] = ['/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/Accelerate.framework/Versions/Current/Frameworks/vecLib.framework/Versions/Current/Headers/']
 
-    print("\n\n*** blas_info: \n%r\n\n ***\n\n" % blas_info)
-    print(
-        "\n\n*** os.environ.get('OPENBLAS') = %r ***\n\n"
-        % (os.environ.get("OPENBLAS", None))
-    )
+    if on_cibw_mac():
+        blas_info["include_dirs"] = [
+            "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/Accelerate.framework/Versions/Current/Frameworks/vecLib.framework/Versions/Current/Headers/"
+        ]
 
     return cblas_libs, blas_info
 
@@ -203,7 +198,6 @@ def get_lapack_info():
 
     if on_cibw_win():
         lapack_info = get_info("lapack_opt", notfound_action=0)
-        print("***\nDetected lapack info: %r" % lapack_info)
         lapack_info = {
             "define_macros": [("NO_ATLAS_INFO", 1), ("HAVE_CBLAS", None)],
             "library_dirs": [
@@ -246,12 +240,6 @@ def get_lapack_info():
         lapack_info.pop("libraries", None)
     else:
         lapack_libs = lapack_info.pop("libraries", [])
-
-    print("\n\n*** lapack_info: \n%r\n\n ***\n\n" % lapack_info)
-    print(
-        "\n\n*** os.environ.get('LAPACK') = %r ***\n\n"
-        % (os.environ.get("LAPACK", None))
-    )
 
     return lapack_libs, lapack_info
 
@@ -308,13 +296,6 @@ def configuration():
     if USE_CYTHON:
         config.ext_modules = cythonize(config.ext_modules)
 
-    print("\n\n *** CONFIG ***\n")
-    print(config)
-    print("\n\n *** EXT_MODULE ***\n")
-    from pprint import pprint
-
-    print(pprint(config.ext_modules[0].__dict__))
-
     return config
 
 
@@ -341,42 +322,8 @@ def check_requirements():
         raise ImportError(numpy_instructions)
 
 
-def cibuildwheel_windows():
-    if not on_cibw_win():
-        return
-    print("\n*** Preparing GenSVM for CIBuildWheel ***")
-
-    import shutil
-
-    # check if we're executing python in 32bit or 64bit mode
-    bits = 64 if sys.maxsize > 2 ** 32 else 32
-    bitprefix = "x64" if bits == 64 else "win32"
-
-    basepath = "C:\\cibw\\openblas\\OpenBLAS.0.2.14.1\\lib\\native"
-    dllpath = basepath + "\\lib\\" + bitprefix + "\\libopenblas.dll.a"
-    print("dllpath: %s" % dllpath)
-    if os.path.exists(dllpath):
-        shutil.move(dllpath, basepath + "\\lib\\libopenblas.lib")
-    print(os.listdir(basepath + "\\lib"))
-
-    os.environ[
-        "OPENBLAS"
-    ] = "C:\\cibw\\openblas\\OpenBLAS.0.2.14.1\\lib\\native\\lib"
-    print(os.environ.get("OPENBLAS", "none"))
-
-    for path, dirs, files in os.walk("C:\\cibw\\openblas"):
-        print(path, file=sys.stderr)
-        for f in files:
-            print("\t" + f, file=sys.stderr)
-    sys.stderr.flush()
-    import time
-
-    time.sleep(5)
-
-
 if __name__ == "__main__":
     check_requirements()
-    cibuildwheel_windows()
 
     version = re.search(
         '__version__ = "([^\']+)"', open("gensvm/__init__.py").read()
