@@ -34,6 +34,9 @@ develop: ## Install a development version of the package needed for testing
 dist: ## Make Python source distribution
 	python setup.py sdist
 
+release:
+	python make_release.py
+
 docs: doc
 doc: venv ## Build documentation with Sphinx
 	source $(VENV_DIR)/bin/activate && m2r README.md && mv README.rst $(DOC_DIR)
