@@ -2,7 +2,8 @@
 # -*- coding: utf-8 -*-
 
 import os
-import re
+
+from distutils.command.sdist import sdist
 
 # Package meta-data
 AUTHOR = "Gertjan van den Burg"
@@ -346,6 +347,7 @@ if __name__ == "__main__":
     attr["license"] = LICENSE
     attr["install_requires"] = REQUIRED
     attr["extras_require"] = EXTRAS
+    attr["cmdclass"] = {"sdist": sdist}
 
     from numpy.distutils.core import setup
 
