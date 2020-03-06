@@ -6,6 +6,11 @@
 .. include:: ./readme.rst
 
 .. toctree::
+   :maxdepth: 2
+
+   readme
+
+.. toctree::
    :caption: API Documentation
    :maxdepth: 2
 
