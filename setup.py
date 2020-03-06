@@ -70,6 +70,13 @@ def on_cibw_win():
     )
 
 
+def on_cibw_mac():
+    return (
+        os.environ.get("CIBUILDWHEEL", "0") == "1"
+        and os.environ.get("TRAVIS_OS_NAME", "none") == "osx"
+    )
+
+
 def _skl_get_blas_info():
     """Copyright notice for this function
 
@@ -160,6 +167,13 @@ def _skl_get_blas_info():
         blas_info.pop("libraries", None)
     else:
         cblas_libs = blas_info.pop("libraries", [])
+
+    if on_cibw_mac():
+        libdir = blas_info.get("library_dirs", [])
+        libdir = libdir[0] if libdir else None
+        if libdir:
+            base = os.path.join(os.path.split(libdir)[:-1])
+            blas_info["include_dirs"] = os.path.join(base, "include")
 
     print("\n\n*** blas_info: \n%r\n\n ***\n\n" % blas_info)
     print(
@@ -295,6 +309,7 @@ def configuration():
     print(config)
     print("\n\n *** EXT_MODULE ***\n")
     from pprint import pprint
+
     print(pprint(config.ext_modules[0].__dict__))
 
     return config
