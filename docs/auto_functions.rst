@@ -1,3 +1,5 @@
+Parameter Grids
+===============
 
 .. py:function:: load_grid_tiny()
    :noindex:

@@ -42,11 +42,11 @@ FULL_NAMES = {
 }
 
 OUTPUT_FILES = {
-    "GenSVMGridSearchCV": os.path.join(DOCDIR, "cls_gridsearch.txt"),
-    "GenSVM": os.path.join(DOCDIR, "cls_gensvm.txt"),
-    "load_grid_tiny": os.path.join(DOCDIR, "auto_functions.txt"),
-    "load_grid_small": os.path.join(DOCDIR, "auto_functions.txt"),
-    "load_grid_full": os.path.join(DOCDIR, "auto_functions.txt"),
+    "GenSVMGridSearchCV": os.path.join(DOCDIR, "cls_gridsearch.rst"),
+    "GenSVM": os.path.join(DOCDIR, "cls_gensvm.rst"),
+    "load_grid_tiny": os.path.join(DOCDIR, "auto_functions.rst"),
+    "load_grid_small": os.path.join(DOCDIR, "auto_functions.rst"),
+    "load_grid_full": os.path.join(DOCDIR, "auto_functions.rst"),
 }
 
 
@@ -83,11 +83,13 @@ def generate_class_autodoc(app, cls):
     documenter.generate(all_members=True)
 
     with open(OUTPUT_FILES[cls], "w") as fid:
+        fid.write(cls + '\n')
+        fid.write(''.join(['=']*len(cls)) + '\n')
         for line in ad.result:
             fid.write(line + "\n")
 
 
-def generate_func_autodoc(app, func):
+def generate_func_autodoc(app, func, add_title=True):
     ad = AutoDirective(
         name="autofunc",
         arguments=[FULL_NAMES[func]],
@@ -108,7 +110,11 @@ def generate_func_autodoc(app, func):
     documenter = FunctionDocumenter(ad, ad.arguments[0])
     documenter.generate(all_members=True)
 
+    title = 'Parameter Grids'
     with open(OUTPUT_FILES[func], "a") as fid:
+        if add_title:
+            fid.write(title + '\n')
+            fid.write(''.join(['=']*len(title)) + '\n')
         for line in ad.result:
             fid.write(line + "\n")
 
@@ -121,8 +127,10 @@ def main():
     app = load_app()
     for cls in CLASSES:
         generate_class_autodoc(app, cls)
+    add_title = True
     for func in FUNCTIONS:
-        generate_func_autodoc(app, func)
+        generate_func_autodoc(app, func, add_title=add_title)
+        add_title = False
 
 
 if __name__ == "__main__":

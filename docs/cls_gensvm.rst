@@ -1,3 +1,5 @@
+GenSVM
+======
 
 .. py:class:: GenSVM(p=1.0, lmd=1e-05, kappa=0.0, epsilon=1e-06, weights='unit', kernel='linear', gamma='auto', coef=1.0, degree=2.0, kernel_eigen_cutoff=1e-08, verbose=0, random_state=None, max_iter=100000000.0)
    :noindex:
