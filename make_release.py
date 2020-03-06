@@ -104,7 +104,8 @@ class UpdateChangelog(Step):
 
 class RunTests(Step):
     def action(self, context):
-        self.do_cmd("make test")
+        self.instruct("Run the unit tests")
+        self.print_run("make test")
 
 
 class BumpVersionPackage(Step):
