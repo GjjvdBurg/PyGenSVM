@@ -74,7 +74,7 @@ GenSVMGridSearchCV
    
                  The refitted estimator is made available at the `:attr:best_estimator_
                  <.GenSVMGridSearchCV.best_estimator_>` attribute and allows the user to
-                 use the :func:`~GenSVMGridSearchCV.predict` method directly on this
+                 use the :meth:`~GenSVMGridSearchCV.predict` method directly on this
                  :class:`.GenSVMGridSearchCV` instance.
    
                  Also for multiple metric evaluation, the attributes :attr:`best_index_

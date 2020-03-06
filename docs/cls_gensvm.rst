@@ -12,7 +12,7 @@ GenSVM
    errors. It is this flexibility that makes it perform well on diverse
    datasets.
    
-   The :func:`~GenSVM.fit` and :func:`~GenSVM.predict` methods of this class
+   The :meth:`~GenSVM.fit` and :meth:`~GenSVM.predict` methods of this class
    use the GenSVM C library for the actual computations.
    
    :param p: Parameter for the L_p norm of the loss function (1.0 <= p <= 2.0)
@@ -25,7 +25,7 @@ GenSVM
                    'group' for group size correction weights (equation 4 in the paper).
    
                    It is also possible to provide an explicit vector of sample weights
-                   through the :func:`~GenSVM.fit` method. If so, it will override the
+                   through the :meth:`~GenSVM.fit` method. If so, it will override the
                    setting provided here.
    :type weights: string, optional (default='unit')
    :param kernel: Specify the kernel type to use in the classifier. It must be one of
@@ -81,7 +81,7 @@ GenSVM
    
    .. seealso::
    
-      :class:`.GenSVMGridSearchCV`
+      :class:`~.gridsearch.GenSVMGridSearchCV`:
           Helper class to run an efficient grid search for GenSVM.
    
    .. _gensvm_kernels:
@@ -95,8 +95,8 @@ GenSVM
    
       Fit the GenSVM model on the given data
       
-      The model can be fit with or without a seed matrix (``seed_V``). This
-      can be used to provide warm starts for the algorithm.
+      The model can be fit with or without a seed matrix (`seed_V`). This can
+      be used to provide warm starts for the algorithm.
       
       :param X: The input data. It is expected that only numeric data is given.
       :type X: array, shape = (n_observations, n_features)
@@ -111,13 +111,13 @@ GenSVM
                      <.GenSVM.combined_coef_>` attribute of a different GenSVM model.
                      This is only supported for the linear kernel.
       
-                     NOTE: the size of the seed_V matrix is ``n_features+1`` by
-                     ``n_classes - 1``.  The number of columns of ``seed_V`` is leading
-                     for the number of classes in the model. For example, if ``y``
-                     contains 3 different classes and ``seed_V`` has 3 columns, we
-                     assume that there are actually 4 classes in the problem but one
-                     class is just represented in this training data. This can be useful
-                     for problems were a certain class has only a few samples.
+                     NOTE: the size of the seed_V matrix is `n_features+1` by `n_classes
+                     - 1`.  The number of columns of `seed_V` is leading for the number
+                       of classes in the model. For example, if `y` contains 3 different
+                       classes and `seed_V` has 3 columns, we assume that there are
+                       actually 4 classes in the problem but one class is just
+                       represented in this training data. This can be useful for
+                       problems were a certain class has only a few samples.
       :type seed_V: array, shape = (n_features+1, n_classes-1), optional
       
       :returns: **self** -- Returns self.
