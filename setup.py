@@ -168,10 +168,7 @@ def _skl_get_blas_info():
     else:
         cblas_libs = blas_info.pop("libraries", [])
 
-    print("\nCIBUILDWHEEL = %s" % os.environ.get('CIBUILDWHEEL', '0'))
-    print("\nTRAVIS_OS_NAME = %s" % os.environ.get('TRAVIS_OS_NAME', '1'))
-
-    if on_cibw_mac():
+    if os.environ.get("TRAVIS_OS_NAME", "none") == "osx":
         libdir = blas_info.get("library_dirs", [])
         libdir = libdir[0] if libdir else None
         if libdir:
