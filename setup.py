@@ -325,7 +325,7 @@ if __name__ == "__main__":
     check_requirements()
 
     version = re.search(
-        '__version__ = "([^\']+)"', open("gensvm/__init__.py").read()
+        '__version__ = "([^\']+)"', open("gensvm/__version__.py").read()
     ).group(1)
 
     attr = configuration().todict()
