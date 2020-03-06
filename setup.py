@@ -173,11 +173,10 @@ def _skl_get_blas_info():
         libdir = libdir[0] if libdir else None
         if libdir:
             base = os.path.split(libdir)[0]
-            blas_info["include_dirs"] = os.path.join(base, "include")
-
+            blas_info["include_dirs"] = [os.path.join(base, "include")]
+    
     if on_cibw_mac():
-        # debugging
-        print(os.listdir('/System/Library/Frameworks/vecLib.framework/Headers'))
+        blas_info['include_dirs'] = ['/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/Accelerate.framework/Versions/Current/Frameworks/vecLib.framework/Versions/Current/Headers/']
 
     print("\n\n*** blas_info: \n%r\n\n ***\n\n" % blas_info)
     print(
