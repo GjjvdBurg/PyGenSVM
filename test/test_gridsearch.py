@@ -201,7 +201,7 @@ class GenSVMGridSearchCVTestCase(unittest.TestCase):
     def slowtest_gridsearch_warnings(self):
         """ GENSVM_GRID: Check grid search with warnings """
         np.random.seed(123)
-        X, y = load_digits(4, return_X_y=True)
+        X, y = load_digits(n_class=4, return_X_y=True)
         small = {}
         for k in [1, 2, 3]:
             tmp = X[y == k, :]

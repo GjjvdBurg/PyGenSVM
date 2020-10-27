@@ -164,7 +164,7 @@ class GenSVMTestCase(unittest.TestCase):
 
     def test_fit_predict_strings(self):
         """ GENSVM: Test fit and predict with string targets """
-        digits = load_digits(4)
+        digits = load_digits(n_class=4)
         n_samples = len(digits.images)
         X = digits.images.reshape(n_samples, -1)
         y = digits.target
