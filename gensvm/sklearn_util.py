@@ -66,7 +66,7 @@ DAMAGE.
 """
 
 from sklearn.exceptions import NotFittedError
-from sklearn.metrics.scorer import _check_multimetric_scoring
+from sklearn.metrics._scorer import _check_multimetric_scoring
 from sklearn.model_selection._validation import _aggregate_score_dicts
 from sklearn.utils.fixes import MaskedArray
 
