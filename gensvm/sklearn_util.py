@@ -65,10 +65,11 @@ DAMAGE.
 
 """
 
+from numpy.ma import MaskedArray
+
 from sklearn.exceptions import NotFittedError
 from sklearn.metrics._scorer import _check_multimetric_scoring
 from sklearn.model_selection._validation import _aggregate_score_dicts
-from sklearn.utils.fixes import MaskedArray
 
 
 def _skl_format_cv_results(
