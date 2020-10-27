@@ -64,7 +64,7 @@ def _sort_candidate_params(candidate_params):
 def _validate_param_grid(param_grid):
     """Check if the parameter values are valid
 
-    This basically does the same checks as in the constructor of the 
+    This basically does the same checks as in the constructor of the
     :class:`~.core.GenSVM` class, but for the entire parameter grid.
 
     """
@@ -231,8 +231,8 @@ def _fit_grid_gensvm(
 ):
     """Utility function for fitting the grid search for GenSVM
 
-    This function sorts the parameter grid for optimal computation speed, sets 
-    the desired verbosity, generates the cross validation splits, and calls the 
+    This function sorts the parameter grid for optimal computation speed, sets
+    the desired verbosity, generates the cross validation splits, and calls the
     low-level training routine in the Cython wrapper.
 
     For parameters, see :class:`.GenSVMGridSearchCV`.
@@ -263,7 +263,9 @@ def _fit_grid_gensvm(
     cv_idx = np.zeros((X.shape[0],), dtype=np.int_) - 1
     fold_idx = 0
     for train, test in cv.split(X, y, groups):
-        cv_idx[test,] = fold_idx
+        cv_idx[
+            test,
+        ] = fold_idx
         fold_idx += 1
 
     results_ = wrapper.grid_wrap(
@@ -283,50 +285,50 @@ def _fit_grid_gensvm(
 class GenSVMGridSearchCV(BaseEstimator, MetaEstimatorMixin):
     """GenSVM cross validated grid search
 
-    This class implements efficient GenSVM grid search with cross validation.  
-    One of the strong features of GenSVM is that seeding the classifier 
-    properly can greatly reduce total training time. This class ensures that 
+    This class implements efficient GenSVM grid search with cross validation.
+    One of the strong features of GenSVM is that seeding the classifier
+    properly can greatly reduce total training time. This class ensures that
     the grid search is done in the most efficient way possible.
 
-    The implementation of this class is based on the `GridSearchCV`_ class in 
-    scikit-learn. The documentation of the various parameters is therefore 
-    mostly the same. This is done to provide the user with a familiar and 
-    easy-to-use interface to doing a grid search with GenSVM. A separate class 
-    was needed to benefit from the fast low-level C implementation of grid 
+    The implementation of this class is based on the `GridSearchCV`_ class in
+    scikit-learn. The documentation of the various parameters is therefore
+    mostly the same. This is done to provide the user with a familiar and
+    easy-to-use interface to doing a grid search with GenSVM. A separate class
+    was needed to benefit from the fast low-level C implementation of grid
     search in the GenSVM library.
 
     Parameters
     ----------
     param_grid : string, dict, or list of dicts
-        If a string, it must be either 'tiny', 'small', or 'full' to load the 
-        predefined parameter grids (see the functions :func:`load_grid_tiny`, 
+        If a string, it must be either 'tiny', 'small', or 'full' to load the
+        predefined parameter grids (see the functions :func:`load_grid_tiny`,
         :func:`load_grid_small`, and :func:`load_grid_full`).
 
-        Otherwise, a dictionary of parameter names (strings) as keys and lists 
-        of parameter settings to evaluate as values, or a list of such dicts.  
-        The GenSVM model will be evaluated at all combinations of the 
+        Otherwise, a dictionary of parameter names (strings) as keys and lists
+        of parameter settings to evaluate as values, or a list of such dicts.
+        The GenSVM model will be evaluated at all combinations of the
         parameters.
 
     scoring : string, callable, list/tuple, dict or None
-        A single string (see :ref:`scoring_parameter`) or a callable (see 
+        A single string (see :ref:`scoring_parameter`) or a callable (see
         :ref:`scoring`) to evaluate the predictions on the test set.
 
-        For evaluating multiple metrics, either give a list of (unique) strings 
+        For evaluating multiple metrics, either give a list of (unique) strings
         or a dict with names as keys and callables as values.
 
-        NOTE that when using custom scorers, each scorer should return a single 
-        value. Metric functions returning a list/array of values can be wrapped 
-        into multiple scorers that return one value each. 
+        NOTE that when using custom scorers, each scorer should return a single
+        value. Metric functions returning a list/array of values can be wrapped
+        into multiple scorers that return one value each.
 
-        If None, the `accuracy_score`_ is used. 
+        If None, the `accuracy_score`_ is used.
 
     iid : boolean, default=True
-        If True, the data is assumed to be identically distributed across the 
-        folds, and the loss minimized is the total loss per sample and not the 
+        If True, the data is assumed to be identically distributed across the
+        folds, and the loss minimized is the total loss per sample and not the
         mean loss across the folds.
 
     cv : int, cross-validation generator or an iterable, optional
-        Determines the cross-validation splitting strategy. Possible inputs for 
+        Determines the cross-validation splitting strategy. Possible inputs for
         cv are:
 
           - None, to use the default 5-fold cross validation,
@@ -334,36 +336,36 @@ class GenSVMGridSearchCV(BaseEstimator, MetaEstimatorMixin):
           - An object to be used as a cross-validation generator.
           - An iterable yielding train, test splits.
 
-        For integer/None inputs, :class:`StratifiedKFold 
-        <sklearn.model_selection.StratifiedKFold>` is used.  In all other 
+        For integer/None inputs, :class:`StratifiedKFold
+        <sklearn.model_selection.StratifiedKFold>` is used.  In all other
         cases, :class:`KFold <sklearn.model_selection.KFold>` is used.
 
-        Refer to the `scikit-learn User Guide on cross validation`_ for the 
+        Refer to the `scikit-learn User Guide on cross validation`_ for the
         various strategies that can be used here.
 
-        NOTE: At the moment, the ShuffleSplit and StratifiedShuffleSplit are 
-        not supported in this class. If you need these, you can use the GenSVM 
-        classifier directly with the GridSearchCV object from scikit-learn.  
-        (these methods require significant changes in the low-level library 
+        NOTE: At the moment, the ShuffleSplit and StratifiedShuffleSplit are
+        not supported in this class. If you need these, you can use the GenSVM
+        classifier directly with the GridSearchCV object from scikit-learn.
+        (these methods require significant changes in the low-level library
         before they can be supported).
 
     refit : boolean, or string, default=True
-        Refit the GenSVM estimator with the best found parameters on the whole 
+        Refit the GenSVM estimator with the best found parameters on the whole
         dataset.
 
-        For multiple metric evaluation, this needs to be a string denoting the 
-        scorer to be used to find the best parameters for refitting the 
+        For multiple metric evaluation, this needs to be a string denoting the
+        scorer to be used to find the best parameters for refitting the
         estimator at the end.
 
-        The refitted estimator is made available at the `:attr:best_estimator_ 
-        <.GenSVMGridSearchCV.best_estimator_>` attribute and allows the user to 
-        use the :meth:`~GenSVMGridSearchCV.predict` method directly on this 
+        The refitted estimator is made available at the `:attr:best_estimator_
+        <.GenSVMGridSearchCV.best_estimator_>` attribute and allows the user to
+        use the :meth:`~GenSVMGridSearchCV.predict` method directly on this
         :class:`.GenSVMGridSearchCV` instance.
 
-        Also for multiple metric evaluation, the attributes :attr:`best_index_ 
-        <.GenSVMGridSearchCV.best_index_>`, :attr:`best_score_ 
-        <.GenSVMGridSearchCV.best_score_>` and :attr:`best_params_ 
-        <.GenSVMGridSearchCV:best_params_>` will only be available if ``refit`` 
+        Also for multiple metric evaluation, the attributes :attr:`best_index_
+        <.GenSVMGridSearchCV.best_index_>`, :attr:`best_score_
+        <.GenSVMGridSearchCV.best_score_>` and :attr:`best_params_
+        <.GenSVMGridSearchCV:best_params_>` will only be available if ``refit``
         is set and all of them will be determined w.r.t this specific scorer.
 
         See ``scoring`` parameter to know more about multiple metric
@@ -373,7 +375,7 @@ class GenSVMGridSearchCV(BaseEstimator, MetaEstimatorMixin):
         Controls the verbosity: the higher, the more messages.
 
     return_train_score : boolean, default=True
-        If ``False``, the :attr:`cv_results_ <.GenSVMGridSearchCV.cv_results_>` 
+        If ``False``, the :attr:`cv_results_ <.GenSVMGridSearchCV.cv_results_>`
         attribute will not include training scores.
 
     Examples
@@ -391,7 +393,7 @@ class GenSVMGridSearchCV(BaseEstimator, MetaEstimatorMixin):
     Attributes
     ----------
     cv_results_ : dict of numpy (masked) ndarrays
-        A dict with keys as column headers and values as columns, that can be 
+        A dict with keys as column headers and values as columns, that can be
         imported into a pandas `DataFrame`_.
 
         For instance the below given table
@@ -435,53 +437,53 @@ class GenSVMGridSearchCV(BaseEstimator, MetaEstimatorMixin):
 
         NOTE:
 
-        The key ``'params'`` is used to store a list of parameter settings 
+        The key ``'params'`` is used to store a list of parameter settings
         dicts for all the parameter candidates.
 
-        The ``mean_fit_time``, ``std_fit_time``, ``mean_score_time`` and 
+        The ``mean_fit_time``, ``std_fit_time``, ``mean_score_time`` and
         ``std_score_time`` are all in seconds.
 
-        For multi-metric evaluation, the scores for all the scorers are 
-        available in the :attr:`cv_results_ <.GenSVMGridSearchCV.cv_results_>` 
-        dict at the keys ending with that scorer's name (``'_<scorer_name>'``) 
-        instead of ``'_score'`` shown above. ('split0_test_precision', 
+        For multi-metric evaluation, the scores for all the scorers are
+        available in the :attr:`cv_results_ <.GenSVMGridSearchCV.cv_results_>`
+        dict at the keys ending with that scorer's name (``'_<scorer_name>'``)
+        instead of ``'_score'`` shown above. ('split0_test_precision',
         'mean_train_precision' etc.)
 
     best_estimator_ : estimator or dict
-        Estimator that was chosen by the search, i.e. estimator which gave 
-        highest score (or smallest loss if specified) on the left out data. Not 
+        Estimator that was chosen by the search, i.e. estimator which gave
+        highest score (or smallest loss if specified) on the left out data. Not
         available if ``refit=False``.
 
         See ``refit`` parameter for more information on allowed values.
 
     best_score_ : float
-        Mean cross-validated score of the best_estimator 
+        Mean cross-validated score of the best_estimator
 
-        For multi-metric evaluation, this is present only if ``refit`` is 
+        For multi-metric evaluation, this is present only if ``refit`` is
         specified.
 
     best_params_ : dict
-        Parameter setting that gave the best results on the hold out data. 
+        Parameter setting that gave the best results on the hold out data.
 
-        For multi-metric evaluation, this is present only if ``refit`` is 
+        For multi-metric evaluation, this is present only if ``refit`` is
         specified.
 
     best_index_ : int
-        The index (of the ``cv_results_`` arrays) which corresponds to the best 
+        The index (of the ``cv_results_`` arrays) which corresponds to the best
         candidate parameter setting.
 
-        The dict at ``search.cv_results_['params'][search.best_index_]`` gives 
-        the parameter setting for the best model, that gives the highest mean 
+        The dict at ``search.cv_results_['params'][search.best_index_]`` gives
+        the parameter setting for the best model, that gives the highest mean
         score (``search.best_score_``).
 
-        For multi-metric evaluation, this is present only if ``refit`` is 
+        For multi-metric evaluation, this is present only if ``refit`` is
         specified.
 
     scorer_ : function or a dict
-        Scorer function used on the held out data to choose the best parameters 
+        Scorer function used on the held out data to choose the best parameters
         for the model.
 
-        For multi-metric evaluation, this attribute holds the validated 
+        For multi-metric evaluation, this attribute holds the validated
         ``scoring`` dict which maps the scorer key to the scorer callable.
 
     n_splits_ : int
@@ -489,7 +491,7 @@ class GenSVMGridSearchCV(BaseEstimator, MetaEstimatorMixin):
 
     Notes
     -----
-    The parameters selected are those that maximize the score of the left out 
+    The parameters selected are those that maximize the score of the left out
     data, unless an explicit score is passed in which case it is used instead.
 
     See Also
@@ -560,14 +562,14 @@ class GenSVMGridSearchCV(BaseEstimator, MetaEstimatorMixin):
         ----------
 
         X : array-like, shape = (n_samples, n_features)
-            Training data, where n_samples is the number of observations and 
+            Training data, where n_samples is the number of observations and
             n_features is the number of features.
 
         y : array-like, shape = (n_samples, )
             Target vector for the training data.
 
         groups : array-like, with shape (n_samples, ), optional
-            Group labels for the samples used while splitting the dataset into 
+            Group labels for the samples used while splitting the dataset into
             train/test sets.
 
         Returns
@@ -651,7 +653,7 @@ class GenSVMGridSearchCV(BaseEstimator, MetaEstimatorMixin):
         Parameters
         ----------
         X : array-like, shape = (n_samples, n_features)
-            Test data, where n_samples is the number of observations and 
+            Test data, where n_samples is the number of observations and
             n_features is the number of features.
 
         y : array-like, shape = (n_samples, )
@@ -679,11 +681,11 @@ class GenSVMGridSearchCV(BaseEstimator, MetaEstimatorMixin):
         Parameters
         ----------
         X : array-like, shape = (n_samples, n_features)
-            Test data, where n_samples is the number of observations and 
+            Test data, where n_samples is the number of observations and
             n_features is the number of features.
 
         trainX : array, shape = [n_train_samples, n_features]
-            Only for nonlinear prediction with kernels: the training data used 
+            Only for nonlinear prediction with kernels: the training data used
             to train the model.
 
         Returns
@@ -697,23 +699,23 @@ class GenSVMGridSearchCV(BaseEstimator, MetaEstimatorMixin):
 
 
 def load_grid_tiny():
-    """ Load a tiny parameter grid for the GenSVM grid search
+    """Load a tiny parameter grid for the GenSVM grid search
 
-    This function returns a parameter grid to use in the GenSVM grid search.  
-    This grid was obtained by analyzing the experiments done for the GenSVM 
-    paper and selecting the configurations that achieve accuracy within the 
-    95th percentile on over 90% of the datasets. It is a good start for a 
-    parameter search with a reasonably high chance of achieving good 
+    This function returns a parameter grid to use in the GenSVM grid search.
+    This grid was obtained by analyzing the experiments done for the GenSVM
+    paper and selecting the configurations that achieve accuracy within the
+    95th percentile on over 90% of the datasets. It is a good start for a
+    parameter search with a reasonably high chance of achieving good
     performance on most datasets.
 
-    Note that this grid is only tested to work well in combination with the 
+    Note that this grid is only tested to work well in combination with the
     linear kernel.
 
     Returns
     -------
 
     pg : list
-        List of 10 parameter configurations that are likely to perform 
+        List of 10 parameter configurations that are likely to perform
         reasonably well.
 
     """
@@ -786,8 +788,8 @@ def load_grid_tiny():
 def load_grid_small():
     """Load a small parameter grid for GenSVM
 
-    This function loads a default parameter grid to use for the #' GenSVM 
-    gridsearch. It contains all possible combinations of the following #' 
+    This function loads a default parameter grid to use for the #' GenSVM
+    gridsearch. It contains all possible combinations of the following #'
     parameter sets::
 
         pg = {
@@ -801,7 +803,7 @@ def load_grid_small():
     -------
 
     pg : dict
-        Mapping from parameters to lists of values for those parameters. To be 
+        Mapping from parameters to lists of values for those parameters. To be
         used as input for the :class:`.GenSVMGridSearchCV` class.
     """
     pg = {
@@ -816,10 +818,10 @@ def load_grid_small():
 def load_grid_full():
     """Load the full parameter grid for GenSVM
 
-    This is the parameter grid used in the GenSVM paper to run the grid search 
-    experiments. It uses a large grid for the ``lmd`` regularization parameter 
-    and converges with a stopping criterion of ``1e-8``. This is a relatively 
-    small stopping criterion and in practice good classification results can be 
+    This is the parameter grid used in the GenSVM paper to run the grid search
+    experiments. It uses a large grid for the ``lmd`` regularization parameter
+    and converges with a stopping criterion of ``1e-8``. This is a relatively
+    small stopping criterion and in practice good classification results can be
     obtained by using a larger stopping criterion.
 
     The function returns the following grid::
@@ -836,7 +838,7 @@ def load_grid_full():
     Returns
     -------
     pg : dict
-        Mapping from parameters to lists of values for those parameters. To be 
+        Mapping from parameters to lists of values for those parameters. To be
         used as input for the :class:`.GenSVMGridSearchCV` class.
     """
     pg = {

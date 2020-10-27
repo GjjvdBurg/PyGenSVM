@@ -10,10 +10,11 @@ import numpy as np
 
 from sklearn.exceptions import NotFittedError
 
+
 def get_ranks(a):
     """
-    Rank data in an array. Low values get a small rank number. Ties are broken 
-    by assigning the lowest value (this corresponds to ``rankdata(a, 
+    Rank data in an array. Low values get a small rank number. Ties are broken
+    by assigning the lowest value (this corresponds to ``rankdata(a,
     method='min')`` in SciPy.
 
     Examples
