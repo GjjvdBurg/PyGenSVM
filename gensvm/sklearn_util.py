@@ -68,7 +68,7 @@ DAMAGE.
 from numpy.ma import MaskedArray
 
 from sklearn.exceptions import NotFittedError
-from sklearn.metrics.scorer import _check_multimetric_scoring
+from sklearn.metrics._scorer import _check_multimetric_scoring
 from sklearn.model_selection._validation import _aggregate_score_dicts
 
 
@@ -141,6 +141,7 @@ def _skl_format_cv_results(
     param_results = defaultdict(
         partial(MaskedArray, np.empty(n_candidates), mask=True, dtype=object)
     )
+
     for cand_i, params in enumerate(candidate_params):
         for name, value in params.items():
             # An all masked empty array gets created for the key
@@ -220,26 +221,26 @@ def _skl_check_is_fitted(estimator, method_name, refit):
 
 
 def _skl_grid_score(X, y, scorer_, best_estimator_, refit, multimetric_):
-    """Returns the score on the given data, if the estimator has been 
-        refit.
+    """Returns the score on the given data, if the estimator has been
+    refit.
 
-        This uses the score defined by ``scoring`` where provided, and the
-        ``best_estimator_.score`` method otherwise.
+    This uses the score defined by ``scoring`` where provided, and the
+    ``best_estimator_.score`` method otherwise.
 
-        Parameters
-        ----------
-        X : array-like, shape = [n_samples, n_features]
-            Input data, where n_samples is the number of samples and
-            n_features is the number of features.
+    Parameters
+    ----------
+    X : array-like, shape = [n_samples, n_features]
+        Input data, where n_samples is the number of samples and
+        n_features is the number of features.
 
-        y : array-like, shape = [n_samples] or [n_samples, n_output], optional
-            Target relative to X for classification or regression;
-            None for unsupervised learning.
+    y : array-like, shape = [n_samples] or [n_samples, n_output], optional
+        Target relative to X for classification or regression;
+        None for unsupervised learning.
 
-        Returns
-        -------
-        score : float
-        """
+    Returns
+    -------
+    score : float
+    """
     if scorer_ is None:
         raise ValueError(
             "No score function explicitly defined, "

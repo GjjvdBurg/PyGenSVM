@@ -288,7 +288,7 @@ def configuration():
             get_include(),
             blas_info.pop("include_dirs", []),
         ],
-        extra_compile_args=blas_info.pop("extra_compile_args", []),
+        extra_compile_args=blas_info.pop("extra_compile_args", []) + ["-fcommon"],
         depends=gensvm_depends,
         **blas_info
     )

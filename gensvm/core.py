@@ -99,12 +99,12 @@ def _fit_gensvm(
 class GenSVM(BaseEstimator, ClassifierMixin):
     """Generalized Multiclass Support Vector Machine Classification.
 
-    This class implements the basic GenSVM classifier. GenSVM is a generalized 
-    multiclass SVM which is flexible in the weighting of misclassification 
-    errors. It is this flexibility that makes it perform well on diverse 
+    This class implements the basic GenSVM classifier. GenSVM is a generalized
+    multiclass SVM which is flexible in the weighting of misclassification
+    errors. It is this flexibility that makes it perform well on diverse
     datasets.
 
-    The :meth:`~GenSVM.fit` and :meth:`~GenSVM.predict` methods of this class 
+    The :meth:`~GenSVM.fit` and :meth:`~GenSVM.predict` methods of this class
     use the GenSVM C library for the actual computations.
 
     Parameters
@@ -119,42 +119,42 @@ class GenSVM(BaseEstimator, ClassifierMixin):
         Parameter for the hinge function in the loss function (kappa > -1.0)
 
     weights: string, optional (default='unit')
-        Type of sample weights to use. Options are 'unit' for unit weights and 
+        Type of sample weights to use. Options are 'unit' for unit weights and
         'group' for group size correction weights (equation 4 in the paper).
 
-        It is also possible to provide an explicit vector of sample weights 
-        through the :meth:`~GenSVM.fit` method. If so, it will override the 
+        It is also possible to provide an explicit vector of sample weights
+        through the :meth:`~GenSVM.fit` method. If so, it will override the
         setting provided here.
 
     kernel : string, optional (default='linear')
-        Specify the kernel type to use in the classifier. It must be one of 
+        Specify the kernel type to use in the classifier. It must be one of
         'linear', 'poly', 'rbf', or 'sigmoid'.
 
     gamma : float, optional (default='auto')
-        Kernel parameter for the rbf, poly, and sigmoid kernel. If gamma is 
-        'auto' then 1/n_features will be used. See `Kernels in GenSVM 
+        Kernel parameter for the rbf, poly, and sigmoid kernel. If gamma is
+        'auto' then 1/n_features will be used. See `Kernels in GenSVM
         <gensvm_kernels_>`_ for the exact implementation of the kernels.
 
     coef : float, optional (default=1.0)
-        Kernel parameter for the poly and sigmoid kernel. See `Kernels in 
+        Kernel parameter for the poly and sigmoid kernel. See `Kernels in
         GenSVM <gensvm_kernels_>`_ for the exact implementation of the kernels.
 
     degree : float, optional (default=2.0)
-        Kernel parameter for the poly kernel. See `Kernels in GenSVM 
+        Kernel parameter for the poly kernel. See `Kernels in GenSVM
         <gensvm_kernels_>`_ for the exact implementation of the kernels.
 
     kernel_eigen_cutoff : float, optional (default=1e-8)
-        Cutoff point for the reduced eigendecomposition used with nonlinear 
-        GenSVM.  Eigenvectors for which the ratio between their corresponding 
-        eigenvalue and the largest eigenvalue is smaller than the cutoff will 
+        Cutoff point for the reduced eigendecomposition used with nonlinear
+        GenSVM.  Eigenvectors for which the ratio between their corresponding
+        eigenvalue and the largest eigenvalue is smaller than the cutoff will
         be dropped.
 
     verbose : int, (default=0)
         Enable verbose output
 
     random_state : None, int, instance of RandomState
-        The seed for the random number generation used for initialization where 
-        necessary. See the documentation of 
+        The seed for the random number generation used for initialization where
+        necessary. See the documentation of
         ``sklearn.utils.check_random_state`` for more info.
 
     max_iter : int, (default=1e8)
@@ -257,7 +257,7 @@ class GenSVM(BaseEstimator, ClassifierMixin):
     def fit(self, X, y, sample_weight=None, seed_V=None):
         """Fit the GenSVM model on the given data
 
-        The model can be fit with or without a seed matrix (`seed_V`). This can 
+        The model can be fit with or without a seed matrix (`seed_V`). This can
         be used to provide warm starts for the algorithm.
 
         Parameters
@@ -270,22 +270,22 @@ class GenSVM(BaseEstimator, ClassifierMixin):
             The label vector, labels can be numbers or strings.
 
         sample_weight : array, shape = (n_observations, )
-            Array of weights that are assigned to individual samples. If not 
-            provided, then the weight specification in the constructor is used 
+            Array of weights that are assigned to individual samples. If not
+            provided, then the weight specification in the constructor is used
             ('unit' or 'group').
 
         seed_V : array, shape = (n_features+1, n_classes-1), optional
-            Seed coefficient array to use as a warm start for the optimization.  
-            It can for instance be the :attr:`combined_coef_ 
-            <.GenSVM.combined_coef_>` attribute of a different GenSVM model.  
+            Seed coefficient array to use as a warm start for the optimization.
+            It can for instance be the :attr:`combined_coef_
+            <.GenSVM.combined_coef_>` attribute of a different GenSVM model.
             This is only supported for the linear kernel.
 
             NOTE: the size of the seed_V matrix is `n_features+1` by `n_classes - 1`.
-            The number of columns of `seed_V` is leading for the number of 
-            classes in the model. For example, if `y` contains 3 different 
-            classes and `seed_V` has 3 columns, we assume that there are 
-            actually 4 classes in the problem but one class is just represented 
-            in this training data. This can be useful for problems were a 
+            The number of columns of `seed_V` is leading for the number of
+            classes in the model. For example, if `y` contains 3 different
+            classes and `seed_V` has 3 columns, we assume that there are
+            actually 4 classes in the problem but one class is just represented
+            in this training data. This can be useful for problems were a
             certain class has only a few samples.
 
         Returns
@@ -390,7 +390,7 @@ class GenSVM(BaseEstimator, ClassifierMixin):
             Data for which to predict the labels
 
         trainX : array, shape = [n_train_samples, n_features]
-            Only for nonlinear prediction with kernels: the training data used 
+            Only for nonlinear prediction with kernels: the training data used
             to train the model.
 
         Returns
