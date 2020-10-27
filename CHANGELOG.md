@@ -1,5 +1,9 @@
 ## Change Log
 
+### Version 0.2.7
+
+- Deal with various deprecated features of sklearn
+
 ### Version 0.2.6
 
 - Minor fixes to fix description on PyPI
