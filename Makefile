@@ -24,11 +24,11 @@ help:
 .PHONY: inplace install
 
 inplace: ## Build C extensions
-	python setup.py build_ext -i
+	pip install numpy && python setup.py build_ext -i
 
 install: ## Install for the current user using the default python command
-	python setup.py build_ext --inplace
-	python setup.py install --user
+	python setup.py build_ext --inplace && \
+		python setup.py install --user
 
 ################
 # Distribution #
