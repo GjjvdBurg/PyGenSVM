@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 
 """
+Unit tests for the grid_search module
 
-    Unit tests for the grid_search module
+This file is part of PyGenSVM.
+
+Author: G.J.J. van den Burg
 
 """
-
-from __future__ import division, print_function
 
 import numpy as np
 import unittest
@@ -139,7 +140,7 @@ class GenSVMGridSearchCVTestCase(unittest.TestCase):
         X = maxabs_scale(X)
         X_train, X_test, y_train, y_test = train_test_split(X, y)
 
-        pg = {"p": [1., 1.5, 2.]}
+        pg = {"p": [1.0, 1.5, 2.0]}
 
         clf = GenSVMGridSearchCV(
             pg, scoring=["accuracy", "adjusted_rand_score"], refit=False
@@ -283,3 +284,7 @@ class GenSVMGridSearchCVTestCase(unittest.TestCase):
         cv = StratifiedShuffleSplit(n_splits=5, test_size=0.2, random_state=42)
         with self.assertRaises(ValueError):
             GenSVMGridSearchCV(param_grid="tiny", verbose=1, cv=cv)
+
+
+if __name__ == "__main__":
+    unittest.main()

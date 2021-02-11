@@ -57,9 +57,11 @@ clean: ## Clean build dist and egg directories left after install
 
 cleaner: clean
 	rm -f ./src/wrapper.c
+
 venv: $(VENV_DIR)/bin/activate
 
-$(VENV_DIR)/bin/activate:
+$(VENV_DIR)/bin/activate: setup.py
 	test -d $(VENV_DIR) || python -m venv $(VENV_DIR)
-	source $(VENV_DIR)/bin/activate && pip install numpy && pip install -e .[dev]
+	source $(VENV_DIR)/bin/activate && pip install -U numpy && \
+		pip install -e .[dev]
 	touch $(VENV_DIR)/bin/activate

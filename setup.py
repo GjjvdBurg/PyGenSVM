@@ -15,14 +15,14 @@ LICENSE_TROVE = (
     "License :: OSI Approved :: GNU General Public License v2 (GPLv2)"
 )
 NAME = "gensvm"
-REQUIRES_PYTHON = ">=2.7"
+REQUIRES_PYTHON = ">=3.6"
 URL = "https://github.com/GjjvdBurg/PyGenSVM"
 VERSION = None
 
 REQUIRED = ["scikit-learn>=0.24.1", "numpy"]
 
 docs_require = ["Sphinx==1.6.5", "sphinx_rtd_theme>=0.4.3", "m2r"]
-test_require = []
+test_require = ["green"]
 dev_require = ["Cython"]
 
 EXTRAS = {
