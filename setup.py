@@ -19,7 +19,7 @@ REQUIRES_PYTHON = ">=2.7"
 URL = "https://github.com/GjjvdBurg/PyGenSVM"
 VERSION = None
 
-REQUIRED = ["scikit-learn", "numpy"]
+REQUIRED = ["scikit-learn>=0.24.1", "numpy"]
 
 docs_require = ["Sphinx==1.6.5", "sphinx_rtd_theme>=0.4.3", "m2r"]
 test_require = []

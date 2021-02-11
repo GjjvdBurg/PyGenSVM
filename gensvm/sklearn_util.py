@@ -16,12 +16,14 @@ required.
 
 import numbers
 import numpy as np
+import warnings
 
 from collections import defaultdict
 from contextlib import suppress
 from functools import partial
 
 from sklearn.metrics._scorer import _MultimetricScorer
+from sklearn.metrics._scorer import check_scoring
 
 from .core import GenSVM
 from .util import get_ranks
@@ -68,8 +70,10 @@ DAMAGE.
 from numpy.ma import MaskedArray
 
 from sklearn.exceptions import NotFittedError
-from sklearn.metrics._scorer import _check_multimetric_scoring
-from sklearn.model_selection._validation import _aggregate_score_dicts
+from sklearn.model_selection._validation import (
+    _normalize_score_results,
+    _aggregate_score_dicts,
+)
 
 
 def _skl_format_cv_results(
@@ -82,25 +86,7 @@ def _skl_format_cv_results(
     iid,
 ):
 
-    # if one choose to see train score, "out" will contain train score info
-    if return_train_score:
-        (
-            train_score_dicts,
-            test_score_dicts,
-            test_sample_counts,
-            fit_time,
-            score_time,
-        ) = zip(*out)
-    else:
-        (test_score_dicts, test_sample_counts, fit_time, score_time) = zip(
-            *out
-        )
-
-    # test_score_dicts and train_score dicts are lists of dictionaries and
-    # we make them into dict of lists
-    test_scores = _aggregate_score_dicts(test_score_dicts)
-    if return_train_score:
-        train_scores = _aggregate_score_dicts(train_score_dicts)
+    out = _aggregate_score_dicts(out)
 
     results = dict()
 
@@ -118,6 +104,16 @@ def _skl_format_cv_results(
 
         array_means = np.average(array, axis=1, weights=weights)
         results["mean_%s" % key_name] = array_means
+
+        if key_name.startswith(("train_", "test_")) and np.any(
+            ~np.isfinite(array_means)
+        ):
+            warnings.warn(
+                f"One or more of the {key_name.split('_')[0]} scores "
+                f"are non-finite: {array_means}",
+                category=UserWarning,
+            )
+
         # Weighted std is not directly available in numpy
         array_stds = np.sqrt(
             np.average(
@@ -133,8 +129,8 @@ def _skl_format_cv_results(
                 get_ranks(-array_means), dtype=np.int32
             )
 
-    _store("fit_time", fit_time)
-    _store("score_time", score_time)
+    _store("fit_time", out["fit_time"])
+    _store("score_time", out["score_time"])
     # Use one MaskedArray and mask all the places where the param is not
     # applicable for that candidate. Use defaultdict as each candidate may
     # not contain all the params
@@ -153,52 +149,26 @@ def _skl_format_cv_results(
     # Store a list of param dicts at the key 'params'
     results["params"] = candidate_params
 
-    # NOTE test_sample counts (weights) remain the same for all candidates
-    test_sample_counts = np.array(test_sample_counts[:n_splits], dtype=np.int)
-    for scorer_name in scorers.keys():
+    test_scores_dict = _normalize_score_results(out["test_scores"])
+    if return_train_score:
+        train_scores_dict = _normalize_score_results(out["train_scores"])
+
+    for scorer_name in test_scores_dict:
         # Computed the (weighted) mean and std for test scores alone
         _store(
             "test_%s" % scorer_name,
-            test_scores[scorer_name],
+            test_scores_dict[scorer_name],
             splits=True,
             rank=True,
-            weights=test_sample_counts if iid else None,
+            weights=None,
         )
         if return_train_score:
             _store(
                 "train_%s" % scorer_name,
-                train_scores[scorer_name],
+                train_scores_dict[scorer_name],
                 splits=True,
             )
-
     return results
-
-
-def _skl_check_scorers(scoring, refit):
-
-    scorers, multimetric_ = _check_multimetric_scoring(
-        GenSVM(), scoring=scoring
-    )
-    if multimetric_:
-        if refit is not False and (
-            not isinstance(refit, str) or refit not in scorers
-        ):
-            raise ValueError(
-                "For multi-metric scoring, the parameter "
-                "refit must be set to a scorer key "
-                "to refit an estimator with the best "
-                "parameter setting on the whole data and "
-                "make the best_* attributes "
-                "available for that metric. kjIf this is not "
-                "needed, refit should be set to False "
-                "explicitly. %r was passed." % refit
-            )
-        else:
-            refit_metric = refit
-    else:
-        refit_metric = "score"
-
-    return scorers, multimetric_, refit_metric
 
 
 def _skl_check_is_fitted(estimator, method_name, refit):
@@ -283,3 +253,24 @@ def _skl_score(estimator, X_test, y_test, scorer):
         if not isinstance(scores, numbers.Number):
             raise ValueError(error_msg % (scores, type(scores), scorer))
     return scores
+
+
+def _skl_check_refit_for_multimetric(self, scores):
+    """Check `refit` is compatible with `scores` is valid"""
+    multimetric_refit_msg = (
+        "For multi-metric scoring, the parameter refit must be set to a "
+        "scorer key or a callable to refit an estimator with the best "
+        "parameter setting on the whole data and make the best_* "
+        "attributes available for that metric. If this is not needed, "
+        f"refit should be set to False explicitly. {self.refit!r} was "
+        "passed."
+    )
+
+    valid_refit_dict = isinstance(self.refit, str) and self.refit in scores
+
+    if (
+        self.refit is not False
+        and not valid_refit_dict
+        and not callable(self.refit)
+    ):
+        raise ValueError(multimetric_refit_msg)

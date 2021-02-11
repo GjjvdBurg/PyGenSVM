@@ -29,14 +29,15 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.utils import check_X_y
 from sklearn.utils.multiclass import type_of_target
 from sklearn.utils.validation import indexable
+from sklearn.metrics._scorer import check_scoring, _check_multimetric_scoring
 
 from .cython_wrapper import wrapper
 from .core import GenSVM
 from .sklearn_util import (
     _skl_format_cv_results,
-    _skl_check_scorers,
     _skl_check_is_fitted,
     _skl_grid_score,
+    _skl_check_refit_for_multimetric,
 )
 
 
@@ -165,7 +166,7 @@ def _format_results(
         is_missing = np.any(np.isnan(durations))
 
         for test_idx in sorted(np.unique(cv_idx)):
-            ret = []
+            ret = {}
             score_time = 0
 
             if return_train_score:
@@ -175,11 +176,11 @@ def _format_results(
                 y_train = true_y[
                     cv_idx != test_idx,
                 ]
-                train_score, score_t = _wrap_score(
+                train_scores, score_t = _wrap_score(
                     train_pred, y_train, scorers, is_multimetric
                 )
                 score_time += score_t
-                ret.append(train_score)
+                ret["train_scores"] = train_scores
 
             test_pred = predictions[
                 cv_idx == test_idx,
@@ -187,20 +188,21 @@ def _format_results(
             y_test = true_y[
                 cv_idx == test_idx,
             ]
-            test_score, score_t = _wrap_score(
+            test_scores, score_t = _wrap_score(
                 test_pred, y_test, scorers, is_multimetric
             )
             score_time += score_t
-            ret.append(test_score)
+            ret["test_scores"] = test_scores
 
             if return_n_test_samples:
-                ret.append(len(y_test))
+                ret["n_test_samples"] = len(y_test)
             if return_times:
                 fit_time = fit_times[test_idx]
                 score_time = np.nan if is_missing else score_time
-                ret.extend([fit_time, score_time])
+                ret["fit_time"] = fit_time
+                ret["score_time"] = score_time
             if return_parameters:
-                ret.append(param)
+                ret["parameters"] = param
 
             out.append(ret)
 
@@ -551,6 +553,7 @@ class GenSVMGridSearchCV(BaseEstimator, MetaEstimatorMixin):
         self.verbose = verbose
         self.return_train_score = return_train_score
         self.iid = iid
+        self.estimator = GenSVM()
 
     def _get_param_iterator(self):
         return ParameterGrid(self.param_grid)
@@ -578,6 +581,7 @@ class GenSVMGridSearchCV(BaseEstimator, MetaEstimatorMixin):
             Return self.
 
         """
+        refit_metric = "score"
 
         X, y_orig = check_X_y(
             X, y, accept_sparse=False, dtype=np.float64, order="C"
@@ -595,9 +599,16 @@ class GenSVMGridSearchCV(BaseEstimator, MetaEstimatorMixin):
 
         candidate_params = list(self._get_param_iterator())
 
-        scorers, self.multimetric_, refit_metric = _skl_check_scorers(
-            self.scoring, self.refit
-        )
+        if callable(self.scoring):
+            scorers = self.scoring
+        elif self.scoring is None or isinstance(self.scoring, str):
+            scorers = check_scoring(self.estimator, self.scoring)
+        else:
+            scorers = _check_multimetric_scoring(self.estimator, self.scoring)
+            self._check_refit_for_multimetric(scorers)
+            refit_metric = self.refit
+
+        self.multimetric_ = isinstance(scorers, dict)
 
         X, y, groups = indexable(X, y, groups)
 
@@ -640,7 +651,7 @@ class GenSVMGridSearchCV(BaseEstimator, MetaEstimatorMixin):
             self.best_estimator_.fit(X, y_orig)
 
         ## Store the only scorer not as a dict for single metric evaluation
-        self.scorer_ = scorers if self.multimetric_ else scorers["score"]
+        self.scorer_ = scorers
 
         self.cv_results_ = results
         self.n_splits_ = n_splits
@@ -696,6 +707,9 @@ class GenSVMGridSearchCV(BaseEstimator, MetaEstimatorMixin):
         """
         _skl_check_is_fitted(self, "predict", self.refit)
         return self.best_estimator_.predict(X, trainX=trainX)
+
+    def _check_refit_for_multimetric(self, scores):
+        return _skl_check_refit_for_multimetric(self, scores)
 
 
 def load_grid_tiny():
