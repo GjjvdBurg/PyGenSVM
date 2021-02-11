@@ -23,8 +23,5 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Install PyGenSVM
-        run: pip install -e .[test]
-
       - name: Run unit tests
         run: make test_direct
