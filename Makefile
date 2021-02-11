@@ -17,25 +17,47 @@ help:
 		 awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-15s\033[0m\
 		 %s\n", $$1, $$2}'
 
-in: inplace
-inplace:
+################
+# Installation #
+################
+
+.PHONY: inplace install
+
+inplace: ## Build C extensions
 	python setup.py build_ext -i
 
 install: ## Install for the current user using the default python command
 	python setup.py build_ext --inplace
 	python setup.py install --user
 
-test: venv ## Run nosetests using the default nosetests command
-	source $(VENV_DIR)/bin/activate && green -a -vv -f
+################
+# Distribution #
+################
 
-develop: ## Install a development version of the package needed for testing
-	python setup.py develop --user
+.PHONY: release dist
 
 dist: ## Make Python source distribution
 	python setup.py sdist
 
-release:
+release: ## Prepare a release
 	python make_release.py
+
+###########
+# Testing #
+###########
+
+.PHONY: test test_direct
+
+test: venv ## Run nosetests using the default nosetests command
+	source $(VENV_DIR)/bin/activate && green -a -vv -f ./tests
+
+test_direct: inplace ## Run unit tests without a virtual environment
+	pip install wheel && pip install . && \
+		python -m unittest discover ./tests
+
+#################
+# Documentation #
+#################
 
 docs: doc
 doc: venv ## Build documentation with Sphinx
@@ -43,7 +65,25 @@ doc: venv ## Build documentation with Sphinx
 	source $(VENV_DIR)/bin/activate && m2r CHANGELOG.md && mv CHANGELOG.rst $(DOC_DIR)
 	source $(VENV_DIR)/bin/activate && $(MAKE) -C $(DOC_DIR) html
 
-clean: ## Clean build dist and egg directories left after install
+#######################
+# Virtual environment #
+#######################
+
+.PHONY: venv
+
+venv: $(VENV_DIR)/bin/activate
+
+$(VENV_DIR)/bin/activate: setup.py
+	test -d $(VENV_DIR) || python -m venv $(VENV_DIR)
+	source $(VENV_DIR)/bin/activate && pip install -U numpy && \
+		pip install -e .[dev]
+	touch $(VENV_DIR)/bin/activate
+
+############
+# Clean up #
+############
+
+clean: ## Clean up after build or dist and remove compiled code
 	rm -rf ./dist
 	rm -rf ./build
 	rm -rf ./$(PACKAGE).egg-info
@@ -55,13 +95,5 @@ clean: ## Clean build dist and egg directories left after install
 	find . -type f -iname '*.pyc' -delete
 	find . -type d -name '__pycache__' -empty -delete
 
-cleaner: clean
+cleaner: clean ## Remove Cython output too
 	rm -f ./src/wrapper.c
-
-venv: $(VENV_DIR)/bin/activate
-
-$(VENV_DIR)/bin/activate: setup.py
-	test -d $(VENV_DIR) || python -m venv $(VENV_DIR)
-	source $(VENV_DIR)/bin/activate && pip install -U numpy && \
-		pip install -e .[dev]
-	touch $(VENV_DIR)/bin/activate
