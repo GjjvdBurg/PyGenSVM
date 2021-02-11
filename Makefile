@@ -52,7 +52,7 @@ test: venv ## Run nosetests using the default nosetests command
 	source $(VENV_DIR)/bin/activate && green -a -vv -f ./tests
 
 test_direct: inplace ## Run unit tests without a virtual environment
-	pip install wheel && pip install . && \
+	pip install wheel numpy && pip install . && \
 		python -m unittest discover ./tests
 
 #################
