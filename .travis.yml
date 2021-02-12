@@ -35,7 +35,7 @@ env:
     - secure: "Mfu8zoi/Zxaao84+OiDD9Cy+Dzl+neB2+OFL4WK7NM40vtfHwpN7EMUaQN9FscizQqZZbsn3csCZ7+Lpgcgpq88dkFpsLbDJuX3DXUXmNZDjskzetbnE+IzOMqzugiIkm7tDSqoMpjkvtOOpTnhWQj/06BQy17NsTLZvtZGsqeoDFZby6PgfpQlU//RO+qcSds47lcQnw4jhgr5x0xPvczKL5FIY7Xwrv/C5kYhC14fadoKAdJI9tmD5lzlf2iW4dMYnB3gO4zlT5PUzhpO5yTpVIenv84d/LJUITBmVocbhzkYt4NIRIuuQAtLQ3STD/BJN+HyzhZKYhlxSgd6kKCjimJjGrv6ssemXnVn6DZNyDvY7bFuWNv1Xo/I3+XQAN/BGAGpPsgoMn6c3PwCbz/1K1DyJmcx1nkb8OtWFvu1QyzTk9ZLRg8S+QB5ouHYzd0P6q6TBs3CMIOHO9lEd5UmtNLHobqlvVOHCkDgUwkC/VHR+2UbkriUx2o5L96QyrcnaVqIsdX1XpwFtwcG/HjG/s+3qAvIHOQN55m8IkTsVCylF8zOzX0YBhPGG+H9YxshDZGu7uWFFSLFMn5GIt+50bSQ33nsrswUvxgMz926RA54K0NTn9HXy8Q9JCikA/HopS6as4id2s8u7Umdhu1lgrAxW3BEgX35VsH2Vw9M="
 
     # PyGenSVM is Python3.6+
-    - CIBW_SKIP="cp27-* cp35-*"
+    - CIBW_SKIP="cp27-* cp35-* pp*"
 
     # Run the unit tests on the wheels that are created
     - CIBW_TEST_REQUIRES="numpy Cython"
