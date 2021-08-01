@@ -24,7 +24,7 @@ help:
 .PHONY: inplace install
 
 inplace: ## Build C extensions
-	pip install numpy && python setup.py build_ext -i
+	pip install numpy Cython && python setup.py build_ext -i
 
 install: ## Install for the current user using the default python command
 	python setup.py build_ext --inplace && \
