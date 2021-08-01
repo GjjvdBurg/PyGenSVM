@@ -12,17 +12,22 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ 'ubuntu-latest' ]
-        py: [ '3.6', '3.7', '3.8', '3.9' ]
+        os: [ 'ubuntu-latest', 'macos-latest' ]
+        # minimal and latest
+        py: [ '3.6', '3.9' ]
     steps:
       - name: Install Python ${{ matrix.py }}
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.py }}
 
-      - name: Install system dependencies
-        # TODO: can we use openblas?
+      - name: Install system dependencies (Linux)
+        if: runner.os == 'Linux'
         run: sudo apt-get install libatlas-base-dev liblapack-dev liblapacke-dev
+
+      - name: Install system dependencies (OSX)
+        if: runner.os == 'macOS'
+        run: brew update && brew install openblas
 
       - name: Checkout
         uses: actions/checkout@v2
