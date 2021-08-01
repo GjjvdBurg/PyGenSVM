@@ -27,7 +27,7 @@ jobs:
 
       - name: Install system dependencies (OSX)
         if: runner.os == 'macOS'
-        run: brew update && brew install openblas
+        run: brew install openblas
 
       - name: Checkout
         uses: actions/checkout@v2
