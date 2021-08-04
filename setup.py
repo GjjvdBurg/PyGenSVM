@@ -200,14 +200,14 @@ def get_lapack_info():
                     return True
         return False
 
-    if on_cibw_win():
+    if on_gh_actions_windows():
         lapack_info = get_info("lapack_opt", notfound_action=0)
         lapack_info = {
             "define_macros": [("NO_ATLAS_INFO", 1), ("HAVE_CBLAS", None)],
             "library_dirs": [
                 os.sep.join(
                     [
-                        "C:",
+                        "D:",
                         "cibw",
                         "openblas",
                         "OpenBLAS.0.2.14.1",
@@ -220,7 +220,7 @@ def get_lapack_info():
             "include_dirs": [
                 os.sep.join(
                     [
-                        "C:",
+                        "D:",
                         "cibw",
                         "openblas",
                         "OpenBLAS.0.2.14.1",
