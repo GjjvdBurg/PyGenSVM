@@ -39,9 +39,9 @@ jobs:
         run: |
           nuget install OpenBLAS -OutputDirectory /cibw/openblas -Verbosity detailed
           echo "[openblas]" | Out-File -FilePath ~/.numpy-site.cfg -Encoding utf8
-          echo "libraries = openblas" | Out-File -FilePath ~/.numpy-site.cfg -Encoding utf8
-          echo "library_dirs = /cibw/openblas/OpenBLAS/lib" | Out-File -FilePath ~/.numpy-site.cfg -Encoding utf8
-          echo "include_dir = /cibw/openblas/OpenBLAS/include" | Out-File -FilePath ~/.numpy-site.cfg -Encoding utf8
+          echo "libraries = openblas" | Out-File -FilePath ~/.numpy-site.cfg -Encoding utf8 -Append
+          echo "library_dirs = /cibw/openblas/OpenBLAS/lib" | Out-File -FilePath ~/.numpy-site.cfg -Encoding utf8 -Append
+          echo "include_dir = /cibw/openblas/OpenBLAS/include" | Out-File -FilePath ~/.numpy-site.cfg -Encoding utf8 -Append
 
       - name: Checkout
         uses: actions/checkout@v2
