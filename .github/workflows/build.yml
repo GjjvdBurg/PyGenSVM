@@ -19,7 +19,9 @@ jobs:
         #os: [ 'ubuntu-latest', 'macos-latest', 'windows-latest' ]
         os: [ 'windows-latest' ]
         # minimal and latest
-        py: [ '3.6', '3.9' ]
+        #py: [ '3.6', '3.9' ]
+        py: [ '3.6' ]
+        openblas_version: '0.2.14.1'
     steps:
       - name: Install Python ${{ matrix.py }}
         uses: actions/setup-python@v2
@@ -37,11 +39,11 @@ jobs:
       - name: Install system dependencies (Windows)
         if: runner.os == 'Windows'
         run: |
-          nuget install OpenBLAS -OutputDirectory /cibw/openblas -Verbosity detailed
+          nuget install OpenBLAS -Version ${{ matrix.openblas_version }} -OutputDirectory /cibw/openblas -Verbosity detailed
           echo "[openblas]" | Out-File -FilePath ~/.numpy-site.cfg -Encoding utf8
           echo "libraries = openblas" | Out-File -FilePath ~/.numpy-site.cfg -Encoding utf8 -Append
-          echo "library_dirs = D:\\cibw\\openblas\\OpenBLAS\\lib" | Out-File -FilePath ~/.numpy-site.cfg -Encoding utf8 -Append
-          echo "include_dir = D:\\cibw\\openblas\\OpenBLAS\\include" | Out-File -FilePath ~/.numpy-site.cfg -Encoding utf8 -Append
+          echo "library_dirs = D:\\cibw\\openblas\\OpenBLAS.${{ matrix.openblas_version }}\\lib\\native\\lib\\x64" | Out-File -FilePath ~/.numpy-site.cfg -Encoding utf8 -Append
+          echo "include_dir = D:\\cibw\\openblas\\OpenBLAS.${{ matrix.openblas_version }}\\lib\\native\\include" | Out-File -FilePath ~/.numpy-site.cfg -Encoding utf8 -Append
           Tree "D:\\cibw\\openblas"
 
       - name: Checkout
