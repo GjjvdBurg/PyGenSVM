@@ -41,6 +41,6 @@ jobs:
       - name: Run unit tests (OSX)
         if: runner.os == 'macOS'
         env:
-          LDFLAGS="-L/usr/local/opt/openblas/lib"
-          CPPFLAGS="-I/usr/local/opt/openblas/include"
+          LDFLAGS: "-L/usr/local/opt/openblas/lib"
+          CPPFLAGS: "-I/usr/local/opt/openblas/include"
         run: make test_direct
