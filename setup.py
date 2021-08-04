@@ -113,6 +113,9 @@ def _skl_get_blas_info():
 
     """
     from numpy.distutils.system_info import get_info
+    from numpy.distutils.log import set_verbosity
+
+    set_verbosity(2)
 
     def atlas_not_found(blas_info_):
         def_macros = blas_info_.get("define_macros", [])
