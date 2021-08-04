@@ -64,6 +64,8 @@ jobs:
 
       - name: Run unit tests (Windows)
         if: runner.os == 'Windows'
+        env:
+          DISTUTILS_DEBUG: 1
         run: make test_direct
 
 
