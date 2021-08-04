@@ -36,7 +36,12 @@ jobs:
 
       - name: Install system dependencies (Windows)
         if: runner.os == 'Windows'
-        run: nuget install OpenBLAS -OutputDirectory /cibw/openblas -Verbosity detailed
+        run: >
+          nuget install OpenBLAS -OutputDirectory /cibw/openblas -Verbosity detailed
+          echo "[openblas]" > ~/.numpy-site.cfg
+          echo "libraries = openblas" > ~/.numpy-site.cfg
+          echo "library_dirs = /cibw/openblas/OpenBLAS/lib" > ~/.numpy-site.cfg
+          echo "include_dir = /cibw/openblas/OpenBLAS/include" > ~/.numpy-site.cfg
 
       - name: Checkout
         uses: actions/checkout@v2
