@@ -42,7 +42,7 @@ jobs:
           echo "libraries = openblas" | Out-File -FilePath ~/.numpy-site.cfg -Encoding utf8 -Append
           echo "library_dirs = D:\\cibw\\openblas\\OpenBLAS\\lib" | Out-File -FilePath ~/.numpy-site.cfg -Encoding utf8 -Append
           echo "include_dir = D:\\cibw\\openblas\\OpenBLAS\\include" | Out-File -FilePath ~/.numpy-site.cfg -Encoding utf8 -Append
-          dir /s "D:\\cibw\\openblas"
+          Tree "D:\\cibw\\openblas"
 
       - name: Checkout
         uses: actions/checkout@v2
