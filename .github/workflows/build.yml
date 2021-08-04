@@ -44,7 +44,7 @@ jobs:
           echo "libraries = openblas" | Out-File -FilePath ~/.numpy-site.cfg -Encoding utf8 -Append
           echo "library_dirs = D:\\cibw\\openblas\\OpenBLAS.${{ matrix.openblas_version }}\\lib\\native\\lib\\x64" | Out-File -FilePath ~/.numpy-site.cfg -Encoding utf8 -Append
           echo "include_dir = D:\\cibw\\openblas\\OpenBLAS.${{ matrix.openblas_version }}\\lib\\native\\include" | Out-File -FilePath ~/.numpy-site.cfg -Encoding utf8 -Append
-          Tree "D:\\cibw\\openblas"
+          TREE "D:\\cibw\\openblas" /F
 
       - name: Checkout
         uses: actions/checkout@v2
