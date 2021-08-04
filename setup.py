@@ -3,6 +3,7 @@
 
 import io
 import os
+import sys
 
 from distutils.command.sdist import sdist
 
@@ -144,7 +145,7 @@ def _skl_get_blas_info():
                         "lib",
                         "native",
                         "lib",
-                        "x64"
+                        "x64",
                     ]
                 )
             ],
@@ -283,6 +284,12 @@ def configuration():
 
     from numpy import get_include
 
+    extra_compile_args = blas_info.pop("extra_compile_args", [])
+    if sys.platform == "win32":
+        extra_compile_args.append("/d2FH4-")
+    else:
+        extra_compile_args.append("-fcommon")
+
     config.add_extension(
         "cython_wrapper.wrapper",
         sources=gensvm_sources,
@@ -293,8 +300,7 @@ def configuration():
             get_include(),
             blas_info.pop("include_dirs", []),
         ],
-        extra_compile_args=blas_info.pop("extra_compile_args", [])
-        + ["-fcommon"],
+        extra_compile_args=extra_compile_args,
         depends=gensvm_depends,
         **blas_info
     )
