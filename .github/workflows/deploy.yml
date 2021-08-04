@@ -42,5 +42,4 @@ jobs:
             Rename-Item "D:\\cibw\\openblas\\OpenBLAS.${{ matrix.openblas_version }}\\lib\\native\\lib\\x64\\libopenblas.dll.a" "libopenblas.lib"
             Rename-Item "D:\\cibw\\openblas\\OpenBLAS.${{ matrix.openblas_version }}\\lib\\native\\lib\\win32\\libopenblas.dll.a" "libopenblas.lib"
             TREE "D:\\cibw\\openblas" /F
-            # echo "[build]`ncompiler=mingw32" | Out-File -Encoding ASCII 
-            # ~/pydistutils.cfg
+          CIBW_BEFORE_BUILD: "pip install numpy Cython"
