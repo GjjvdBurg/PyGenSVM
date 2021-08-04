@@ -36,7 +36,7 @@ jobs:
 
       - name: Install system dependencies (Windows)
         if: runner.os == 'Windows'
-        run: >
+        run: |
           nuget install OpenBLAS -OutputDirectory /cibw/openblas -Verbosity detailed
           echo "[openblas]" | Out-File -FilePath ~/.numpy-site.cfg -Encoding utf8
           echo "libraries = openblas" | Out-File -FilePath ~/.numpy-site.cfg -Encoding utf8
