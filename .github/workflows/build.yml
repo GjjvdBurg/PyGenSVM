@@ -16,7 +16,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ 'ubuntu-latest', 'macos-latest', 'windows-latest' ]
+        #os: [ 'ubuntu-latest', 'macos-latest', 'windows-latest' ]
+        os: [ 'windows-latest' ]
         # minimal and latest
         py: [ '3.6', '3.9' ]
     steps:
@@ -35,7 +36,7 @@ jobs:
 
       - name: Install system dependencies (Windows)
         if: runner.os == 'Windows'
-        run: nuget install OpenBLAS
+        run: nuget install OpenBLAS -OutputDirectory /cibw/openblas -Verbosity detailed
 
       - name: Checkout
         uses: actions/checkout@v2
