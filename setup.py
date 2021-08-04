@@ -286,7 +286,8 @@ def configuration():
 
     extra_compile_args = blas_info.pop("extra_compile_args", [])
     if sys.platform == "win32":
-        extra_compile_args.append("/d2FH4-")
+        #extra_compile_args.append("/d2FH4-")
+        pass
     else:
         extra_compile_args.append("-fcommon")
 
