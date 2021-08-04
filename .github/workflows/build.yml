@@ -34,5 +34,13 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Run unit tests
+      - name: Run unit tests (Linux)
+        if: runner.os == 'Linux'
+        run: make test_direct
+
+      - name: Run unit tests (OSX)
+        if: runner.os == 'macOS'
+        env:
+          LDFLAGS="-L/usr/local/opt/openblas/lib"
+          CPPFLAGS="-I/usr/local/opt/openblas/include"
         run: make test_direct
