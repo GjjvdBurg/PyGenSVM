@@ -21,7 +21,7 @@ jobs:
         # minimal and latest
         #py: [ '3.6', '3.9' ]
         py: [ '3.6' ]
-        openblas_version: '0.2.14.1'
+        openblas_version: [ '0.2.14.1' ]
     steps:
       - name: Install Python ${{ matrix.py }}
         uses: actions/setup-python@v2
