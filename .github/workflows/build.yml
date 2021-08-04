@@ -46,6 +46,7 @@ jobs:
           echo 'include_dir = D:\cibw\openblas\OpenBLAS.${{ matrix.openblas_version }}\lib\native\include' | Out-File -FilePath ~/.numpy-site.cfg -Encoding utf8 -Append
           TREE "D:\\cibw\\openblas" /F
           Rename-Item "D:\\cibw\\openblas\\OpenBLAS.${{ matrix.openblas_version }}\\lib\\native\\lib\\x64\\libopenblas.dll.a" "libopenblas.lib"
+          Rename-Item "D:\\cibw\\openblas\\OpenBLAS.${{ matrix.openblas_version }}\\lib\\native\\lib\\x32\\libopenblas.dll.a" "libopenblas.lib"
           TREE "D:\\cibw\\openblas" /F
 
       - name: Checkout
