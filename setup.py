@@ -64,10 +64,10 @@ except ImportError:
     )
 
 
-def on_cibw_win():
+def on_gh_actions_windows():
     return (
-        os.environ.get("CIBUILDWHEEL", "0") == "1"
-        and os.environ.get("TRAVIS_OS_NAME", "none") == "windows"
+        os.environ.get("GITHUB_ACTIONS", "false") == "true"
+        and os.environ.get("RUNNER_OS", "none") == "Windows"
     )
 
 
@@ -127,14 +127,14 @@ def _skl_get_blas_info():
                     return True
         return False
 
-    if on_cibw_win():
+    if on_gh_actions_windows():
         blas_info = get_info("blas_opt", notfound_action=0)
         blas_info = {
             "define_macros": [("NO_ATLAS_INFO", 1), ("HAVE_CBLAS", None)],
             "library_dirs": [
                 os.sep.join(
                     [
-                        "C:",
+                        "D:",
                         "cibw",
                         "openblas",
                         "OpenBLAS.0.2.14.1",
@@ -147,7 +147,7 @@ def _skl_get_blas_info():
             "include_dirs": [
                 os.sep.join(
                     [
-                        "C:",
+                        "D:",
                         "cibw",
                         "openblas",
                         "OpenBLAS.0.2.14.1",
@@ -168,7 +168,7 @@ def _skl_get_blas_info():
     else:
         cblas_libs = blas_info.pop("libraries", [])
 
-    if os.environ.get("TRAVIS_OS_NAME", "none") == "osx":
+    if os.environ.get("RUNNER_OS", "none") == "macOS":
         libdir = blas_info.get("library_dirs", [])
         libdir = libdir[0] if libdir else None
         if libdir:
@@ -288,7 +288,8 @@ def configuration():
             get_include(),
             blas_info.pop("include_dirs", []),
         ],
-        extra_compile_args=blas_info.pop("extra_compile_args", []) + ["-fcommon"],
+        extra_compile_args=blas_info.pop("extra_compile_args", [])
+        + ["-fcommon"],
         depends=gensvm_depends,
         **blas_info
     )
