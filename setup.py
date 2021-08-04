@@ -144,6 +144,7 @@ def _skl_get_blas_info():
                         "lib",
                         "native",
                         "lib",
+                        "x64"
                     ]
                 )
             ],
@@ -214,6 +215,7 @@ def get_lapack_info():
                         "lib",
                         "native",
                         "lib",
+                        "x64",
                     ]
                 )
             ],
