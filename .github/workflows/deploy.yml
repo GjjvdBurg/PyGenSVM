@@ -27,7 +27,7 @@ jobs:
 
       - uses: pypa/cibuildwheel@v1.12.0
         env:
-          CIBW_TEST_COMMAND: "python -VV && python -m unittest discover -f -s {project}/tests/test_unit/"
+          CIBW_TEST_COMMAND: "python -VV && python -m unittest discover -f -s {project}/tests/"
           CIBW_TEST_EXTRAS: "dev"
           CIBW_SKIP: "pp* cp27-* cp33-* cp34-* cp35-*"
             #CIBW_ARCHS_MACOS: x86_64 arm64 universal2
