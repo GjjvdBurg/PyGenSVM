@@ -13,8 +13,16 @@ BITNESS=$3
 # In this case, we need to vendor VCRUNTIME140.dll
 wheel unpack "$WHEEL"
 WHEEL_DIRNAME=$(ls -d gensvm-*)
-ls -R "${WHEEL_DIRNAME}"
+
+ls -R -a "${WHEEL_DIRNAME}"
+
 python build_tools/github/vendor.py "$WHEEL_DIRNAME" "$BITNESS"
-ls -R "${WHEEL_DIRNAME}"
+
+sleep 1
+
+ls -R -a "${WHEEL_DIRNAME}"
+
+sleep 1
+
 wheel pack "$WHEEL_DIRNAME" -d "$DEST_DIR"
 rm -rf "$WHEEL_DIRNAME"

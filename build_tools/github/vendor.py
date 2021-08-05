@@ -119,7 +119,7 @@ def main(wheel_dirname, bitness):
     target_folder = op.join(wheel_dirname, TARGET_FOLDER)
     distributor_init = op.join(wheel_dirname, DISTRIBUTOR_INIT)
 
-    # Create the "sklearn/.libs" subfolder
+    # Create the "gensvm/.libs" subfolder
     if not op.exists(target_folder):
         os.mkdir(target_folder)
 
