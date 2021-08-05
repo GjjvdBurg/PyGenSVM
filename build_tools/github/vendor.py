@@ -151,5 +151,3 @@ def main(wheel_dirname, bitness):
 if __name__ == "__main__":
     _, wheel_file, bitness = sys.argv
     main(wheel_file, bitness)
-
-    © 2021 GitHub, Inc.
