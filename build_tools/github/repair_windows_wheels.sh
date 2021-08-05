@@ -24,5 +24,9 @@ ls -R -a "${WHEEL_DIRNAME}"
 
 sleep 1
 
+cat "${WHEEL_DIRNAME}/gensvm/_distributor_init.py"
+
+sleep 1
+
 wheel pack "$WHEEL_DIRNAME" -d "$DEST_DIR"
 rm -rf "$WHEEL_DIRNAME"
