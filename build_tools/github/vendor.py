@@ -19,8 +19,8 @@ VCOMP140_SRC_PATH = "C:\\Windows\\System32\\vcomp140.dll"
 VCRUNTIME140_SRC_PATH = "C:\\Windows\\System32\\vcruntime140.dll"
 VCRUNTIME140_1_SRC_PATH = "C:\\Windows\\System32\\vcruntime140_1.dll"
 
-OPENBLAS_LIB_32_PATH = "D:\\cibw\\OpenBLAS\\OpenBLAS.0.2.14-1\\lib\\native\\lib\\win32\\libopenblas.lib"
-OPENBLAS_LIB_64_PATH = "D:\\cibw\\OpenBLAS\\OpenBLAS.0.2.14-1\\lib\\native\\lib\\win32\\libopenblas.lib"
+OPENBLAS_LIB_32_PATH = "D:\\cibw\\OpenBLAS\\OpenBLAS.0.2.14.1\\lib\\native\\lib\\win32\\libopenblas.lib"
+OPENBLAS_LIB_64_PATH = "D:\\cibw\\OpenBLAS\\OpenBLAS.0.2.14.1\\lib\\native\\lib\\win32\\libopenblas.lib"
 
 
 def make_distributor_init_32_bits(
