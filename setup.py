@@ -4,6 +4,7 @@
 import io
 import os
 import sys
+import struct
 
 from distutils.command.sdist import sdist
 
@@ -132,6 +133,7 @@ def _skl_get_blas_info():
         return False
 
     if on_gh_actions_windows():
+        bitness = struct.calcsize("P") * 8
         blas_info = get_info("blas_opt", notfound_action=0)
         blas_info = {
             "define_macros": [("NO_ATLAS_INFO", 1), ("HAVE_CBLAS", None)],
@@ -145,7 +147,7 @@ def _skl_get_blas_info():
                         "lib",
                         "native",
                         "lib",
-                        "x64",
+                        "x64" if bitness == "64" else "win32",
                     ]
                 )
             ],
@@ -203,6 +205,7 @@ def get_lapack_info():
         return False
 
     if on_gh_actions_windows():
+        bitness = struct.calcsize("P") * 8
         lapack_info = get_info("lapack_opt", notfound_action=0)
         lapack_info = {
             "define_macros": [("NO_ATLAS_INFO", 1), ("HAVE_CBLAS", None)],
@@ -216,7 +219,7 @@ def get_lapack_info():
                         "lib",
                         "native",
                         "lib",
-                        "x64",
+                        "x64" if bitness == "64" else "win32",
                     ]
                 )
             ],
@@ -286,7 +289,7 @@ def configuration():
 
     extra_compile_args = blas_info.pop("extra_compile_args", [])
     if sys.platform == "win32":
-        #extra_compile_args.append("/d2FH4-")
+        # extra_compile_args.append("/d2FH4-")
         pass
     else:
         extra_compile_args.append("-fcommon")
