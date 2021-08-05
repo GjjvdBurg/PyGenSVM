@@ -28,9 +28,5 @@ cat "${WHEEL_DIRNAME}/gensvm/_distributor_init.py"
 
 sleep 1
 
-pwsh build_tools/github/inspect_pyd.ps1
-
-sleep 1
-
 wheel pack "$WHEEL_DIRNAME" -d "$DEST_DIR"
 rm -rf "$WHEEL_DIRNAME"
