@@ -28,7 +28,7 @@ cat "${WHEEL_DIRNAME}/gensvm/_distributor_init.py"
 
 sleep 1
 
-ldd "${WHEEL_DIRNAME}/gensvm/cython_wrapper/wrapper.cp37-win32.pyd"
+pwsh build_tools/github/inspect_pyd.ps1
 
 sleep 1
 
