@@ -19,9 +19,15 @@ VCOMP140_SRC_PATH = "C:\\Windows\\System32\\vcomp140.dll"
 VCRUNTIME140_SRC_PATH = "C:\\Windows\\System32\\vcruntime140.dll"
 VCRUNTIME140_1_SRC_PATH = "C:\\Windows\\System32\\vcruntime140_1.dll"
 
+OPENBLAS_LIB_32_PATH = "D:\\cibw\\OpenBLAS\\OpenBLAS.0.2.14-1\\lib\\native\\lib\\win32\\libopenblas.lib"
+OPENBLAS_LIB_64_PATH = "D:\\cibw\\OpenBLAS\\OpenBLAS.0.2.14-1\\lib\\native\\lib\\win32\\libopenblas.lib"
+
 
 def make_distributor_init_32_bits(
-    distributor_init, vcomp140_dll_filename, vcruntime140_dll_filename
+    distributor_init,
+    vcomp140_dll_filename,
+    vcruntime140_dll_filename,
+    openblas_lib_filename,
 ):
     """Create a _distributor_init.py file for 32-bit architectures.
     This file is imported first when importing the sklearn package
@@ -46,10 +52,14 @@ def make_distributor_init_32_bits(
                 libs_path = op.join(op.dirname(__file__), ".libs")
                 vcomp140_dll_filename = op.join(libs_path, "{0}")
                 vcruntime140_dll_filename = op.join(libs_path, "{1}")
+                openblas_lib_filename = op.join(libs_path, "{2}")
                 WinDLL(op.abspath(vcomp140_dll_filename))
                 WinDLL(op.abspath(vcruntime140_dll_filename))
+                WinDLL(op.abspath(openblas_lib_filename))
             """.format(
-                    vcomp140_dll_filename, vcruntime140_dll_filename
+                    vcomp140_dll_filename,
+                    vcruntime140_dll_filename,
+                    openblas_lib_filename,
                 )
             )
         )
@@ -60,6 +70,7 @@ def make_distributor_init_64_bits(
     vcomp140_dll_filename,
     vcruntime140_dll_filename,
     vcruntime140_1_dll_filename,
+    openblas_lib_filename,
 ):
     """Create a _distributor_init.py file for 64-bit architectures.
     This file is imported first when importing the sklearn package
@@ -86,13 +97,16 @@ def make_distributor_init_64_bits(
                 vcomp140_dll_filename = op.join(libs_path, "{0}")
                 vcruntime140_dll_filename = op.join(libs_path, "{1}")
                 vcruntime140_1_dll_filename = op.join(libs_path, "{2}")
+                openblas_lib_filename = op.join(libs_path, "{3}")
                 WinDLL(op.abspath(vcomp140_dll_filename))
                 WinDLL(op.abspath(vcruntime140_dll_filename))
                 WinDLL(op.abspath(vcruntime140_1_dll_filename))
+                WinDLL(op.abspath(openblas_lib_filename))
             """.format(
                     vcomp140_dll_filename,
                     vcruntime140_dll_filename,
                     vcruntime140_1_dll_filename,
+                    openblas_lib_filename,
                 )
             )
         )
@@ -133,11 +147,23 @@ def main(wheel_dirname, bitness):
         print(f"Copying {VCRUNTIME140_1_SRC_PATH} to {target_folder}.")
         shutil.copy2(VCRUNTIME140_1_SRC_PATH, target_folder)
 
+    if bitness == "32":
+        print(f"Copying {OPENBLAS_LIB_32_PATH} to {target_folder}.")
+        shutil.copy2(OPENBLAS_LIB_32_PATH, target_folder)
+        openblas_lib_filename = op.basename(OPENBLAS_LIB_32_PATH)
+    else:
+        print(f"Copying {OPENBLAS_LIB_64_PATH} to {target_folder}.")
+        shutil.copy2(OPENBLAS_LIB_64_PATH, target_folder)
+        openblas_lib_filename = op.basename(OPENBLAS_LIB_64_PATH)
+
     # Generate the _distributor_init file in the source tree
     print("Generating the '_distributor_init.py' file.")
     if bitness == "32":
         make_distributor_init_32_bits(
-            distributor_init, vcomp140_dll_filename, vcruntime140_dll_filename
+            distributor_init,
+            vcomp140_dll_filename,
+            vcruntime140_dll_filename,
+            openblas_lib_filename,
         )
     else:
         make_distributor_init_64_bits(
@@ -145,6 +171,7 @@ def main(wheel_dirname, bitness):
             vcomp140_dll_filename,
             vcruntime140_dll_filename,
             vcruntime140_1_dll_filename,
+            openblas_lib_filename,
         )
 
 
