@@ -38,7 +38,7 @@ jobs:
           CIBW_BUILD: cp${{ matrix.python }}-${{ matrix.platform_id }}
           CIBW_REPAIR_WHEEL_COMMAND_WINDOWS: bash build_tools/github/repair_windows_wheels.sh {wheel} {dest_dir} ${{ matrix.bitness }}
           CIBW_BEFORE_TEST_WINDOWS: bash build_tools/github/build_minimal_windows_image.sh ${{ matrix.python }} ${{ matrix.bitness }}
-          CIBW_TEST_COMMAND: "python -VV && python -m unittest discover -f -s {project}/tests/"
+          CIBW_TEST_COMMAND: "python -VV && python -vvvv -m unittest discover -f -s {project}/tests/"
           CIBW_TEST_EXTRAS: "dev"
           CIBW_SKIP: "pp* cp27-* cp33-* cp34-* cp35-*"
           CIBW_BEFORE_ALL_WINDOWS: pwsh build_tools/github/setup_windows.ps1
