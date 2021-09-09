@@ -22,6 +22,10 @@ VCRUNTIME140_1_SRC_PATH = "C:\\Windows\\System32\\vcruntime140_1.dll"
 OPENBLAS_LIB_32_PATH = "D:\\cibw\\OpenBLAS\\OpenBLAS.0.2.14.1\\lib\\native\\bin\\win32\\libopenblas.dll"
 OPENBLAS_LIB_64_PATH = "D:\\cibw\\OpenBLAS\\OpenBLAS.0.2.14.1\\lib\\native\\bin\\x64\\libopenblas.dll"
 
+# TEMP
+OPENBLAS_LIB_32_PATH = "D:\\cibw\\OpenBLAS\\OpenBLAS.0.2.14.1\\lib\\native\\lib\\win32\\libopenblas.dll"
+OPENBLAS_LIB_64_PATH = "D:\\cibw\\OpenBLAS\\OpenBLAS.0.2.14.1\\lib\\native\\lib\\x64\\libopenblas.dll"
+
 
 def make_distributor_init_32_bits(
     distributor_init,
@@ -151,15 +155,15 @@ def main(wheel_dirname, bitness):
     shutil.copy2(VCRUNTIME140_SRC_PATH, target_folder)
 
     if bitness == "64":
-        print(f"Copying {VCRUNTIME140_1_SRC_PATH} to {target_folder}.")
+        print(f"Copying {VCRUNTIME140_1_SRC_PATH} to {target_folder}")
         shutil.copy2(VCRUNTIME140_1_SRC_PATH, target_folder)
 
     if bitness == "32":
-        print(f"Copying {OPENBLAS_LIB_32_PATH} to {target_folder}.")
+        print(f"Copying {OPENBLAS_LIB_32_PATH} to {target_folder}")
         shutil.copy2(OPENBLAS_LIB_32_PATH, target_folder)
         openblas_lib_filename = op.basename(OPENBLAS_LIB_32_PATH)
     else:
-        print(f"Copying {OPENBLAS_LIB_64_PATH} to {target_folder}.")
+        print(f"Copying {OPENBLAS_LIB_64_PATH} to {target_folder}")
         shutil.copy2(OPENBLAS_LIB_64_PATH, target_folder)
         openblas_lib_filename = op.basename(OPENBLAS_LIB_64_PATH)
 
