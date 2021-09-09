@@ -50,11 +50,16 @@ def make_distributor_init_32_bits(
             if os.name == "nt":
                 # Load vcomp140.dll and vcruntime140.dll
                 libs_path = op.join(op.dirname(__file__), ".libs")
+
                 vcomp140_dll_filename = op.join(libs_path, "{0}")
                 vcruntime140_dll_filename = op.join(libs_path, "{1}")
                 openblas_lib_filename = op.join(libs_path, "{2}")
-                print(openblas_lib_filename)
-                print(op.abspath(openblas_lib_filename))
+
+                print("vcomp140_dll_filename", vcomp140_dll_filename)
+                print("vcruntime140_dll_filename", vcruntime140_dll_filename)
+                print("openblas_lib_filename", openblas_lib_filename)
+                print("openblas_lib_filename absolute", op.abspath(openblas_lib_filename))
+
                 WinDLL(op.abspath(vcomp140_dll_filename))
                 WinDLL(op.abspath(vcruntime140_dll_filename))
                 WinDLL(op.abspath(openblas_lib_filename))
