@@ -53,6 +53,7 @@ def make_distributor_init_32_bits(
             that build the wheel.
             '''
             import os
+            import time
             import os.path as op
             from ctypes import WinDLL
             if os.name == "nt":
@@ -67,22 +68,38 @@ def make_distributor_init_32_bits(
                 openblas_quadmath_filename = op.join(libs_path, "{5}")
 
                 print("vcomp140_dll_filename", vcomp140_dll_filename)
+                time.sleep(1)
                 print("vcruntime140_dll_filename", vcruntime140_dll_filename)
+                time.sleep(1)
                 print("openblas_gcc_filename", openblas_gcc_filename)
+                time.sleep(1)
                 print("openblas_fortran_filename", openblas_fortran_filename)
+                time.sleep(1)
                 print("openblas_lib_filename", openblas_lib_filename)
+                time.sleep(1)
                 print("openblas_quadmath_filename", openblas_quadmath_filename)
+                time.sleep(1)
 
                 print("Loading vcomp140")
                 WinDLL(op.abspath(vcomp140_dll_filename))
+                time.sleep(1)
+
                 print("Loading vcruntime140")
                 WinDLL(op.abspath(vcruntime140_dll_filename))
+                time.sleep(1)
+
                 print("Loading openblas_gcc")
                 WinDLL(op.abspath(openblas_gcc_filename))
+                time.sleep(1)
+
                 print("Loading openblas_fortran")
                 WinDLL(op.abspath(openblas_fortran_filename))
+                time.sleep(1)
+
                 print("Loading openblas_quadmath")
                 WinDLL(op.abspath(openblas_quadmath_filename))
+                time.sleep(1)
+
                 print("Loading openblas_lib")
                 WinDLL(op.abspath(openblas_lib_filename))
 
