@@ -22,20 +22,12 @@ VCRUNTIME140_1_SRC_PATH = "C:\\Windows\\System32\\vcruntime140_1.dll"
 OPENBLAS_LIB_32_PATH = "D:\\cibw\\OpenBLAS\\OpenBLAS.0.2.14.1\\lib\\native\\bin\\win32\\libopenblas.dll"
 OPENBLAS_LIB_64_PATH = "D:\\cibw\\OpenBLAS\\OpenBLAS.0.2.14.1\\lib\\native\\bin\\x64\\libopenblas.dll"
 
-OPENBLAS_32_LIBGCC = "D:\\cibw\\OpenBLAS\\OpenBLAS.0.2.14.1\\lib\\native\\bin\\win32\\libgcc_s_sjlj-1.dll"
-OPENBLAS_32_FORTRAN = "D:\\cibw\\OpenBLAS\\OpenBLAS.0.2.14.1\\lib\\native\\bin\\win32\\libgfortran-3.dll"
-OPENBLAS_32_OPENBLAS = "D:\\cibw\\OpenBLAS\\OpenBLAS.0.2.14.1\\lib\\native\\bin\\win32\\libopenblas.dll"
-OPENBLAS_32_QUADMATH = "D:\\cibw\\OpenBLAS\\OpenBLAS.0.2.14.1\\lib\\native\\bin\\win32\\libquadmath-0.dll"
-
 
 def make_distributor_init_32_bits(
     distributor_init,
     vcomp140_dll_filename,
     vcruntime140_dll_filename,
-    openblas_gcc_filename,
-    openblas_fortran_filename,
     openblas_lib_filename,
-    openblas_quadmath_filename,
 ):
     """Create a _distributor_init.py file for 32-bit architectures.
     This file is imported first when importing the sklearn package
@@ -62,22 +54,15 @@ def make_distributor_init_32_bits(
 
                 vcomp140_dll_filename = op.join(libs_path, "{0}")
                 vcruntime140_dll_filename = op.join(libs_path, "{1}")
-                openblas_gcc_filename = op.join(libs_path, "{2}")
-                openblas_fortran_filename = op.join(libs_path, "{3}")
-                openblas_lib_filename = op.join(libs_path, "{4}")
-                openblas_quadmath_filename = op.join(libs_path, "{5}")
+                openblas_lib_filename = op.join(libs_path, "{2}")
 
                 print("vcomp140_dll_filename", vcomp140_dll_filename)
                 time.sleep(1)
+
                 print("vcruntime140_dll_filename", vcruntime140_dll_filename)
                 time.sleep(1)
-                print("openblas_gcc_filename", openblas_gcc_filename)
-                time.sleep(1)
-                print("openblas_fortran_filename", openblas_fortran_filename)
-                time.sleep(1)
+
                 print("openblas_lib_filename", openblas_lib_filename)
-                time.sleep(1)
-                print("openblas_quadmath_filename", openblas_quadmath_filename)
                 time.sleep(1)
 
                 print("Loading vcomp140")
@@ -88,28 +73,13 @@ def make_distributor_init_32_bits(
                 WinDLL(op.abspath(vcruntime140_dll_filename))
                 time.sleep(1)
 
-                print("Loading openblas_gcc")
-                WinDLL(op.abspath(openblas_gcc_filename))
-                time.sleep(1)
-
-                print("Loading openblas_fortran")
-                WinDLL(op.abspath(openblas_fortran_filename))
-                time.sleep(1)
-
-                print("Loading openblas_quadmath")
-                WinDLL(op.abspath(openblas_quadmath_filename))
-                time.sleep(1)
-
                 print("Loading openblas_lib")
                 WinDLL(op.abspath(openblas_lib_filename))
 
             """.format(
                     vcomp140_dll_filename,
                     vcruntime140_dll_filename,
-                    openblas_gcc_filename,
-                    openblas_fortran_filename,
                     openblas_lib_filename,
-                    openblas_quadmath_filename,
                 )
             )
         )
@@ -198,21 +168,9 @@ def main(wheel_dirname, bitness):
         shutil.copy2(VCRUNTIME140_1_SRC_PATH, target_folder)
 
     if bitness == "32":
-        print(f"Copying {OPENBLAS_32_LIBGCC} to {target_folder}")
-        shutil.copy2(OPENBLAS_32_LIBGCC, target_folder)
-        openblas_gcc_filename = op.basename(OPENBLAS_32_LIBGCC)
-
-        print(f"Copying {OPENBLAS_32_FORTRAN} to {target_folder}")
-        shutil.copy2(OPENBLAS_32_FORTRAN, target_folder)
-        openblas_fortran_filename = op.basename(OPENBLAS_32_FORTRAN)
-
-        print(f"Copying {OPENBLAS_32_OPENBLAS} to {target_folder}")
-        shutil.copy2(OPENBLAS_32_OPENBLAS, target_folder)
-        openblas_lib_filename = op.basename(OPENBLAS_32_OPENBLAS)
-
-        print(f"Copying {OPENBLAS_32_QUADMATH} to {target_folder}")
-        shutil.copy2(OPENBLAS_32_QUADMATH, target_folder)
-        openblas_quadmath_filename = op.basename(OPENBLAS_32_QUADMATH)
+        print(f"Copying {OPENBLAS_LIB_32_PATH} to {target_folder}")
+        shutil.copy2(OPENBLAS_LIB_32_PATH, target_folder)
+        openblas_lib_filename = op.basename(OPENBLAS_LIB_32_PATH)
     else:
         print(f"Copying {OPENBLAS_LIB_64_PATH} to {target_folder}")
         shutil.copy2(OPENBLAS_LIB_64_PATH, target_folder)
@@ -225,10 +183,7 @@ def main(wheel_dirname, bitness):
             distributor_init,
             vcomp140_dll_filename,
             vcruntime140_dll_filename,
-            openblas_gcc_filename,
-            openblas_fortran_filename,
             openblas_lib_filename,
-            openblas_quadmath_filename,
         )
     else:
         make_distributor_init_64_bits(
