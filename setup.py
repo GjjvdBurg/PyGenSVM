@@ -146,8 +146,7 @@ def _skl_get_blas_info():
                         "OpenBLAS.0.2.14.1",
                         "lib",
                         "native",
-                        #"lib",
-                        "bin",
+                        "lib",
                         "x64" if bitness == "64" else "win32",
                     ]
                 )
