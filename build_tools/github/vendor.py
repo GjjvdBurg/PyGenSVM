@@ -46,40 +46,60 @@ def make_distributor_init_32_bits(
             import os
             import time
             import os.path as op
+            import numpy
+            import glob
             from ctypes import WinDLL
             if os.name == "nt":
                 # Load vcomp140.dll and vcruntime140.dll
                 libs_path = op.join(op.dirname(__file__), ".libs")
+                np_libs_path = op.join(op.dirname(numpy.__file__), '.libs')
 
-                vcomp140_dll_filename = op.join(libs_path, "{0}")
-                vcruntime140_dll_filename = op.join(libs_path, "{1}")
-                openblas_lib_filename = op.join(libs_path, "{2}")
+                DLL_filenames = []
+                DLL_filenames.append(op.join(libs_path, "{0}"))
+                DLL_filenames.append(op.join(libs_path, "{1}"))
+                if os.path.isdir(np_libs_path):
+                  ob_dlls = list(glob.glob(os.path.join(np_libs_dir, '*openblas*dll')))
+                else:
+                  ob_dlls = [op.join(libs_path, "{2}")]
 
-                print("vcomp140_dll_filename", vcomp140_dll_filename)
-                assert op.exists(op.abspath(vcomp140_dll_filename))
-                time.sleep(1)
+                DLL_filenames.extend(ob_dlls)
 
-                print("vcruntime140_dll_filename", vcruntime140_dll_filename)
-                assert op.exists(op.abspath(vcruntime140_dll_filename))
-                time.sleep(1)
+                for dll_file in DLL_filenames:
+                  print("Loading dll file:", op.abspath(dll_file))
+                  WinDLL(op.abspath(dll_file))
+                  print("Success")
+                  time.sleep(1)
 
-                print("openblas_lib_filename", openblas_lib_filename)
-                assert op.exists(op.abspath(openblas_lib_filename))
-                time.sleep(1)
+                # vcomp140_dll_filename = op.join(libs_path, "{0}")
+                # vcruntime140_dll_filename = op.join(libs_path, "{1}")
+                # if op.exists(np_libs_path):
+                # openblas_lib_filename = op.join(libs_path, "{2}")
 
-                print("Loading vcomp140")
-                WinDLL(op.abspath(vcomp140_dll_filename))
-                print("Loaded vcomp140 successfully")
-                time.sleep(1)
+                # print("vcomp140_dll_filename", vcomp140_dll_filename)
+                # assert op.exists(op.abspath(vcomp140_dll_filename))
+                # time.sleep(1)
 
-                print("Loading vcruntime140")
-                WinDLL(op.abspath(vcruntime140_dll_filename))
-                print("Loaded vcruntime140 successfully")
-                time.sleep(1)
+                # print("vcruntime140_dll_filename", vcruntime140_dll_filename)
+                # assert op.exists(op.abspath(vcruntime140_dll_filename))
+                # time.sleep(1)
 
-                print("Loading openblas_lib")
-                WinDLL(op.abspath(openblas_lib_filename))
-                print("Loaded openblas_lib successfully")
+                # print("openblas_lib_filename", openblas_lib_filename)
+                # assert op.exists(op.abspath(openblas_lib_filename))
+                # time.sleep(1)
+
+                # print("Loading vcomp140")
+                # WinDLL(op.abspath(vcomp140_dll_filename))
+                # print("Loaded vcomp140 successfully")
+                # time.sleep(1)
+
+                # print("Loading vcruntime140")
+                # WinDLL(op.abspath(vcruntime140_dll_filename))
+                # print("Loaded vcruntime140 successfully")
+                # time.sleep(1)
+
+                # print("Loading openblas_lib")
+                # WinDLL(op.abspath(openblas_lib_filename))
+                # print("Loaded openblas_lib successfully")
 
             """.format(
                     vcomp140_dll_filename,
