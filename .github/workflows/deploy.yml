@@ -33,6 +33,9 @@ jobs:
         with:
           python-version: '3.7'
 
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
+
       - name: Build and test wheels
         env:
           CIBW_BUILD: cp${{ matrix.python }}-${{ matrix.platform_id }}
