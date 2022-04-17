@@ -2,6 +2,7 @@ include setup.py
 include README.md
 include LICENSE
 include CHANGELOG.md
+include gensvm/cython_wrapper/wrapper.lib
 recursive-include gensvm *.py
 recursive-include gensvm *.pxd
 recursive-include gensvm *.pyx
