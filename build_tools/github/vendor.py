@@ -6,6 +6,7 @@ for 64-bit architectures.
 """
 
 
+import glob
 import os
 import os.path as op
 import shutil
@@ -21,6 +22,7 @@ VCRUNTIME140_1_SRC_PATH = "C:\\Windows\\System32\\vcruntime140_1.dll"
 
 OPENBLAS_LIB_32_PATH = "D:\\cibw\\OpenBLAS\\OpenBLAS.0.2.14.1\\lib\\native\\bin\\win32\\libopenblas.dll"
 OPENBLAS_LIB_64_PATH = "D:\\cibw\\OpenBLAS\\OpenBLAS.0.2.14.1\\lib\\native\\bin\\x64\\libopenblas.dll"
+
 
 def make_distributor_init_32_bits(
     distributor_init,
@@ -181,6 +183,15 @@ def main(wheel_dirname, bitness):
     # Create the "gensvm/.libs" subfolder
     if not op.exists(target_folder):
         os.mkdir(target_folder)
+
+    # Find the .lib file for the Cython wrapper
+    libs = glob.glob("build/*/Release/gensvm/cython_wrapper/wrapper.lib")
+    if not libs:
+        print("No wrapper.lib found!")
+    else:
+        wrap_lib = libs[0]
+        print(f"Copying {wrap_lib} to {target_folder}.")
+        shutil.copy2(wrap_lib, target_folder)
 
     print(f"Copying {VCOMP140_SRC_PATH} to {target_folder}.")
     shutil.copy2(VCOMP140_SRC_PATH, target_folder)
