@@ -170,7 +170,7 @@ def predict_kernels_wrap(
     n_var = Xtrain.shape[1]
 
     cdef np.ndarray[np.int_t, ndim=1, mode='c'] predictions
-    predictions = np.empty((n_obs_test, ), dtype=np.int)
+    predictions = np.empty((n_obs_test, ), dtype=int)
 
     gensvm_predict_kernels(Xtest.data, Xtrain.data, V.data, V_rows, V_cols, 
             n_obs_train, n_obs_test, n_var, n_class, kernel_idx, gamma, coef, 
