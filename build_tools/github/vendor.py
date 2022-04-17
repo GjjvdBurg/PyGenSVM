@@ -72,7 +72,7 @@ def make_distributor_init_32_bits(
                   print("Loading dll file:", op.abspath(dll_file))
                   WinDLL(op.abspath(dll_file))
                   print("Successfully loaded:", op.abspath(dll_file))
-                  time.sleep(1)
+                  time.sleep(5)
 
             """.format(
                     vcomp140_dll_filename,
