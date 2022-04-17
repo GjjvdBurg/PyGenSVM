@@ -28,6 +28,7 @@ def make_distributor_init_32_bits(
     distributor_init,
     vcomp140_dll_filename,
     vcruntime140_dll_filename,
+    wrapper_lib_filename,
     openblas_lib_filename,
 ):
     """Create a _distributor_init.py file for 32-bit architectures.
@@ -59,10 +60,11 @@ def make_distributor_init_32_bits(
                 DLL_filenames = []
                 DLL_filenames.append(op.join(libs_path, "{0}"))
                 DLL_filenames.append(op.join(libs_path, "{1}"))
+                DLL_filenames.append(op.join(libs_path, "{2}"))
                 if os.path.isdir(np_libs_dir):
                   ob_dlls = list(glob.glob(os.path.join(np_libs_dir, '*openblas*dll')))
                 else:
-                  ob_dlls = [op.join(libs_path, "{2}")]
+                  ob_dlls = [op.join(libs_path, "{3}")]
 
                 DLL_filenames.extend(ob_dlls)
 
@@ -106,6 +108,7 @@ def make_distributor_init_32_bits(
             """.format(
                     vcomp140_dll_filename,
                     vcruntime140_dll_filename,
+                    wrapper_lib_filename,
                     openblas_lib_filename,
                 )
             )
@@ -117,6 +120,7 @@ def make_distributor_init_64_bits(
     vcomp140_dll_filename,
     vcruntime140_dll_filename,
     vcruntime140_1_dll_filename,
+    wrapper_lib_filename,
     openblas_lib_filename,
 ):
     """Create a _distributor_init.py file for 64-bit architectures.
@@ -189,9 +193,9 @@ def main(wheel_dirname, bitness):
     if not libs:
         print("No wrapper.lib found!")
     else:
-        wrap_lib = libs[0]
-        print(f"Copying {wrap_lib} to {target_folder}.")
-        shutil.copy2(wrap_lib, target_folder)
+        wrapper_lib_filename = libs[0]
+        print(f"Copying {wrapper_lib_filename} to {target_folder}.")
+        shutil.copy2(wrapper_lib_filename, target_folder)
 
     print(f"Copying {VCOMP140_SRC_PATH} to {target_folder}.")
     shutil.copy2(VCOMP140_SRC_PATH, target_folder)
@@ -219,6 +223,7 @@ def main(wheel_dirname, bitness):
             distributor_init,
             vcomp140_dll_filename,
             vcruntime140_dll_filename,
+            wrapper_lib_filename,
             openblas_lib_filename,
         )
     else:
@@ -227,6 +232,7 @@ def main(wheel_dirname, bitness):
             vcomp140_dll_filename,
             vcruntime140_dll_filename,
             vcruntime140_1_dll_filename,
+            wrapper_lib_filename,
             openblas_lib_filename,
         )
 
