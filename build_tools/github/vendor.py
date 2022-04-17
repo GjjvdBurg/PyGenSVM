@@ -162,9 +162,10 @@ def main(wheel_dirname, bitness):
     if not libs:
         print("No wrapper.lib found!")
     else:
-        wrapper_lib_filename = libs[0]
-        print(f"Copying {wrapper_lib_filename} to {target_folder}.")
-        shutil.copy2(wrapper_lib_filename, target_folder)
+        wrapper_lib_path = libs[0]
+        wrapper_lib_filename = op.basename(wrapper_lib_path)
+        print(f"Copying {wrapper_lib_path} to {target_folder}.")
+        shutil.copy2(wrapper_lib_path, target_folder)
 
     print(f"Copying {VCOMP140_SRC_PATH} to {target_folder}.")
     shutil.copy2(VCOMP140_SRC_PATH, target_folder)
